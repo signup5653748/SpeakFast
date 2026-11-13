@@ -9,10 +9,6 @@ plugins {
     alias(libs.plugins.ksp)
 }
 
-detekt {
-    config.setFrom(file("$rootDir/config/detekt/detekt.yml"))
-}
-
 kotlin {
     compilerOptions {
         languageVersion = org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_0

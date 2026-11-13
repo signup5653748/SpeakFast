@@ -6,8 +6,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.widget.Toast
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -16,96 +16,113 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.debk007.speakfast.presentation.App
-import com.debk007.speakfast.ui.FloatingTriggerService
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LocalLifecycleOwner
 
-class MainActivity : AppCompatActivity() {
-    private var refreshToggle = false
-
+class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent {
-            val currentActivity = this
+        setContent { MainScreen() }
+    }
 
-            @Composable
-            fun MainScreen() {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(16.dp)
+    @Composable
+    private fun MainScreen() {
+        var refreshTrigger by remember { mutableStateOf(false) }
+
+        // Observe lifecycle to refresh UI when returning from settings
+        val lifecycleOwner = LocalLifecycleOwner.current
+        DisposableEffect(lifecycleOwner) {
+            val observer = LifecycleEventObserver { _, event ->
+                if (event == Lifecycle.Event.ON_RESUME) {
+                    refreshTrigger = !refreshTrigger
+                }
+            }
+            lifecycleOwner.lifecycle.addObserver(observer)
+            onDispose {
+                lifecycleOwner.lifecycle.removeObserver(observer)
+            }
+        }
+
+        // Re-read permissions on every refreshTrigger change
+        val accessibilityEnabled = remember(refreshTrigger) {
+            isAccessibilityServiceEnabled(this)
+        }
+        val overlayGranted = remember(refreshTrigger) {
+            Settings.canDrawOverlays(this)
+        }
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(16.dp)
+        ) {
+            // Accessibility Service status
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = androidx.compose.foundation.layout.Arrangement.SpaceBetween
+            ) {
+                Text("Accessibility Service:", style = androidx.compose.material3.MaterialTheme.typography.bodyLarge)
+                Text(
+                    if (accessibilityEnabled) "Enabled" else "Disabled",
+                    color = if (accessibilityEnabled) Color.Green else Color.Red,
+                    style = androidx.compose.material3.MaterialTheme.typography.bodyLarge
+                )
+            }
+
+            // Overlay permission status
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = androidx.compose.foundation.layout.Arrangement.SpaceBetween
+            ) {
+                Text("Overlay Permission:", style = androidx.compose.material3.MaterialTheme.typography.bodyLarge)
+                Text(
+                    if (overlayGranted) "Granted" else "Not Granted",
+                    color = if (overlayGranted) Color.Green else Color.Red,
+                    style = androidx.compose.material3.MaterialTheme.typography.bodyLarge
+                )
+            }
+
+            // Enable Accessibility Service button (only if disabled)
+            if (!accessibilityEnabled) {
+                Button(
+                    onClick = {
+                        val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
+                        startActivity(intent)
+                    },
+                    modifier = Modifier.fillMaxWidth()
                 ) {
-                    // Accessibility Service status
-                    val accessibilityEnabled = isAccessibilityServiceEnabled(currentActivity)
-                    Row(modifier = Modifier.fillMaxWidth()) {
-                        Text("Accessibility Service:", modifier = Modifier.weight(1f))
-                        Text(
-                            if (accessibilityEnabled) "Enabled" else "Disabled",
-                            color = if (accessibilityEnabled) Color.Green else Color.Red
-                        )
-                    }
-
-                    // Overlay permission status
-                    val overlayGranted = Settings.canDrawOverlays(currentActivity)
-                    Row(modifier = Modifier.fillMaxWidth()) {
-                        Text("Overlay Permission:", modifier = Modifier.weight(1f))
-                        Text(
-                            if (overlayGranted) "Granted" else "Not Granted",
-                            color = if (overlayGranted) Color.Green else Color.Red
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    // Enable Accessibility Service button (only if disabled)
-                    if (!accessibilityEnabled) {
-                        Button(
-                            onClick = {
-                                val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
-                                currentActivity.startActivity(intent)
-                            }
-                        ) {
-                            Text("Enable Accessibility Service")
-                        }
-                        Spacer(modifier = Modifier.height(8.dp))
-                    }
-
-                    // Start Floating Trigger button
-                    Button(
-                        onClick = {
-                            if (Settings.canDrawOverlays(currentActivity)) {
-                                val serviceIntent = Intent(currentActivity, FloatingTriggerService::class.java)
-                                currentActivity.startService(serviceIntent)
-                                Toast.makeText(currentActivity, "Trigger Started", Toast.LENGTH_SHORT).show()
-                            } else {
-                                val overlayPermissionIntent = Intent(
-                                    Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                                    Uri.parse("package:${currentActivity.packageName}")
-                                )
-                                currentActivity.startActivity(overlayPermissionIntent)
-                            }
-                        }
-                    ) {
-                        Text("Start Floating Trigger")
-                    }
-
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    App()
+                    Text("Enable Accessibility Service", style = androidx.compose.material3.MaterialTheme.typography.labelLarge)
                 }
             }
 
-            MainScreen()
+            // Start Floating Trigger button
+            Button(
+                onClick = {
+                    if (Settings.canDrawOverlays(this)) {
+                        val serviceIntent = Intent(this, FloatingTriggerService::class.java)
+                        startService(serviceIntent)
+                        Toast.makeText(this, "Trigger Started", Toast.LENGTH_SHORT).show()
+                    } else {
+                        val overlayPermissionIntent = Intent(
+                            Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                            Uri.parse("package:$packageName")
+                        )
+                        startActivity(overlayPermissionIntent)
+                    }
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Start Floating Trigger", style = androidx.compose.material3.MaterialTheme.typography.labelLarge)
+            }
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        refreshToggle = !refreshToggle
     }
 
     private fun isAccessibilityServiceEnabled(context: Context): Boolean {
