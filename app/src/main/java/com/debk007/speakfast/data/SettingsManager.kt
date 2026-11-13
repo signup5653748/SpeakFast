@@ -11,7 +11,9 @@ import androidx.datastore.preferences.preferencesDataStore
 import com.debk007.speakfast.model.Settings
 import com.debk007.speakfast.model.TriggerMethod
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.runBlocking
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "speakfast_settings")
 
@@ -30,6 +32,8 @@ class SettingsManager(private val context: Context) {
         .map { preferences ->
             preferences.toSettings()
         }
+
+    fun getSettings(): Settings = kotlinx.coroutines.runBlocking { settingsFlow.first() }
 
     private fun Preferences.toSettings(): Settings {
         return Settings(

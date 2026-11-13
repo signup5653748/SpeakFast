@@ -3,7 +3,8 @@ package com.debk007.speakfast.accessibility
 import android.graphics.Bitmap
 import android.graphics.Rect
 import com.google.mlkit.vision.text.TextRecognition
-import com.google.mlkit.vision.text.TextRecognizerOptions
+import com.google.mlkit.vision.text.TextRecognizer
+import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 
 object OcrFallback {
 
@@ -19,7 +20,7 @@ object OcrFallback {
     ) {
         val croppedBitmap = Bitmap.createBitmap(bitmap, rect.left, rect.top, rect.width(), rect.height())
 
-        val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
+        val recognizer: TextRecognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
 
         recognizer.processImage(croppedBitmap)
             .addOnSuccessListener { visionText ->

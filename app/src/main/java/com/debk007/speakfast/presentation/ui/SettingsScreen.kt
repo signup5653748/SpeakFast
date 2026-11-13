@@ -7,7 +7,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.debk007.speakfast.presentation.viewmodel.SettingsViewModel
@@ -15,6 +14,7 @@ import com.debk007.speakfast.presentation.viewmodel.SettingsViewModel
 @Composable
 fun SettingsScreen(viewModel: SettingsViewModel) {
     val uiState by viewModel.uiState.collectAsState()
+    val settings = uiState.settings
 
     Column(
         modifier = Modifier.fillMaxSize().padding(16.dp)
@@ -27,35 +27,35 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
 
         // Language settings
         Text(
-            text = "Language: ${uiState.selectedLanguage}",
+            text = "Language: ${settings?.languageCode ?: "en"}",
             style = MaterialTheme.typography.bodyLarge,
             modifier = Modifier.padding(top = 16.dp)
         )
 
         // Voice settings
         Text(
-            text = "Voice: ${uiState.selectedVoice}",
+            text = "Voice: ${settings?.voice ?: "default"}",
             style = MaterialTheme.typography.bodyLarge,
             modifier = Modifier.padding(top = 8.dp)
         )
 
         // Speech rate
         Text(
-            text = "Speech Rate: ${String.format("%.1f", uiState.speechRate)}",
+            text = "Speech Rate: ${String.format("%.1f", settings?.speechRate ?: 1.0f)}",
             style = MaterialTheme.typography.bodyLarge,
             modifier = Modifier.padding(top = 8.dp)
         )
 
         // Pitch
         Text(
-            text = "Pitch: ${String.format("%.1f", uiState.pitch)}",
+            text = "Pitch: ${String.format("%.1f", settings?.pitch ?: 1.0f)}",
             style = MaterialTheme.typography.bodyLarge,
             modifier = Modifier.padding(top = 8.dp)
         )
 
         // Trigger method
         Text(
-            text = "Trigger Method: ${uiState.triggerMethod}",
+            text = "Trigger Method: ${settings?.triggerMethod?.name ?: "QUICK_SETTINGS_TILE"}",
             style = MaterialTheme.typography.bodyLarge,
             modifier = Modifier.padding(top = 8.dp)
         )
