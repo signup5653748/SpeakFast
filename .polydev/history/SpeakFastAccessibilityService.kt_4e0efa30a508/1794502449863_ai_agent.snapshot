@@ -1,0 +1,195 @@
+package com.debk007.speakfast.accessibility
+
+import android.accessibilityservice.AccessibilityService
+import android.accessibilityservice.AccessibilityServiceInfo
+import android.graphics.Bitmap
+import android.graphics.Rect
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
+import android.view.accessibility.AccessibilityEvent
+import android.view.accessibility.AccessibilityNodeInfo
+import com.debk007.speakfast.speech.SpeechManager
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
+
+@AndroidEntryPoint
+class SpeakFastAccessibilityService : AccessibilityService() {
+
+    @Inject
+    lateinit var speechManager: SpeechManager
+
+    private val mainHandler = Handler(Looper.getMainLooper())
+
+    override fun onServiceConnected() {
+        super.onServiceConnected()
+        val info = AccessibilityServiceInfo().apply {
+            this.flags = AccessibilityServiceInfo.FLAG_REQUEST_TOUCH_EXPLORATION_GESTURE
+            this.eventTypes = AccessibilityEvent.TYPE_VIEW_FOCUSED or
+                    AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED or
+                    AccessibilityEvent.TYPE_VIEW_CLICKED or
+                    AccessibilityEvent.TYPE_VIEW_SELECTED or
+                    AccessibilityEvent.TYPE_TEXT_CHANGED or
+                    AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED
+            this.feedbackType = AccessibilityServiceInfo.FEEDBACK_SPOKEN
+            this.notificationTimeout = 100
+        }
+        this.setServiceInfo(info)
+        Log.d("SpeakFast", "Accessibility service connected")
+    }
+
+    override fun onAccessibilityEvent(event: AccessibilityEvent?) {
+        when (event?.eventType) {
+            AccessibilityEvent.TYPE_VIEW_FOCUSED -> {
+                handleViewFocused(event)
+            }
+            AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED -> {
+                handleWindowContentChanged(event)
+            }
+            AccessibilityEvent.TYPE_VIEW_CLICKED -> {
+                handleViewClicked(event)
+            }
+            AccessibilityEvent.TYPE_VIEW_SELECTED -> {
+                handleViewSelected(event)
+            }
+            AccessibilityEvent.TYPE_TEXT_CHANGED -> {
+                handleTextChanged(event)
+            }
+            AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> {
+                handleWindowStateChanged(event)
+            }
+        }
+    }
+
+    private fun handleViewFocused(event: AccessibilityEvent) {
+        val node = event.source ?: return
+        handleSelection(node)
+    }
+
+    private fun handleWindowContentChanged(event: AccessibilityEvent) {
+        val root = getRootInActiveWindow() ?: return
+        handleSelection(root)
+    }
+
+    private fun handleViewClicked(event: AccessibilityEvent) {
+        val node = event.source ?: return
+        handleSelection(node)
+    }
+
+    private fun handleViewSelected(event: AccessibilityEvent) {
+        val node = event.source ?: return
+        handleSelection(node)
+    }
+
+    private fun handleTextChanged(event: AccessibilityEvent) {
+        val node = event.source ?: return
+        handleSelection(node)
+    }
+
+    private fun handleWindowStateChanged(event: AccessibilityEvent) {
+        val root = getRootInActiveWindow() ?: return
+        handleSelection(root)
+    }
+
+    private fun handleSelection(node: AccessibilityNodeInfo) {
+        val bounds = Rect()
+        node.getBoundsInScreen(bounds)
+
+        val boundsList = mutableListOf<Rect>()
+        for (i in 0..2) {
+            val sampleBounds = Rect()
+            node.getBoundsInScreen(sampleBounds)
+            boundsList.add(sampleBounds)
+        }
+
+        val finalBounds = boundsList.last()
+
+        if (isInSelectionArea(finalBounds)) {
+            val text = node.text?.toString() ?: node.contentDescription?.toString() ?: ""
+
+            if (text.isNotEmpty()) {
+                processSelectionBounds(finalBounds)
+                speakText(text)
+            }
+        }
+    }
+
+    private fun isInSelectionArea(bounds: Rect): Boolean {
+        return bounds.left <= selectionEndX && bounds.right > selectionStartX &&
+                bounds.top <= selectionEndY && bounds.bottom > selectionStartY
+    }
+
+    fun triggerRead(selectionRect: Rect) {
+        val root = getRootInActiveWindow() ?: return
+
+        val intersectingNodes = mutableListOf<AccessibilityNodeInfo>()
+        ScreenNodeReader.findIntersectingNodes(root, selectionRect, intersectingNodes)
+
+        val sortedNodes = BoundsSorter.sortNodesByBounds(intersectingNodes)
+
+        val textNodes = mutableListOf<String>()
+        for (node in sortedNodes) {
+            val text = node.text?.toString() ?: node.contentDescription?.toString() ?: ""
+            if (text.isNotEmpty()) {
+                textNodes.add(text)
+            }
+        }
+
+        if (textNodes.isNotEmpty()) {
+            val combinedText = textNodes.joinToString(" ")
+            speakText(combinedText)
+        } else {
+            triggerOcrFallback(selectionRect)
+        }
+    }
+
+    private fun triggerOcrFallback(selectionRect: Rect) {
+        val bitmap = takeScreenshot() ?: return
+
+        OcrFallback.recognizeText(bitmap, selectionRect, object : OcrFallback.OnTextRecognizedListener {
+            override fun onTextRecognized(text: String) {
+                if (text.isNotEmpty()) {
+                    speakText(text)
+                }
+            }
+
+            override fun onError(error: Exception) {
+                Log.e("SpeakFast", "OCR failed: ${error.message}", error)
+            }
+        })
+    }
+
+    private fun takeScreenshot(): Bitmap? {
+        return try {
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N_MR1) {
+                val display = windowManager.currentWindowManager
+                val screenshot = display.getScreenshot()
+                return screenshot
+            }
+            return null
+        } catch (e: Exception) {
+            Log.e("SpeakFast", "Failed to take screenshot: ${e.message}", e)
+            return null
+        }
+    }
+
+    private fun speakText(text: String) {
+        speechManager.speakText(text)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d("SpeakFast", "Accessibility service destroyed")
+    }
+
+    companion object {
+        private const val TAG = "SpeakFast"
+        private const val SELECTION_TIMEOUT_MS = 300L
+    }
+
+    private var selectionStartX = 0f
+    private var selectionStartY = 0f
+    private var selectionEndX = 0f
+    private var selectionEndY = 0f
+    private var isSelecting = false
+}

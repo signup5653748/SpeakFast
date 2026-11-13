@@ -1,0 +1,31 @@
+cat > .polydev/rules.md << 'EOF'
+ — Standing Agent Rules
+
+## Git
+- ALL git operations (status, add, commit, push, pull, diff, log)
+  go through the terminal tool only. Never use a GUI Commit/Sync
+  panel action — it runs on separate internal state that has
+  repeatedly diverged from the real .git folder, causing phantom
+  conflicts and silent data issues in this project's history.
+- One git command at a time. Show the command and its real output
+  before running the next one.
+
+## Builds — never run them
+- NEVER run ./gradlew (any task), gradle wrapper, compileDebugKotlin,
+  assembleDebug/Release, or attempt to launch/preview the app.
+  Builds happen on GitHub Actions only. This device cannot build —
+  it has no way to verify compilation succeeded.
+- NEVER claim something "compiled successfully," "is fixed," or is
+  "production-ready" based on your own edit alone. You have no way
+  to confirm this without a real build. Only the GitHub Actions log
+  (which I will paste) or my own terminal output confirms a fix.
+
+## No installs
+- Never run apk add, npm install, pip install, or anything that
+  downloads/extracts a toolchain. If a task seems to need a new
+  package, stop and report that instead.
+  
+  ## AI Code Generation Constraints
+- **Strict API Verification:** Before calling any method on a custom class (e.g., `ScreenNodeReader`, `SettingsManager`), the AI must verify that the method signature exactly matches the code it previously generated. Do not invent "convenience" methods that don't exist in the file.
+- **Android Memory Safety:** When working with `AccessibilityNodeInfo` or `Bitmap` objects, ALWAYS explicitly call `.recycle()` when the object is discarded or no longer needed. Native memory leaks crash accessibility services.
+- **No Silent Failures:** Never use empty `catch` blocks or return default values on failure without propagating an error state (e.g., using sealed classes like `SettingsResult.Error` or returning a `Result` type).
