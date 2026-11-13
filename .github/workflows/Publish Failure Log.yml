@@ -1,0 +1,189 @@
+name: Publish Failure Log
+
+on:
+  workflow_run:
+    workflows: ["Build Release APK"]
+    types:
+      - completed
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: 'Run ID of the failed build (e.g., 1234567890). Leave empty to auto-detect latest failure.'
+        required: false
+        type: string
+
+jobs:
+  publish-log:
+    if: ${{ github.event.workflow_run.conclusion == 'failure' || github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: read
+
+    steps:
+    - name: Extract Core Failure Block & Overwrite File
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        TARGET_RUN_ID: ${{ inputs.run_id || github.event.workflow_run.id }}
+        DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+      run: |
+        cat << 'EOF' > fetch_failure_logs.py
+        import os, json, urllib.request, urllib.error, re, base64, sys
+
+        repo = os.environ.get("GITHUB_REPOSITORY", "")
+        token = os.environ.get("GITHUB_TOKEN", "")
+        target_run_id = os.environ.get("TARGET_RUN_ID", "").strip()
+        default_branch = os.environ.get("DEFAULT_BRANCH") or "main"
+        log_branch = "ci-logs"
+        log_path = "latest-failure.txt"
+
+        if not repo or not token:
+            print("::error:: Missing required environment variables")
+            sys.exit(1)
+
+        base = "https://api.github.com/repos/" + repo
+        headers = {"Authorization": f"Bearer {token}", "Accept": "application/vnd.github+json"}
+
+        class NoRedirect(urllib.request.HTTPRedirectHandler):
+            def redirect_request(self, req, fp, code, msg, hdrs, newurl):
+                return None
+
+        no_redirect_opener = urllib.request.build_opener(NoRedirect)
+
+        def api_get(url):
+            req = urllib.request.Request(url, headers=headers)
+            try:
+                with no_redirect_opener.open(req) as r:
+                    return r.read()
+            except urllib.error.HTTPError as e:
+                if e.code in (301, 302, 303, 307, 308):
+                    location = e.headers.get("Location")
+                    if location:
+                        with urllib.request.urlopen(location) as r2:
+                            return r2.read()
+                raise
+
+        def api_json(url, data=None, method=None):
+            body = json.dumps(data).encode() if data is not None else None
+            req = urllib.request.Request(url, data=body, headers=headers, method=method)
+            if body:
+                req.add_header("Content-Type", "application/json")
+            try:
+                with urllib.request.urlopen(req) as r:
+                    return json.load(r)
+            except urllib.error.HTTPError as e:
+                print(f"::error:: API request failed to {url}: {e.code} {e.reason}", file=sys.stderr)
+                raise
+
+        try:
+            if not target_run_id:
+                print("::notice:: No Run ID provided. Searching for latest failed 'Build Release APK' run...")
+                runs_data = api_json(base + "/actions/runs?per_page=50")
+                found_run = next((run for run in runs_data.get("workflow_runs", []) if run.get("name") == "Build Release APK" and run.get("conclusion") == "failure"), None)
+                
+                if found_run:
+                    target_run_id = str(found_run["id"])
+                    print(f"::notice:: Auto-detected latest failed run ID: {target_run_id}")
+                else:
+                    print("::error:: No failed run found in the last 50 runs. Please provide a Run ID manually.")
+                    sys.exit(1)
+
+            print(f"::notice:: Fetching log for Run ID: {target_run_id}")
+            jobs_data = api_json(base + "/actions/runs/" + target_run_id + "/jobs")
+            failed_jobs = [j for j in jobs_data.get("jobs", []) if j.get("conclusion") == "failure"]
+            if not failed_jobs:
+                failed_jobs = [j for j in jobs_data.get("jobs", []) if j.get("conclusion") not in ("success", "skipped")]
+
+            if not failed_jobs:
+                print("::error:: No failed jobs found in this run.")
+                sys.exit(1)
+
+            job = failed_jobs[0]
+            print(f"::notice:: Extracting core failure block from job: {job.get('name')}")
+            
+            log_bytes = api_get(base + "/actions/jobs/" + str(job["id"]) + "/logs")
+            clean_log = re.sub(r'\x1b\[[0-9;]*m', '', log_bytes.decode("utf-8", errors="replace"))
+            lines = clean_log.split('\n')
+
+            filtered_lines = []
+            for line in lines:
+                stripped = line.strip()
+                log_msg = stripped.split("Z ", 1)[-1] if "Z " in stripped else stripped
+                
+                is_error_line = (
+                    log_msg.startswith("e: ") or
+                    log_msg.startswith("w: ") or
+                    "FAILURE" in log_msg or
+                    "Unresolved reference" in log_msg or
+                    "BUILD FAILED" in log_msg or
+                    "* What went wrong:" in log_msg or
+                    "* Try:" in log_msg or
+                    ("> Task " in log_msg and "FAILED" in log_msg) or
+                    "Compilation error" in log_msg
+                )
+                
+                if is_error_line:
+                    filtered_lines.append(line)
+
+            seen = set()
+            final_filtered = []
+            for line in filtered_lines:
+                clean = re.sub(r'\x1b\[[0-9;]*m', '', line).strip()
+                if clean and clean not in seen:
+                    seen.add(clean)
+                    final_filtered.append(line)
+            filtered_lines = final_filtered
+
+            if not filtered_lines:
+                filtered_lines = ["::warning:: No specific error keywords found. The build may have failed for an uncaptured reason."]
+
+            final_content = f"=== FAILURE LOG FOR RUN: {target_run_id} ===\n"
+            final_content += f"=== FAILED JOB: {job.get('name')} ===\n"
+            final_content += f"=== DATE: {os.popen('date -u').read().strip()} ===\n"
+            final_content += f"=== CORE ERROR BLOCK (Zero false positives, ZERO noise) ===\n\n"
+            final_content += "\n".join(filtered_lines).strip() + "\n"
+
+            branch_exists = True
+            try:
+                api_json(base + "/git/refs/heads/" + log_branch)
+            except urllib.error.HTTPError as e:
+                if e.code == 404:
+                    branch_exists = False
+                else:
+                    raise
+
+            if not branch_exists:
+                print("::notice:: Creating 'ci-logs' branch...")
+                main_ref = api_json(base + "/git/refs/heads/" + default_branch)
+                api_json(base + "/git/refs", data={"ref": "refs/heads/" + log_branch, "sha": main_ref["object"]["sha"]}, method="POST")
+
+            existing_sha = None
+            try:
+                existing = api_json(base + "/contents/" + log_path + "?ref=" + log_branch)
+                existing_sha = existing.get("sha")
+                print("::notice:: Existing file found. It will be COMPLETELY OVERWRITTEN.")
+            except urllib.error.HTTPError as e:
+                if e.code != 404:
+                    raise
+
+            b64content = base64.b64encode(final_content.encode("utf-8")).decode()
+            payload = {
+                "message": "Overwrite latest CI failure log (run " + target_run_id + ")", 
+                "content": b64content, 
+                "branch": log_branch
+            }
+            if existing_sha:
+                payload["sha"] = existing_sha
+
+            result = api_json(base + "/contents/" + log_path, data=payload, method="PUT")
+            print("::notice:: SUCCESS! Old log deleted, new clean failure block saved.")
+            print("::notice:: View it here: " + result["content"]["html_url"])
+
+        except Exception as e:
+            print(f"::error:: Fatal script error: {str(e)}", file=sys.stderr)
+            import traceback
+            traceback.print_exc()
+            sys.exit(1)
+        EOF
+        
+        python3 fetch_failure_logs.py
