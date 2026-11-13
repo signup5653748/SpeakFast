@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<accessibility-service xmlns:android="http://schemas.android.com/apk/res/android"
-    android:accessibilityEventTypes="TYPE_WINDOW_CONTENT_CHANGED|TYPE_VIEW_FOCUSED|TYPE_VIEW_CLICKED|TYPE_VIEW_SELECTED|TYPE_TEXT_CHANGED|TYPE_WINDOW_STATE_CHANGED"
-    android:accessibilityFeedbackType="feedbackEnabled"
-    android:accessibilityFlags="flagIncludeNotImportantViews"
-    android:packageNames="com.debk007.speakfast"
-    android:settingsActivity=".MainActivity" />
