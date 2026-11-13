@@ -1,4 +1,6 @@
 <resources>
-    // TODO: Set App Name
-    <string name="app_name">Kotlin Android Template</string>
+    <string name="app_name">SpeakFast</string>
+    <string name="accessibility_service_description">SpeakFast reads screen content aloud using a fixed locale and animation-tolerant hit detection.</string>
+    <string name="accessibility_service_summary">SpeakFast Screen Reader</string>
+    <string name="accessibility_service_name">SpeakFast Accessibility Service</string>
 </resources>
