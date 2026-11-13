@@ -77,54 +77,58 @@ jobs:
 
         try:
             if not target_run_id:
-                print("::notice:: No Run ID provided. Searching for latest failed 'Build Release APK' run...")
                 runs_data = api_json(base + "/actions/runs?per_page=50")
                 found_run = next((run for run in runs_data.get("workflow_runs", []) if run.get("name") == "Build Release APK" and run.get("conclusion") == "failure"), None)
-                
                 if found_run:
                     target_run_id = str(found_run["id"])
-                    print(f"::notice:: Auto-detected latest failed run ID: {target_run_id}")
                 else:
-                    print("::error:: No failed run found in the last 50 runs. Please provide a Run ID manually.")
                     sys.exit(1)
 
-            print(f"::notice:: Fetching log for Run ID: {target_run_id}")
             jobs_data = api_json(base + "/actions/runs/" + target_run_id + "/jobs")
             failed_jobs = [j for j in jobs_data.get("jobs", []) if j.get("conclusion") == "failure"]
             if not failed_jobs:
                 failed_jobs = [j for j in jobs_data.get("jobs", []) if j.get("conclusion") not in ("success", "skipped")]
-
             if not failed_jobs:
-                print("::error:: No failed jobs found in this run.")
                 sys.exit(1)
 
             job = failed_jobs[0]
-            print(f"::notice:: Extracting core failure block from job: {job.get('name')}")
-            
             log_bytes = api_get(base + "/actions/jobs/" + str(job["id"]) + "/logs")
             clean_log = re.sub(r'\x1b\[[0-9;]*m', '', log_bytes.decode("utf-8", errors="replace"))
             lines = clean_log.split('\n')
 
             filtered_lines = []
-            for line in lines:
+            capture_block = False
+            
+            for i, line in enumerate(lines):
                 stripped = line.strip()
                 log_msg = stripped.split("Z ", 1)[-1] if "Z " in stripped else stripped
+                lower_msg = log_msg.lower()
                 
-                is_error_line = (
-                    log_msg.startswith("e: ") or
-                    log_msg.startswith("w: ") or
-                    "FAILURE" in log_msg or
-                    "Unresolved reference" in log_msg or
-                    "BUILD FAILED" in log_msg or
-                    "* What went wrong:" in log_msg or
-                    "* Try:" in log_msg or
-                    ("> Task " in log_msg and "FAILED" in log_msg) or
-                    "Compilation error" in log_msg
-                )
+                # 1. Catch Gradle Task Failures and Global Failures
+                if ("> task " in lower_msg and "failed" in lower_msg) or \
+                   "failure: build failed" in lower_msg or \
+                   "execution failed for task" in lower_msg:
+                    capture_block = True
                 
-                if is_error_line:
+                if capture_block:
                     filtered_lines.append(line)
+                    
+                # 2. Catch specific isolated errors (Kotlin, AAPT, XML)
+                if not capture_block:
+                    if lower_msg.startswith("e: ") or \
+                       "aapt" in lower_msg or \
+                       "aapt2" in lower_msg or \
+                       "unresolved reference" in lower_msg or \
+                       "error:" in lower_msg:
+                        filtered_lines.append(line)
 
+                # 3. Stop capturing 30 lines after "BUILD FAILED" to get the summary
+                if "build failed" in lower_msg:
+                    for j in range(i+1, min(i+30, len(lines))):
+                        filtered_lines.append(lines[j])
+                    break
+
+            # Deduplicate
             seen = set()
             final_filtered = []
             for line in filtered_lines:
@@ -132,28 +136,24 @@ jobs:
                 if clean and clean not in seen:
                     seen.add(clean)
                     final_filtered.append(line)
-            filtered_lines = final_filtered
-
-            if not filtered_lines:
-                filtered_lines = ["::warning:: No specific error keywords found. The build may have failed for an uncaptured reason."]
+            
+            if not final_filtered:
+                final_filtered = ["::warning:: No specific error keywords found. Check full log."]
 
             final_content = f"=== FAILURE LOG FOR RUN: {target_run_id} ===\n"
             final_content += f"=== FAILED JOB: {job.get('name')} ===\n"
             final_content += f"=== DATE: {os.popen('date -u').read().strip()} ===\n"
-            final_content += f"=== CORE ERROR BLOCK (Zero false positives, ZERO noise) ===\n\n"
-            final_content += "\n".join(filtered_lines).strip() + "\n"
+            final_content += f"=== UNIVERSAL ERROR BLOCK (Kotlin, AAPT, XML, Gradle) ===\n\n"
+            final_content += "\n".join(final_filtered).strip() + "\n"
 
             branch_exists = True
             try:
                 api_json(base + "/git/refs/heads/" + log_branch)
             except urllib.error.HTTPError as e:
-                if e.code == 404:
-                    branch_exists = False
-                else:
-                    raise
+                if e.code == 404: branch_exists = False
+                else: raise
 
             if not branch_exists:
-                print("::notice:: Creating 'ci-logs' branch...")
                 main_ref = api_json(base + "/git/refs/heads/" + default_branch)
                 api_json(base + "/git/refs", data={"ref": "refs/heads/" + log_branch, "sha": main_ref["object"]["sha"]}, method="POST")
 
@@ -161,28 +161,18 @@ jobs:
             try:
                 existing = api_json(base + "/contents/" + log_path + "?ref=" + log_branch)
                 existing_sha = existing.get("sha")
-                print("::notice:: Existing file found. It will be COMPLETELY OVERWRITTEN.")
             except urllib.error.HTTPError as e:
-                if e.code != 404:
-                    raise
+                if e.code != 404: raise
 
             b64content = base64.b64encode(final_content.encode("utf-8")).decode()
-            payload = {
-                "message": "Overwrite latest CI failure log (run " + target_run_id + ")", 
-                "content": b64content, 
-                "branch": log_branch
-            }
-            if existing_sha:
-                payload["sha"] = existing_sha
+            payload = {"message": "Overwrite CI failure log", "content": b64content, "branch": log_branch}
+            if existing_sha: payload["sha"] = existing_sha
 
             result = api_json(base + "/contents/" + log_path, data=payload, method="PUT")
-            print("::notice:: SUCCESS! Old log deleted, new clean failure block saved.")
-            print("::notice:: View it here: " + result["content"]["html_url"])
+            print("::notice:: SUCCESS! Clean failure block saved: " + result["content"]["html_url"])
 
         except Exception as e:
             print(f"::error:: Fatal script error: {str(e)}", file=sys.stderr)
-            import traceback
-            traceback.print_exc()
             sys.exit(1)
         EOF
         
