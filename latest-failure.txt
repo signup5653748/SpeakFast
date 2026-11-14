@@ -1,67 +1,52 @@
-=== FAILURE LOG FOR RUN: 43560753450 ===
+=== FAILURE LOG FOR RUN: 43564032272 ===
 === FAILED JOB: Build Signed Release APK ===
-=== DATE: Sat Nov 14 05:18:01 UTC 2026 ===
+=== DATE: Sat Nov 14 05:59:27 UTC 2026 ===
 === UNIVERSAL ERROR BLOCK (Kotlin, AAPT, XML, Gradle) ===
 
-2026-11-14T05:17:22.8107471Z   echo "::error::KEYSTORE_BASE64 secret is not set."
-2026-11-14T05:17:22.8122146Z   echo "::error::Could not read any alias from the keystore. Check that KEYSTORE_PASSWORD is correct."
-2026-11-14T05:17:36.3628211Z AAPT2 aapt2-8.7.2-12006047-linux Daemon #0: starting
-2026-11-14T05:17:36.3678276Z Aapt output file /home/runner/work/SpeakFast/SpeakFast/app/build/intermediates/linked_resources_binary_format/release/processReleaseResources/linked-resources-binary-format-release.ap_
-2026-11-14T05:17:48.5207294Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:115:50 Argument type mismatch: actual type is 'androidx.compose.foundation.layout.ColumnScope', but 'android.content.Context!' was expected.
-2026-11-14T05:17:48.5209079Z > Task :app:compileReleaseKotlin FAILED
-2026-11-14T05:17:48.5209637Z AAPT2 aapt2-8.7.2-12006047-linux Daemon #0: shutdown
-2026-11-14T05:17:48.5238635Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:116:61 Unresolved reference 'FloatingTriggerService'.
-2026-11-14T05:17:48.5258687Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:116:91 Cannot infer type for this parameter. Please specify it explicitly.
-2026-11-14T05:17:48.5260319Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:116:91 Unresolved reference. None of the following candidates is applicable because of a receiver type mismatch:
-2026-11-14T05:17:48.5261481Z val <T> KClass<T>.java: Class<T>
-2026-11-14T05:17:48.5262302Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/accessibility/OcrFallback.kt:25:20 None of the following candidates is applicable:
-2026-11-14T05:17:48.5263146Z fun process(p0: MlImage): Task<Text!>
-2026-11-14T05:17:48.5263568Z fun process(p0: InputImage): Task<Text!>
-2026-11-14T05:17:48.5264393Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/accessibility/OcrFallback.kt:26:14 Unresolved reference 'addOnSuccessListener'.
-2026-11-14T05:17:48.5265650Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/accessibility/OcrFallback.kt:26:37 Cannot infer type for this parameter. Please specify it explicitly.
-2026-11-14T05:17:48.5266878Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/accessibility/OcrFallback.kt:27:49 Unresolved reference 'text'.
-2026-11-14T05:17:48.5268329Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/accessibility/OcrFallback.kt:30:37 Cannot infer type for this parameter. Please specify it explicitly.
-2026-11-14T05:17:48.5270143Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/accessibility/ScreenNodeReader.kt:15:18 Unresolved reference 'intersectsWith'.
-2026-11-14T05:17:48.5271484Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/accessibility/ScreenNodeReader.kt:36:18 Unresolved reference 'intersectsWith'.
-2026-11-14T05:17:48.5272960Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/accessibility/SpeakFastAccessibilityService.kt:74:40 Unresolved reference 'TYPE_TEXT_CHANGED'.
-2026-11-14T05:17:48.5274872Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/model/Settings.kt:3:16 Unresolved reference 'serialization'.
-2026-11-14T05:17:48.5276801Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/model/Settings.kt:5:2 Cannot access 'typealias Serializable = Serializable': it is internal in file.
-2026-11-14T05:17:48.5278239Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/model/Settings.kt:5:2 Illegal annotation class 'Serializable'.
-2026-11-14T05:17:48.5279711Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/model/Settings.kt:14:2 Cannot access 'typealias Serializable = Serializable': it is internal in file.
-2026-11-14T05:17:48.5281083Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/model/Settings.kt:14:2 Illegal annotation class 'Serializable'.
-2026-11-14T05:17:48.5282790Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/model/Settings.kt:39:2 Cannot access 'typealias Serializable = Serializable': it is internal in file.
-2026-11-14T05:17:48.5284160Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/model/Settings.kt:39:2 Illegal annotation class 'Serializable'.
-2026-11-14T05:17:48.5285425Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/model/Settings.kt:51:2 Cannot access 'typealias Serializable = Serializable': it is internal in file.
-2026-11-14T05:17:48.5286798Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/model/Settings.kt:51:2 Illegal annotation class 'Serializable'.
-2026-11-14T05:17:48.6238043Z 
-2026-11-14T05:17:48.6239070Z gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_4-1794633446219.json
-2026-11-14T05:17:48.6240227Z FAILURE: Build failed with an exception.
-2026-11-14T05:17:48.6240478Z 
-2026-11-14T05:17:48.6240685Z 
-2026-11-14T05:17:48.6241201Z [Incubating] Problems report is available at: file:///home/runner/work/SpeakFast/SpeakFast/build/reports/problems/problems-report.html
-2026-11-14T05:17:48.6242058Z * What went wrong:
-2026-11-14T05:17:48.6242778Z Execution failed for task ':app:compileReleaseKotlin' (registered by plugin 'org.jetbrains.kotlin.android').
-2026-11-14T05:17:48.6243862Z > A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
-2026-11-14T05:17:48.6244761Z    > Compilation error. See log for more details
-2026-11-14T05:17:48.6245125Z 
-2026-11-14T05:17:48.6245302Z * Try:
-2026-11-14T05:17:48.6245654Z > Run with --debug option to get more log output.
-2026-11-14T05:17:48.6246783Z 
-2026-11-14T05:17:48.6249763Z > Run with --scan to get full insights from a Build Scan (powered by Develocity).
-2026-11-14T05:17:48.6250477Z > Get more help at https://help.gradle.org.
-2026-11-14T05:17:48.6250823Z 
-2026-11-14T05:17:48.6251062Z * Exception is:
-2026-11-14T05:17:48.6251891Z org.gradle.api.tasks.TaskExecutionException: Execution failed for task ':app:compileReleaseKotlin' (registered by plugin 'org.jetbrains.kotlin.android').
-2026-11-14T05:17:48.6252969Z Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
-2026-11-14T05:17:48.6253421Z 
-2026-11-14T05:17:48.6254038Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.lambda$doExecute$1(DefaultTaskNodeExecutor.java:367)
-2026-11-14T05:17:48.6255115Z You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
-2026-11-14T05:17:48.6255770Z 
-2026-11-14T05:17:48.6256233Z 	at org.gradle.internal.Try$Failure.ifSuccessfulOrElse(Try.java:288)
-2026-11-14T05:17:48.6257408Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.doExecute(DefaultTaskNodeExecutor.java:365)
-2026-11-14T05:17:48.6258478Z For more on this, please refer to https://docs.gradle.org/9.9.0/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
-2026-11-14T05:17:48.6259843Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.executeTrackingTaskIdentity(DefaultTaskNodeExecutor.java:332)
-2026-11-14T05:17:48.6265014Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.executeFinalizingProperties(DefaultTaskNodeExecutor.java:318)
-2026-11-14T05:17:48.6266681Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.executeSkippingWithNoActions(DefaultTaskNodeExecutor.java:289)
-2026-11-14T05:17:48.6274621Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.executeSkippingOnlyIf(DefaultTaskNodeExecutor.java:272)
-2026-11-14T05:17:48.6283001Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.executeCatchingFailures(DefaultTaskNodeExecutor.java:228)
+2026-11-14T05:58:47.8895340Z   echo "::error::KEYSTORE_BASE64 secret is not set."
+2026-11-14T05:58:47.8911250Z   echo "::error::Could not read any alias from the keystore. Check that KEYSTORE_PASSWORD is correct."
+2026-11-14T05:59:02.7992778Z AAPT2 aapt2-8.7.2-12006047-linux Daemon #0: starting
+2026-11-14T05:59:02.8053395Z Aapt output file /home/runner/work/SpeakFast/SpeakFast/app/build/intermediates/linked_resources_binary_format/release/processReleaseResources/linked-resources-binary-format-release.ap_
+2026-11-14T05:59:14.5654066Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/model/Settings.kt:3:16 Unresolved reference 'serialization'.
+2026-11-14T05:59:14.5655004Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/model/Settings.kt:5:2 Cannot access 'typealias Serializable = Serializable': it is internal in file.
+2026-11-14T05:59:14.5655897Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/model/Settings.kt:5:2 Illegal annotation class 'Serializable'.
+2026-11-14T05:59:14.5656730Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/model/Settings.kt:14:2 Cannot access 'typealias Serializable = Serializable': it is internal in file.
+2026-11-14T05:59:14.5657563Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/model/Settings.kt:14:2 Illegal annotation class 'Serializable'.
+2026-11-14T05:59:14.5658368Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/model/Settings.kt:39:2 Cannot access 'typealias Serializable = Serializable': it is internal in file.
+2026-11-14T05:59:14.5659201Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/model/Settings.kt:39:2 Illegal annotation class 'Serializable'.
+2026-11-14T05:59:14.5660026Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/model/Settings.kt:51:2 Cannot access 'typealias Serializable = Serializable': it is internal in file.
+2026-11-14T05:59:14.5660977Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/model/Settings.kt:51:2 Illegal annotation class 'Serializable'.
+2026-11-14T05:59:14.5662464Z > Task :app:compileReleaseKotlin FAILED
+2026-11-14T05:59:14.5663033Z AAPT2 aapt2-8.7.2-12006047-linux Daemon #0: shutdown
+2026-11-14T05:59:14.6648428Z 
+2026-11-14T05:59:14.6649537Z gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_4-1794635931221.json
+2026-11-14T05:59:14.6652948Z FAILURE: Build failed with an exception.
+2026-11-14T05:59:14.6653484Z 
+2026-11-14T05:59:14.6653730Z * What went wrong:
+2026-11-14T05:59:14.6654363Z Execution failed for task ':app:compileReleaseKotlin' (registered by plugin 'org.jetbrains.kotlin.android').
+2026-11-14T05:59:14.6654954Z 
+2026-11-14T05:59:14.6655385Z [Incubating] Problems report is available at: file:///home/runner/work/SpeakFast/SpeakFast/build/reports/problems/problems-report.html
+2026-11-14T05:59:14.6655800Z 
+2026-11-14T05:59:14.6657573Z Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+2026-11-14T05:59:14.6660143Z > A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
+2026-11-14T05:59:14.6661297Z 
+2026-11-14T05:59:14.6664928Z You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+2026-11-14T05:59:14.6667446Z 
+2026-11-14T05:59:14.6668122Z For more on this, please refer to https://docs.gradle.org/9.9.0/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+2026-11-14T05:59:14.6669208Z 38 actionable tasks: 38 executed
+2026-11-14T05:59:14.6677176Z    > Compilation error. See log for more details
+2026-11-14T05:59:14.6677694Z 
+2026-11-14T05:59:14.6677901Z * Try:
+2026-11-14T05:59:14.6678310Z > Run with --debug option to get more log output.
+2026-11-14T05:59:14.6678962Z > Run with --scan to get full insights from a Build Scan (powered by Develocity).
+2026-11-14T05:59:14.6679692Z > Get more help at https://help.gradle.org.
+2026-11-14T05:59:14.6680041Z 
+2026-11-14T05:59:14.6680256Z * Exception is:
+2026-11-14T05:59:14.6681043Z org.gradle.api.tasks.TaskExecutionException: Execution failed for task ':app:compileReleaseKotlin' (registered by plugin 'org.jetbrains.kotlin.android').
+2026-11-14T05:59:14.6682984Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.lambda$doExecute$1(DefaultTaskNodeExecutor.java:367)
+2026-11-14T05:59:14.6683720Z 	at org.gradle.internal.Try$Failure.ifSuccessfulOrElse(Try.java:288)
+2026-11-14T05:59:14.6684392Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.doExecute(DefaultTaskNodeExecutor.java:365)
+2026-11-14T05:59:14.6685289Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.executeTrackingTaskIdentity(DefaultTaskNodeExecutor.java:332)
+2026-11-14T05:59:14.6686118Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.executeFinalizingProperties(DefaultTaskNodeExecutor.java:318)
+2026-11-14T05:59:14.6686888Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.executeSkippingWithNoActions(DefaultTaskNodeExecutor.java:289)
+2026-11-14T05:59:14.6687654Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.executeSkippingOnlyIf(DefaultTaskNodeExecutor.java:272)
