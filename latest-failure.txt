@@ -1,51 +1,50 @@
-=== FAILURE LOG FOR RUN: 43589233655 ===
+=== FAILURE LOG FOR RUN: 43589891856 ===
 === FAILED JOB: Build Signed Release APK ===
-=== DATE: Sat Nov 14 11:17:46 UTC 2026 ===
+=== DATE: Sat Nov 14 11:26:04 UTC 2026 ===
 === UNIVERSAL ERROR BLOCK (Kotlin, AAPT, XML, Gradle) ===
 
-2026-11-14T11:17:02.8823825Z   echo "::error::KEYSTORE_BASE64 secret is not set."
-2026-11-14T11:17:02.8848383Z   echo "::error::Could not read any alias from the keystore. Check that KEYSTORE_PASSWORD is correct."
-2026-11-14T11:17:18.7110295Z AAPT2 aapt2-8.7.2-12006047-linux Daemon #0: starting
-2026-11-14T11:17:18.7140622Z Aapt output file /home/runner/work/SpeakFast/SpeakFast/app/build/intermediates/linked_resources_binary_format/release/processReleaseResources/linked-resources-binary-format-release.ap_
-2026-11-14T11:17:32.0647555Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:73:15 Unresolved reference 'isNetworkVoiceRequired'.
-2026-11-14T11:17:32.0648538Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/ui/FloatingTriggerService.kt:123:13 Unresolved reference 'arrow'.
-2026-11-14T11:17:32.0649419Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/ui/FloatingTriggerService.kt:127:64 Unresolved reference 'playPause'.
-2026-11-14T11:17:32.0650480Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/ui/FloatingTriggerService.kt:128:22 Unresolved reference 'playPause'.
-2026-11-14T11:17:32.0651880Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/ui/FloatingTriggerService.kt:128:68 Unresolved reference 'playPause'.
-2026-11-14T11:17:32.0652786Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/ui/FloatingTriggerService.kt:129:40 Unresolved reference 'playPause'.
-2026-11-14T11:17:32.0656307Z > Task :app:compileReleaseKotlin FAILED
-2026-11-14T11:17:32.0656699Z AAPT2 aapt2-8.7.2-12006047-linux Daemon #0: shutdown
-2026-11-14T11:17:32.0657290Z gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_4-1794655026427.json
-2026-11-14T11:17:32.1644663Z 
-2026-11-14T11:17:32.1644694Z 
-2026-11-14T11:17:32.1646062Z [Incubating] Problems report is available at: file:///home/runner/work/SpeakFast/SpeakFast/build/reports/problems/problems-report.html
-2026-11-14T11:17:32.1657096Z FAILURE: Build failed with an exception.
-2026-11-14T11:17:32.1657446Z 
-2026-11-14T11:17:32.1657462Z 
-2026-11-14T11:17:32.1657659Z * What went wrong:
-2026-11-14T11:17:32.1658275Z Execution failed for task ':app:compileReleaseKotlin' (registered by plugin 'org.jetbrains.kotlin.android').
-2026-11-14T11:17:32.1659316Z > A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
-2026-11-14T11:17:32.1660439Z    > Compilation error. See log for more details
-2026-11-14T11:17:32.1660721Z 
-2026-11-14T11:17:32.1660836Z * Try:
-2026-11-14T11:17:32.1661168Z > Run with --debug option to get more log output.
-2026-11-14T11:17:32.1661723Z > Run with --scan to get full insights from a Build Scan (powered by Develocity).
-2026-11-14T11:17:32.1662288Z > Get more help at https://help.gradle.org.
-2026-11-14T11:17:32.1662591Z 
-2026-11-14T11:17:32.1662710Z * Exception is:
-2026-11-14T11:17:32.1663499Z org.gradle.api.tasks.TaskExecutionException: Execution failed for task ':app:compileReleaseKotlin' (registered by plugin 'org.jetbrains.kotlin.android').
-2026-11-14T11:17:32.1664750Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.lambda$doExecute$1(DefaultTaskNodeExecutor.java:367)
-2026-11-14T11:17:32.1665640Z 	at org.gradle.internal.Try$Failure.ifSuccessfulOrElse(Try.java:288)
-2026-11-14T11:17:32.1666469Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.doExecute(DefaultTaskNodeExecutor.java:365)
-2026-11-14T11:17:32.1667646Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.executeTrackingTaskIdentity(DefaultTaskNodeExecutor.java:332)
-2026-11-14T11:17:32.1668967Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.executeFinalizingProperties(DefaultTaskNodeExecutor.java:318)
-2026-11-14T11:17:32.1670492Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.executeSkippingWithNoActions(DefaultTaskNodeExecutor.java:289)
-2026-11-14T11:17:32.1671835Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.executeSkippingOnlyIf(DefaultTaskNodeExecutor.java:272)
-2026-11-14T11:17:32.1673458Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.executeCatchingFailures(DefaultTaskNodeExecutor.java:228)
-2026-11-14T11:17:32.1674767Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.executeWithFallbackOperationId(DefaultTaskNodeExecutor.java:197)
-2026-11-14T11:17:32.1675987Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.executeWithLifecycle(DefaultTaskNodeExecutor.java:171)
-2026-11-14T11:17:32.1677034Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.access$000(DefaultTaskNodeExecutor.java:67)
-2026-11-14T11:17:32.1678041Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor$1.run(DefaultTaskNodeExecutor.java:136)
-2026-11-14T11:17:32.1679032Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOperationRunner.java:30)
-2026-11-14T11:17:32.1680844Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOperationRunner.java:27)
-2026-11-14T11:17:32.1681850Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:67)
+2026-11-14T11:25:12.2264449Z   echo "::error::KEYSTORE_BASE64 secret is not set."
+2026-11-14T11:25:12.2284664Z   echo "::error::Could not read any alias from the keystore. Check that KEYSTORE_PASSWORD is correct."
+2026-11-14T11:25:30.5105225Z AAPT2 aapt2-8.7.2-12006047-linux Daemon #0: starting
+2026-11-14T11:25:30.5139870Z Aapt output file /home/runner/work/SpeakFast/SpeakFast/app/build/intermediates/linked_resources_binary_format/release/processReleaseResources/linked-resources-binary-format-release.ap_
+2026-11-14T11:25:48.2935343Z > Task :app:compileReleaseKotlin FAILED
+2026-11-14T11:25:48.2936041Z AAPT2 aapt2-8.7.2-12006047-linux Daemon #0: shutdown
+2026-11-14T11:25:48.2937928Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:73:15 Unresolved reference 'isNetworkVoiceRequired'.
+2026-11-14T11:25:48.2939885Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/ui/FloatingTriggerService.kt:123:13 Unresolved reference 'arrow'.
+2026-11-14T11:25:48.2941549Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/ui/FloatingTriggerService.kt:127:64 Unresolved reference 'playPause'.
+2026-11-14T11:25:48.2943432Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/ui/FloatingTriggerService.kt:128:22 Unresolved reference 'playPause'.
+2026-11-14T11:25:48.2945086Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/ui/FloatingTriggerService.kt:128:68 Unresolved reference 'playPause'.
+2026-11-14T11:25:48.2946746Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/ui/FloatingTriggerService.kt:129:40 Unresolved reference 'playPause'.
+2026-11-14T11:25:48.2948807Z gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_4-1794655517121.json
+2026-11-14T11:25:48.3938456Z 
+2026-11-14T11:25:48.3938482Z 
+2026-11-14T11:25:48.3939437Z FAILURE: Build failed with an exception.
+2026-11-14T11:25:48.3940381Z 
+2026-11-14T11:25:48.3940802Z * What went wrong:
+2026-11-14T11:25:48.3941994Z Execution failed for task ':app:compileReleaseKotlin' (registered by plugin 'org.jetbrains.kotlin.android').
+2026-11-14T11:25:48.3944045Z > A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
+2026-11-14T11:25:48.3945598Z    > Compilation error. See log for more details
+2026-11-14T11:25:48.3946226Z 
+2026-11-14T11:25:48.3946582Z * Try:
+2026-11-14T11:25:48.3947264Z > Run with --debug option to get more log output.
+2026-11-14T11:25:48.3948621Z > Run with --scan to get full insights from a Build Scan (powered by Develocity).
+2026-11-14T11:25:48.3950966Z > Get more help at https://help.gradle.org.
+2026-11-14T11:25:48.3951633Z 
+2026-11-14T11:25:48.3952025Z * Exception is:
+2026-11-14T11:25:48.3953524Z org.gradle.api.tasks.TaskExecutionException: Execution failed for task ':app:compileReleaseKotlin' (registered by plugin 'org.jetbrains.kotlin.android').
+2026-11-14T11:25:48.3955813Z [Incubating] Problems report is available at: file:///home/runner/work/SpeakFast/SpeakFast/build/reports/problems/problems-report.html
+2026-11-14T11:25:48.3956928Z 
+2026-11-14T11:25:48.3958180Z Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+2026-11-14T11:25:48.3959919Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.lambda$doExecute$1(DefaultTaskNodeExecutor.java:367)
+2026-11-14T11:25:48.3968468Z 
+2026-11-14T11:25:48.3969099Z 	at org.gradle.internal.Try$Failure.ifSuccessfulOrElse(Try.java:288)
+2026-11-14T11:25:48.3970697Z You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+2026-11-14T11:25:48.3972754Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.doExecute(DefaultTaskNodeExecutor.java:365)
+2026-11-14T11:25:48.3973873Z 
+2026-11-14T11:25:48.3974928Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.executeTrackingTaskIdentity(DefaultTaskNodeExecutor.java:332)
+2026-11-14T11:25:48.3977240Z For more on this, please refer to https://docs.gradle.org/9.9.0/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+2026-11-14T11:25:48.3979762Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.executeFinalizingProperties(DefaultTaskNodeExecutor.java:318)
+2026-11-14T11:25:48.3981252Z 38 actionable tasks: 38 executed
+2026-11-14T11:25:48.3982665Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.executeSkippingWithNoActions(DefaultTaskNodeExecutor.java:289)
+2026-11-14T11:25:48.3985345Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.executeSkippingOnlyIf(DefaultTaskNodeExecutor.java:272)
+2026-11-14T11:25:48.3989619Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.executeCatchingFailures(DefaultTaskNodeExecutor.java:228)
