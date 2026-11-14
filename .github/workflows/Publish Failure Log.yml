@@ -98,21 +98,21 @@ jobs:
 
             filtered_lines = []
             capture_block = False
-            
+
             for i, line in enumerate(lines):
                 stripped = line.strip()
                 log_msg = stripped.split("Z ", 1)[-1] if "Z " in stripped else stripped
                 lower_msg = log_msg.lower()
-                
+
                 # 1. Catch Gradle Task Failures and Global Failures
                 if ("> task " in lower_msg and "failed" in lower_msg) or \
                    "failure: build failed" in lower_msg or \
                    "execution failed for task" in lower_msg:
                     capture_block = True
-                
+
                 if capture_block:
                     filtered_lines.append(line)
-                    
+
                 # 2. Catch specific isolated errors (Kotlin, AAPT, XML)
                 if not capture_block:
                     if lower_msg.startswith("e: ") or \
@@ -136,7 +136,7 @@ jobs:
                 if clean and clean not in seen:
                     seen.add(clean)
                     final_filtered.append(line)
-            
+
             if not final_filtered:
                 final_filtered = ["::warning:: No specific error keywords found. Check full log."]
 
@@ -175,5 +175,5 @@ jobs:
             print(f"::error:: Fatal script error: {str(e)}", file=sys.stderr)
             sys.exit(1)
         EOF
-        
+
         python3 fetch_failure_logs.py
