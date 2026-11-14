@@ -43,6 +43,14 @@ android {
                 keyPassword = "android"
             }
         }
+        create("release") {
+            val storeFilePath = System.getenv("KEYSTORE_PATH") ?: "release.keystore"
+            val storeFile = file(storeFilePath)
+            storeFile = storeFile
+            storePassword = System.getenv("KEYSTORE_PASSWORD") ?: ""
+            keyAlias = System.getenv("KEY_ALIAS") ?: ""
+            keyPassword = System.getenv("KEY_PASSWORD") ?: ""
+        }
     }
 
     buildTypes {
@@ -56,6 +64,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("release")
         }
     }
     compileOptions {
