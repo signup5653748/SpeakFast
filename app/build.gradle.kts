@@ -35,8 +35,7 @@ android {
 
     signingConfigs {
         create("release") {
-            val storeFile = file(System.getenv("KEYSTORE_PATH") ?: "release.keystore")
-            storeFile = storeFile
+            storeFile = file(System.getenv("KEYSTORE_PATH") ?: "release.keystore")
             storePassword = System.getenv("KEYSTORE_PASSWORD") ?: "dummy"
             keyAlias = System.getenv("KEY_ALIAS") ?: "speakfast-release"
             keyPassword = System.getenv("KEY_PASSWORD") ?: "dummy"
