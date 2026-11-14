@@ -14,9 +14,11 @@ import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.debk007.speakfast.MainActivity
+import com.debk007.speakfast.R
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
@@ -35,7 +37,7 @@ class FloatingTriggerService : Service() {
 
     private lateinit var wm: WindowManager
     private lateinit var bubbleParams: WindowManager.LayoutParams
-    private lateinit var bubble: TextView
+    private lateinit var bubble: ImageView
     private var playerBar: LinearLayout? = null
     private var selectionView: SelectionView? = null
     private var playerVisible = false
@@ -53,17 +55,15 @@ class FloatingTriggerService : Service() {
 
     private fun createBubble() {
         bubbleParams = WindowManager.LayoutParams(
-            dp(52), dp(52),
+            dp(56), dp(56),
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
             PixelFormat.TRANSLUCENT
         ).apply { gravity = Gravity.TOP or Gravity.START; x = dp(16); y = dp(220) }
 
-        bubble = TextView(this).apply {
-            text = "🔊"
-            textSize = 20f
-            setTextColor(Color.WHITE)
-            gravity = Gravity.CENTER
+        bubble = ImageView(this).apply {
+            setImageResource(R.drawable.ic_floating_speak)
+            setPadding(dp(14), dp(14), dp(14), dp(14))
             background = GradientDrawable().apply { shape = GradientDrawable.OVAL; setColor(Color.parseColor("#4A6FE3")) }
         }
 
