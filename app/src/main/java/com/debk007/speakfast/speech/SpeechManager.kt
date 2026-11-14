@@ -70,7 +70,7 @@ class SpeechManager @Inject constructor(
             .sortedBy { it.name }
 
     fun isOnline(voice: Voice): Boolean = runCatching {
-        voice.isNetworkVoiceRequired || (voice.features?.contains("networkTts") == true)
+        voice.requiresNetwork || (voice.features?.contains("networkTts") == true)
     }.getOrDefault(false)
 
     fun speakScreen(text: String) {

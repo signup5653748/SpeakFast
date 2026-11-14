@@ -117,16 +117,32 @@ class FloatingTriggerService : Service() {
         extraGroup.addView(barButton("⏮") { send(ACTION_REWIND) })
         extraGroup.addView(barButton("⏭") { send(ACTION_FORWARD) })
 
-        val arrow = barButton("›") {
-            val show = extraGroup.visibility == View.GONE
-            extraGroup.visibility = if (show) View.VISIBLE else View.GONE
-            arrow.text = if (show) "‹" else "›"
+        val arrow = TextView(this).apply {
+            text = "›"
+            textSize = 18f
+            setTextColor(Color.WHITE)
+            gravity = Gravity.CENTER
+            val pad = dp(12)
+            setPadding(pad, pad, pad, pad)
+            setOnClickListener {
+                val show = extraGroup.visibility == View.GONE
+                extraGroup.visibility = if (show) View.VISIBLE else View.GONE
+                text = if (show) "‹" else "›"
+            }
         }
 
-        val playPause = barButton("▶") {
-            if (!started) { started = true; send(ACTION_READ); playPause.text = "⏸" }
-            else if (playPause.text == "▶") { send(ACTION_RESUME); playPause.text = "⏸" }
-            else { send(ACTION_PAUSE); playPause.text = "▶" }
+        val playPause = TextView(this).apply {
+            text = "▶"
+            textSize = 18f
+            setTextColor(Color.WHITE)
+            gravity = Gravity.CENTER
+            val pad = dp(12)
+            setPadding(pad, pad, pad, pad)
+            setOnClickListener {
+                if (!started) { started = true; send(ACTION_READ); text = "⏸" }
+                else if (text == "▶") { send(ACTION_RESUME); text = "⏸" }
+                else { send(ACTION_PAUSE); text = "▶" }
+            }
         }
 
         val stop = TextView(this).apply {
