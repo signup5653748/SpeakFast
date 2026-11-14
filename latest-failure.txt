@@ -1,39 +1,38 @@
-=== FAILURE LOG FOR RUN: 43616440328 ===
+=== FAILURE LOG FOR RUN: 43616452908 ===
 === FAILED JOB: Build Signed Release APK ===
-=== DATE: Sat Nov 14 16:36:21 UTC 2026 ===
+=== DATE: Sat Nov 14 16:36:35 UTC 2026 ===
 === UNIVERSAL ERROR BLOCK (Kotlin, AAPT, XML, Gradle) ===
 
-2026-11-14T16:35:57.2999782Z   echo "::error::KEYSTORE_BASE64 secret is not set."
-2026-11-14T16:35:57.3010485Z   echo "::error::Could not read any alias from the keystore. Check that KEYSTORE_PASSWORD is correct."
-2026-11-14T16:36:08.2463768Z e: file:///home/runner/work/SpeakFast/SpeakFast/.base/app/build.gradle.kts:40:41: Unresolved reference 'util' on receiver of type 'BaseAppModuleExtension'.
-2026-11-14T16:36:08.2470313Z e: file:///home/runner/work/SpeakFast/SpeakFast/.base/app/build.gradle.kts:40:84: Unresolved reference 'util' on receiver of type 'BaseAppModuleExtension'.
-2026-11-14T16:36:08.3510239Z FAILURE: Build failed with an exception.
-2026-11-14T16:36:08.3510542Z 
-2026-11-14T16:36:08.3531776Z [Incubating] Problems report is available at: file:///home/runner/work/SpeakFast/SpeakFast/.base/build/reports/problems/problems-report.html
-2026-11-14T16:36:08.3561597Z 
-2026-11-14T16:36:08.3621700Z * Where:
-2026-11-14T16:36:08.3659236Z Build file '/home/runner/work/SpeakFast/SpeakFast/.base/app/build.gradle.kts' line: 40
-2026-11-14T16:36:08.3660157Z 
-2026-11-14T16:36:08.3672009Z 
-2026-11-14T16:36:08.3672403Z Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
-2026-11-14T16:36:08.3691562Z * What went wrong:
-2026-11-14T16:36:08.3691744Z 
-2026-11-14T16:36:08.3721217Z Script compilation errors:
-2026-11-14T16:36:08.3721930Z You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
-2026-11-14T16:36:08.3725929Z 
-2026-11-14T16:36:08.3725941Z 
-2026-11-14T16:36:08.3751952Z   Line 40:             val keystoreBytes = android.util.Base64.decode(keystoreBase64, android.util.Base64.NO_WRAP)
-2026-11-14T16:36:08.3752978Z For more on this, please refer to https://docs.gradle.org/9.9.0/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
-2026-11-14T16:36:08.3767219Z                                                    ^ Unresolved reference 'util' on receiver of type 'BaseAppModuleExtension'.
-2026-11-14T16:36:08.3767850Z 
-2026-11-14T16:36:08.3768377Z   Line 40:             val keystoreBytes = android.util.Base64.decode(keystoreBase64, android.util.Base64.NO_WRAP)
-2026-11-14T16:36:08.3769293Z                                                                                               ^ Unresolved reference 'util' on receiver of type 'BaseAppModuleExtension'.
-2026-11-14T16:36:08.3769856Z 
-2026-11-14T16:36:08.3770090Z 2 errors
-2026-11-14T16:36:08.3770348Z 
-2026-11-14T16:36:08.3770578Z * Try:
-2026-11-14T16:36:08.3771142Z > Run with --debug option to get more log output.
-2026-11-14T16:36:08.3771739Z > Run with --scan to get full insights from a Build Scan (powered by Develocity).
-2026-11-14T16:36:08.3772175Z > Get more help at https://help.gradle.org.
-2026-11-14T16:36:08.3772635Z 
-2026-11-14T16:36:08.3772828Z * Exception is:
+2026-11-14T16:36:10.5018337Z   echo "::error::KEYSTORE_BASE64 secret is not set."
+2026-11-14T16:36:10.5033558Z   echo "::error::Could not read any alias from the keystore. Check that KEYSTORE_PASSWORD is correct."
+2026-11-14T16:36:22.1012489Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:49:13: 'val' cannot be reassigned.
+2026-11-14T16:36:22.2044207Z FAILURE: Build failed with an exception.
+2026-11-14T16:36:22.2090102Z 
+2026-11-14T16:36:22.2092178Z * Where:
+2026-11-14T16:36:22.2137988Z Build file '/home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts' line: 49
+2026-11-14T16:36:22.2160071Z 
+2026-11-14T16:36:22.2190483Z * What went wrong:
+2026-11-14T16:36:22.2191026Z 
+2026-11-14T16:36:22.2220553Z Script compilation error:
+2026-11-14T16:36:22.2221282Z Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+2026-11-14T16:36:22.2249924Z 
+2026-11-14T16:36:22.2249936Z 
+2026-11-14T16:36:22.2250719Z   Line 49:             storeFile = storeFile
+2026-11-14T16:36:22.2259132Z                        ^ 'val' cannot be reassigned.
+2026-11-14T16:36:22.2260536Z You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+2026-11-14T16:36:22.2261131Z 
+2026-11-14T16:36:22.2261878Z For more on this, please refer to https://docs.gradle.org/9.9.0/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+2026-11-14T16:36:22.2289986Z 
+2026-11-14T16:36:22.2290371Z 1 error
+2026-11-14T16:36:22.2290608Z 
+2026-11-14T16:36:22.2290986Z * Try:
+2026-11-14T16:36:22.2291604Z > Run with --debug option to get more log output.
+2026-11-14T16:36:22.2292377Z > Run with --scan to get full insights from a Build Scan (powered by Develocity).
+2026-11-14T16:36:22.2293116Z > Get more help at https://help.gradle.org.
+2026-11-14T16:36:22.2293509Z 
+2026-11-14T16:36:22.2293668Z * Exception is:
+2026-11-14T16:36:22.2295315Z ScriptCompilationException(scriptCompilationErrors=[ScriptCompilationError(message='val' cannot be reassigned., location=SourceLocation(path=/home/runner/.gradle/caches/9.9.0/kotlin-dsl/ic/ecf7e30b3b07b4580ee1ede6cc11ad9c/sources/build.gradle.kts, line=49, column=13, lineEnd=49, columnEnd=22, lineContent=            storeFile = storeFile))])
+2026-11-14T16:36:22.2297534Z 	at org.gradle.kotlin.dsl.support.DefaultKotlinCompiler.compileKotlinScriptToDirectory(KotlinCompiler.kt:164)
+2026-11-14T16:36:22.2298729Z 	at org.gradle.kotlin.dsl.support.DefaultKotlinCompiler.compileKotlinScriptToDirectory(KotlinCompiler.kt:106)
+2026-11-14T16:36:22.2300178Z 	at org.gradle.kotlin.dsl.execution.ResidualProgramCompiler$compileScript$1.invoke_A6FCAhw$lambda$0(ResidualProgramCompiler.kt:716)
+2026-11-14T16:36:22.2301566Z 	at org.gradle.kotlin.dsl.provider.StandardKotlinScriptEvaluator$InterpreterHost$runCompileBuildOperation$1.call(KotlinScriptEvaluator.kt:230)
