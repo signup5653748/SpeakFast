@@ -16,8 +16,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.semantics.hideFromAccessibility
-import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.unit.dp
 import com.debk007.speakfast.presentation.viewmodel.SettingsViewModel
 import java.util.Locale
@@ -37,7 +36,7 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
-            .semantics { hideFromAccessibility() },
+            .clearAndSetSemantics { },
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         Text("Settings", style = MaterialTheme.typography.headlineLarge)
