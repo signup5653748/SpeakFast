@@ -1,45 +1,38 @@
-=== FAILURE LOG FOR RUN: 43615607177 ===
+=== FAILURE LOG FOR RUN: 43616287243 ===
 === FAILED JOB: Build Signed Release APK ===
-=== DATE: Sat Nov 14 16:27:59 UTC 2026 ===
+=== DATE: Sat Nov 14 16:34:48 UTC 2026 ===
 === UNIVERSAL ERROR BLOCK (Kotlin, AAPT, XML, Gradle) ===
 
-2026-11-14T16:26:47.8287838Z   echo "::error::KEYSTORE_BASE64 secret is not set."
-2026-11-14T16:26:47.8307640Z   echo "::error::Could not read any alias from the keystore. Check that KEYSTORE_PASSWORD is correct."
-2026-11-14T16:27:13.1286887Z Downloading https://dl.google.com/dl/android/maven2/com/android/tools/build/aaptcompiler/8.7.2/aaptcompiler-8.7.2.jar to /home/runner/.gradle/.tmp/gradle_download4911215069763333909bin
-2026-11-14T16:27:13.7282983Z Downloading https://dl.google.com/dl/android/maven2/com/android/tools/build/aapt2-proto/8.7.2-12006047/aapt2-proto-8.7.2-12006047.jar to /home/runner/.gradle/.tmp/gradle_download7184741098987489227bin
-2026-11-14T16:27:15.6497979Z Caching disabled for InstrumentationAnalysisTransform: /home/runner/.gradle/caches/modules-2/files-2.1/com.android.tools.build/aaptcompiler/8.7.2/1611b0b107be8db5957172ed2658c958d25690de/aaptcompiler-8.7.2.jar because:
-2026-11-14T16:27:16.2327204Z Caching disabled for InstrumentationAnalysisTransform: /home/runner/.gradle/caches/modules-2/files-2.1/com.android.tools.build/aapt2-proto/8.7.2-12006047/343ec66c023995b766d53fc5d4d5d836d694512e/aapt2-proto-8.7.2-12006047.jar because:
-2026-11-14T16:27:19.3566722Z Caching disabled for MergeInstrumentationAnalysisTransform: /home/runner/.gradle/caches/modules-2/files-2.1/com.android.tools.build/aaptcompiler/8.7.2/1611b0b107be8db5957172ed2658c958d25690de/aaptcompiler-8.7.2.jar because:
-2026-11-14T16:27:19.6237404Z Caching disabled for ExternalDependencyInstrumentingArtifactTransform: /home/runner/.gradle/caches/modules-2/files-2.1/com.android.tools.build/aaptcompiler/8.7.2/1611b0b107be8db5957172ed2658c958d25690de/aaptcompiler-8.7.2.jar because:
-2026-11-14T16:27:21.8424294Z Caching disabled for MergeInstrumentationAnalysisTransform: /home/runner/.gradle/caches/modules-2/files-2.1/com.android.tools.build/aapt2-proto/8.7.2-12006047/343ec66c023995b766d53fc5d4d5d836d694512e/aapt2-proto-8.7.2-12006047.jar because:
-2026-11-14T16:27:21.9983592Z Caching disabled for ExternalDependencyInstrumentingArtifactTransform: /home/runner/.gradle/caches/modules-2/files-2.1/com.android.tools.build/aapt2-proto/8.7.2-12006047/343ec66c023995b766d53fc5d4d5d836d694512e/aapt2-proto-8.7.2-12006047.jar because:
-2026-11-14T16:27:46.0265611Z FAILURE: Build failed with an exception.
-2026-11-14T16:27:46.0266048Z 
-2026-11-14T16:27:46.0295475Z * Where:
-2026-11-14T16:27:46.0296551Z [Incubating] Problems report is available at: file:///home/runner/work/SpeakFast/SpeakFast/build/reports/problems/problems-report.html
-2026-11-14T16:27:46.0321382Z Build file '/home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts' line: 37
-2026-11-14T16:27:46.0322039Z 
-2026-11-14T16:27:46.0322213Z * What went wrong:
-2026-11-14T16:27:46.0322969Z Cannot add a SigningConfig with name 'debug' as a SigningConfig with that name already exists.
-2026-11-14T16:27:46.0323660Z 
-2026-11-14T16:27:46.0323813Z * Try:
-2026-11-14T16:27:46.0324261Z > Run with --debug option to get more log output.
-2026-11-14T16:27:46.0325335Z > Run with --scan to get full insights from a Build Scan (powered by Develocity).
-2026-11-14T16:27:46.0326182Z > Get more help at https://help.gradle.org.
-2026-11-14T16:27:46.0326592Z 
-2026-11-14T16:27:46.0326746Z * Exception is:
-2026-11-14T16:27:46.0327804Z org.gradle.api.InvalidUserDataException: Cannot add a SigningConfig with name 'debug' as a SigningConfig with that name already exists.
-2026-11-14T16:27:46.0329880Z 	at org.gradle.api.internal.DefaultNamedDomainObjectCollection.assertElementNotPresent(DefaultNamedDomainObjectCollection.java:232)
-2026-11-14T16:27:46.0331855Z 	at org.gradle.api.internal.AbstractNamedDomainObjectContainer.create(AbstractNamedDomainObjectContainer.java:84)
-2026-11-14T16:27:46.0333110Z 	at Build_gradle$2.execute$lambda$1(build.gradle.kts:37)
-2026-11-14T16:27:46.0334246Z 	at com.android.build.gradle.internal.dsl.CommonExtensionImpl.signingConfigs(CommonExtensionImpl.kt:399)
-2026-11-14T16:27:46.0349391Z 	at com.android.build.gradle.internal.dsl.BaseAppModuleExtension.signingConfigs(BaseAppModuleExtension.kt)
-2026-11-14T16:27:46.0350555Z 	at Build_gradle$2.execute(build.gradle.kts:36)
-2026-11-14T16:27:46.0351218Z 	at Build_gradle$2.execute(build.gradle.kts:19)
-2026-11-14T16:27:46.0352306Z 	at org.gradle.internal.extensibility.ExtensionsStorage$ExtensionHolder.configure(ExtensionsStorage.java:177)
-2026-11-14T16:27:46.0353856Z 	at org.gradle.internal.extensibility.ExtensionsStorage.configureExtension(ExtensionsStorage.java:64)
-2026-11-14T16:27:46.0355697Z 	at org.gradle.internal.extensibility.DefaultExtensionContainer.configure(DefaultExtensionContainer.java:153)
-2026-11-14T16:27:46.0357145Z 	at org.gradle.kotlin.dsl.Accessors7un1k8mtklqdc1zhu0wdlzdjiKt.android(Unknown Source)
-2026-11-14T16:27:46.0358118Z 	at Build_gradle.<init>(build.gradle.kts:19)
-2026-11-14T16:27:46.0358692Z 	at Program.execute(Unknown Source)
-2026-11-14T16:27:46.0359536Z 	at org.gradle.kotlin.dsl.execution.Interpreter$ProgramHost$eval$1.run(Interpreter.kt:544)
+2026-11-14T16:34:23.7351485Z   echo "::error::KEYSTORE_BASE64 secret is not set."
+2026-11-14T16:34:23.7366469Z   echo "::error::Could not read any alias from the keystore. Check that KEYSTORE_PASSWORD is correct."
+2026-11-14T16:34:37.3524393Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:49:13: 'val' cannot be reassigned.
+2026-11-14T16:34:37.4554813Z FAILURE: Build failed with an exception.
+2026-11-14T16:34:37.4578449Z 
+2026-11-14T16:34:37.4579042Z * Where:
+2026-11-14T16:34:37.4579635Z Build file '/home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts' line: 49
+2026-11-14T16:34:37.4580110Z 
+2026-11-14T16:34:37.4580291Z * What went wrong:
+2026-11-14T16:34:37.4580746Z Script compilation error:
+2026-11-14T16:34:37.4580996Z 
+2026-11-14T16:34:37.4581200Z   Line 49:             storeFile = storeFile
+2026-11-14T16:34:37.4581749Z                        ^ 'val' cannot be reassigned.
+2026-11-14T16:34:37.4582048Z 
+2026-11-14T16:34:37.4582495Z 1 error
+2026-11-14T16:34:37.4582699Z 
+2026-11-14T16:34:37.4582864Z * Try:
+2026-11-14T16:34:37.4583544Z > Run with --debug option to get more log output.
+2026-11-14T16:34:37.4584235Z > Run with --scan to get full insights from a Build Scan (powered by Develocity).
+2026-11-14T16:34:37.4584889Z > Get more help at https://help.gradle.org.
+2026-11-14T16:34:37.4585235Z 
+2026-11-14T16:34:37.4585402Z * Exception is:
+2026-11-14T16:34:37.4587016Z ScriptCompilationException(scriptCompilationErrors=[ScriptCompilationError(message='val' cannot be reassigned., location=SourceLocation(path=/home/runner/.gradle/caches/9.9.0/kotlin-dsl/ic/ecf7e30b3b07b4580ee1ede6cc11ad9c/sources/build.gradle.kts, line=49, column=13, lineEnd=49, columnEnd=22, lineContent=            storeFile = storeFile))])
+2026-11-14T16:34:37.4589050Z 	at org.gradle.kotlin.dsl.support.DefaultKotlinCompiler.compileKotlinScriptToDirectory(KotlinCompiler.kt:164)
+2026-11-14T16:34:37.4590176Z 	at org.gradle.kotlin.dsl.support.DefaultKotlinCompiler.compileKotlinScriptToDirectory(KotlinCompiler.kt:106)
+2026-11-14T16:34:37.4591499Z 	at org.gradle.kotlin.dsl.execution.ResidualProgramCompiler$compileScript$1.invoke_A6FCAhw$lambda$0(ResidualProgramCompiler.kt:716)
+2026-11-14T16:34:37.4592850Z 	at org.gradle.kotlin.dsl.provider.StandardKotlinScriptEvaluator$InterpreterHost$runCompileBuildOperation$1.call(KotlinScriptEvaluator.kt:230)
+2026-11-14T16:34:37.4594574Z 	at org.gradle.kotlin.dsl.provider.StandardKotlinScriptEvaluator$InterpreterHost$runCompileBuildOperation$1.call(KotlinScriptEvaluator.kt:227)
+2026-11-14T16:34:37.4595997Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:210)
+2026-11-14T16:34:37.4597319Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:205)
+2026-11-14T16:34:37.4598700Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:67)
+2026-11-14T16:34:37.4599897Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:60)
+2026-11-14T16:34:37.4601071Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:167)
