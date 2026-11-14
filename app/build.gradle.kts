@@ -93,6 +93,6 @@ dependencies {
     ksp(libs.hilt.kapt)
     implementation(libs.hilt.navigation.compose)
     implementation(libs.navigation.compose)
-    implementation(libs.mlkit.text.recognition)
+    implementation("com.google.android.gms:play-services-mlkit-text-recognition:19.0.1")
     implementation(libs.datastore.preferences)
 }

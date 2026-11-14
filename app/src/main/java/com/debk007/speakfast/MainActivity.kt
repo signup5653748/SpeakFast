@@ -30,6 +30,7 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import com.debk007.speakfast.accessibility.OcrFallback
 import com.debk007.speakfast.presentation.App
 import com.debk007.speakfast.ui.FloatingTriggerService
 
@@ -43,6 +44,7 @@ class MainActivity : ComponentActivity() {
     private fun MainScreen() {
         val context = LocalContext.current
         var refreshTrigger by remember { mutableStateOf(false) }
+        var ocrStatus by remember { mutableStateOf("Model Not Cached") }
 
         val lifecycleOwner = LocalLifecycleOwner.current
         DisposableEffect(lifecycleOwner) {
@@ -124,6 +126,29 @@ class MainActivity : ComponentActivity() {
             ) {
                 Text("Start Floating Trigger", style = MaterialTheme.typography.labelLarge)
             }
+
+            Button(
+                onClick = {
+                    ocrStatus = "Downloading..."
+                    OcrFallback.ensureModelDownloaded(context, object : OcrFallback.ModelDownloadListener {
+                        override fun onSuccess() {
+                            ocrStatus = "Model Ready"
+                        }
+                        override fun onFailure(e: Exception) {
+                            ocrStatus = "Download Failed: ${e.message}"
+                        }
+                    })
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Download Offline OCR Model", style = MaterialTheme.typography.labelLarge)
+            }
+
+            Text(
+                text = "OCR Model Status: $ocrStatus",
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.fillMaxWidth().padding(top = 8.dp)
+            )
 
             App()
         }
