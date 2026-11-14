@@ -1,38 +1,38 @@
-=== FAILURE LOG FOR RUN: 43616287243 ===
+=== FAILURE LOG FOR RUN: 43616301563 ===
 === FAILED JOB: Build Signed Release APK ===
-=== DATE: Sat Nov 14 16:34:48 UTC 2026 ===
+=== DATE: Sat Nov 14 16:34:54 UTC 2026 ===
 === UNIVERSAL ERROR BLOCK (Kotlin, AAPT, XML, Gradle) ===
 
-2026-11-14T16:34:23.7351485Z   echo "::error::KEYSTORE_BASE64 secret is not set."
-2026-11-14T16:34:23.7366469Z   echo "::error::Could not read any alias from the keystore. Check that KEYSTORE_PASSWORD is correct."
-2026-11-14T16:34:37.3524393Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:49:13: 'val' cannot be reassigned.
-2026-11-14T16:34:37.4554813Z FAILURE: Build failed with an exception.
-2026-11-14T16:34:37.4578449Z 
-2026-11-14T16:34:37.4579042Z * Where:
-2026-11-14T16:34:37.4579635Z Build file '/home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts' line: 49
-2026-11-14T16:34:37.4580110Z 
-2026-11-14T16:34:37.4580291Z * What went wrong:
-2026-11-14T16:34:37.4580746Z Script compilation error:
-2026-11-14T16:34:37.4580996Z 
-2026-11-14T16:34:37.4581200Z   Line 49:             storeFile = storeFile
-2026-11-14T16:34:37.4581749Z                        ^ 'val' cannot be reassigned.
-2026-11-14T16:34:37.4582048Z 
-2026-11-14T16:34:37.4582495Z 1 error
-2026-11-14T16:34:37.4582699Z 
-2026-11-14T16:34:37.4582864Z * Try:
-2026-11-14T16:34:37.4583544Z > Run with --debug option to get more log output.
-2026-11-14T16:34:37.4584235Z > Run with --scan to get full insights from a Build Scan (powered by Develocity).
-2026-11-14T16:34:37.4584889Z > Get more help at https://help.gradle.org.
-2026-11-14T16:34:37.4585235Z 
-2026-11-14T16:34:37.4585402Z * Exception is:
-2026-11-14T16:34:37.4587016Z ScriptCompilationException(scriptCompilationErrors=[ScriptCompilationError(message='val' cannot be reassigned., location=SourceLocation(path=/home/runner/.gradle/caches/9.9.0/kotlin-dsl/ic/ecf7e30b3b07b4580ee1ede6cc11ad9c/sources/build.gradle.kts, line=49, column=13, lineEnd=49, columnEnd=22, lineContent=            storeFile = storeFile))])
-2026-11-14T16:34:37.4589050Z 	at org.gradle.kotlin.dsl.support.DefaultKotlinCompiler.compileKotlinScriptToDirectory(KotlinCompiler.kt:164)
-2026-11-14T16:34:37.4590176Z 	at org.gradle.kotlin.dsl.support.DefaultKotlinCompiler.compileKotlinScriptToDirectory(KotlinCompiler.kt:106)
-2026-11-14T16:34:37.4591499Z 	at org.gradle.kotlin.dsl.execution.ResidualProgramCompiler$compileScript$1.invoke_A6FCAhw$lambda$0(ResidualProgramCompiler.kt:716)
-2026-11-14T16:34:37.4592850Z 	at org.gradle.kotlin.dsl.provider.StandardKotlinScriptEvaluator$InterpreterHost$runCompileBuildOperation$1.call(KotlinScriptEvaluator.kt:230)
-2026-11-14T16:34:37.4594574Z 	at org.gradle.kotlin.dsl.provider.StandardKotlinScriptEvaluator$InterpreterHost$runCompileBuildOperation$1.call(KotlinScriptEvaluator.kt:227)
-2026-11-14T16:34:37.4595997Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:210)
-2026-11-14T16:34:37.4597319Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:205)
-2026-11-14T16:34:37.4598700Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:67)
-2026-11-14T16:34:37.4599897Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:60)
-2026-11-14T16:34:37.4601071Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:167)
+2026-11-14T16:34:24.3379872Z   echo "::error::KEYSTORE_BASE64 secret is not set."
+2026-11-14T16:34:24.3400073Z   echo "::error::Could not read any alias from the keystore. Check that KEYSTORE_PASSWORD is correct."
+2026-11-14T16:34:42.4632368Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:49:13: 'val' cannot be reassigned.
+2026-11-14T16:34:42.5696557Z FAILURE: Build failed with an exception.
+2026-11-14T16:34:42.5775865Z 
+2026-11-14T16:34:42.5776838Z [Incubating] Problems report is available at: file:///home/runner/work/SpeakFast/SpeakFast/build/reports/problems/problems-report.html
+2026-11-14T16:34:42.5816452Z * Where:
+2026-11-14T16:34:42.5846473Z Build file '/home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts' line: 49
+2026-11-14T16:34:42.5877224Z 
+2026-11-14T16:34:42.5895925Z 
+2026-11-14T16:34:42.5932032Z * What went wrong:
+2026-11-14T16:34:42.5932861Z Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+2026-11-14T16:34:42.5955298Z 
+2026-11-14T16:34:42.5956050Z Script compilation error:
+2026-11-14T16:34:42.5956406Z 
+2026-11-14T16:34:42.5957240Z You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+2026-11-14T16:34:42.5958513Z   Line 49:             storeFile = storeFile
+2026-11-14T16:34:42.5959098Z 
+2026-11-14T16:34:42.5960236Z For more on this, please refer to https://docs.gradle.org/9.9.0/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+2026-11-14T16:34:42.5970069Z                        ^ 'val' cannot be reassigned.
+2026-11-14T16:34:42.5970686Z 
+2026-11-14T16:34:42.5971068Z 1 error
+2026-11-14T16:34:42.5971576Z 
+2026-11-14T16:34:42.5971973Z * Try:
+2026-11-14T16:34:42.5972659Z > Run with --debug option to get more log output.
+2026-11-14T16:34:42.5973727Z > Run with --scan to get full insights from a Build Scan (powered by Develocity).
+2026-11-14T16:34:42.5974797Z > Get more help at https://help.gradle.org.
+2026-11-14T16:34:42.5975658Z 
+2026-11-14T16:34:42.5976082Z * Exception is:
+2026-11-14T16:34:42.5978774Z ScriptCompilationException(scriptCompilationErrors=[ScriptCompilationError(message='val' cannot be reassigned., location=SourceLocation(path=/home/runner/.gradle/caches/9.9.0/kotlin-dsl/ic/ecf7e30b3b07b4580ee1ede6cc11ad9c/sources/build.gradle.kts, line=49, column=13, lineEnd=49, columnEnd=22, lineContent=            storeFile = storeFile))])
+2026-11-14T16:34:42.5982182Z 	at org.gradle.kotlin.dsl.support.DefaultKotlinCompiler.compileKotlinScriptToDirectory(KotlinCompiler.kt:164)
+2026-11-14T16:34:42.5984318Z 	at org.gradle.kotlin.dsl.support.DefaultKotlinCompiler.compileKotlinScriptToDirectory(KotlinCompiler.kt:106)
+2026-11-14T16:34:42.5994975Z 	at org.gradle.kotlin.dsl.execution.ResidualProgramCompiler$compileScript$1.invoke_A6FCAhw$lambda$0(ResidualProgramCompiler.kt:716)
