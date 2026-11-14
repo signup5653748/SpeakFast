@@ -1,5 +1,5 @@
-[Earlier content for app/src/main/java/com/debk007/speakfast/MainActivity.kt (5589 chars, already written to disk). The module surface below may not show every signature you need — re-read with read_file before editing this file again, OR before importing/calling anything from it in another file. Do not recreate it from scratch and do not guess a function's parameters from memory.
-Module surface:
+package com.debk007.speakfast
+
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -30,10 +30,82 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
-import com.debk007.speakfast.accessibility.OcrFallback
 import com.debk007.speakfast.presentation.App
 import com.debk007.speakfast.ui.FloatingTriggerService
 import dagger.hilt.android.AndroidEntryPoint
+
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    @Composable]
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent { MainScreen() }
+    }
+
+    @Composable
+    private fun MainScreen() {
+        val context = LocalContext.current
+        var refreshTrigger by remember { mutableStateOf(false) }
+
+        val lifecycleOwner = LocalLifecycleOwner.current
+        DisposableEffect(lifecycleOwner) {
+            val observer = LifecycleEventObserver { _, event ->
+                if (event == Lifecycle.Event.ON_RESUME) {
+                    refreshTrigger = !refreshTrigger
+                }
+            }
+            lifecycleOwner.lifecycle.addObserver(observer)
+            onDispose {
+                lifecycleOwner.lifecycle.removeObserver(observer)
+            }
+        }
+
+        val accessibilityEnabled = remember(refreshTrigger) {
+            isAccessibilityServiceEnabled(context)
+        }
+        val overlayGranted = remember(refreshTrigger) {
+            Settings.canDrawOverlays(context)
+        }
+
+        Column(
+            modifier = Modifier.fillMaxSize().padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                Text("Accessibility Service:", style = MaterialTheme.typography.bodyLarge)
+                Text(if (accessibilityEnabled) "Enabled" else "Disabled", color = if (accessibilityEnabled) Color.Green else Color.Red)
+            }
+
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                Text("Overlay Permission:", style = MaterialTheme.typography.bodyLarge)
+                Text(if (overlayGranted) "Granted" else "Not Granted", color = if (overlayGranted) Color.Green else Color.Red)
+            }
+
+            if (!accessibilityEnabled) {
+                Button(
+                    onClick = { context.startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)) },
+                    modifier = Modifier.fillMaxWidth()
+                ) { Text("Enable Accessibility Service") }
+            }
+
+            Button(
+                onClick = {
+                    if (Settings.canDrawOverlays(context)) {
+                        context.startService(Intent(context, FloatingTriggerService::class.java))
+                        Toast.makeText(context, "Trigger Started", Toast.LENGTH_SHORT).show()
+                    } else {
+                        context.startActivity(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:${context.packageName}")))
+                    }
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) { Text("Start Floating Trigger") }
+
+            App()
+        }
+    }
+
+    private fun isAccessibilityServiceEnabled(context: Context): Boolean {
+        val enabledServices = Settings.Secure.getString(context.contentResolver, Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES) ?: return false
+        val componentName = "${context.packageName}/com.debk007.speakfast.accessibility.SpeakFastAccessibilityService"
+        return enabledServices.split(':').any { it == componentName }
+    }
+}
