@@ -6,42 +6,24 @@ import android.view.accessibility.AccessibilityNodeInfo
 object ScreenNodeReader {
 
     fun findIntersectingNodes(
-        root: AccessibilityNodeInfo,
-        selectionBounds: Rect,
-        intersectingNodes: MutableList<AccessibilityNodeInfo>
+        node: AccessibilityNodeInfo,
+        selectionRect: Rect,
+        resultList: MutableList<AccessibilityNodeInfo>
     ) {
-        val rect = android.graphics.Rect()
-        root.getBoundsInScreen(rect)
-        if (rect.intersectsWith(selectionBounds)) {
-            intersectingNodes.add(root)
-        }
+        val nodeRect = Rect()
+        node.getBoundsInScreen(nodeRect)
 
-        for (i in 0 until root.childCount) {
-            val child = root.getChild(i) ?: continue
-            findIntersectingNodes(
-                child,
-                selectionBounds,
-                intersectingNodes
-            )
-        }
-    }
-
-    fun collectTextNodes(
-        root: AccessibilityNodeInfo,
-        selectionBounds: Rect,
-        result: MutableList<String>
-    ) {
-        val rect = android.graphics.Rect()
-        root.getBoundsInScreen(rect)
-        if (rect.intersectsWith(selectionBounds)) {
-            val text = root.text?.toString() ?: root.contentDescription?.toString() ?: ""
-            if (text.isNotEmpty()) {
-                result.add(text)
+        if (Rect.intersects(nodeRect, selectionRect)) {
+            val text = node.text
+            if (text != null && text.toString().isNotBlank()) {
+                resultList.add(node)
             }
+        }
 
-            for (i in 0 until root.childCount) {
-                val child = root.getChild(i) ?: continue
-                collectTextNodes(child, selectionBounds, result)
+        for (i in 0 until node.childCount) {
+            val child = node.getChild(i)
+            if (child != null) {
+                findIntersectingNodes(child, selectionRect, resultList)
             }
         }
     }
