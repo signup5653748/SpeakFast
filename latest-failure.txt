@@ -1,39 +1,44 @@
-=== FAILURE LOG FOR RUN: 43613901022 ===
+=== FAILURE LOG FOR RUN: 43614164620 ===
 === FAILED JOB: Build Signed Release APK ===
-=== DATE: Sat Nov 14 16:08:53 UTC 2026 ===
+=== DATE: Sat Nov 14 16:12:00 UTC 2026 ===
 === UNIVERSAL ERROR BLOCK (Kotlin, AAPT, XML, Gradle) ===
 
-2026-11-14T16:08:25.1022899Z   echo "::error::KEYSTORE_BASE64 secret is not set."
-2026-11-14T16:08:25.1038420Z   echo "::error::Could not read any alias from the keystore. Check that KEYSTORE_PASSWORD is correct."
-2026-11-14T16:08:38.4842533Z e: file:///home/runner/work/SpeakFast/SpeakFast/.base/app/build.gradle.kts:40:41: Unresolved reference 'util' on receiver of type 'BaseAppModuleExtension'.
-2026-11-14T16:08:38.4844501Z e: file:///home/runner/work/SpeakFast/SpeakFast/.base/app/build.gradle.kts:40:84: Unresolved reference 'util' on receiver of type 'BaseAppModuleExtension'.
-2026-11-14T16:08:38.5884314Z FAILURE: Build failed with an exception.
-2026-11-14T16:08:38.5885351Z [Incubating] Problems report is available at: file:///home/runner/work/SpeakFast/SpeakFast/.base/build/reports/problems/problems-report.html
-2026-11-14T16:08:38.5886184Z 
-2026-11-14T16:08:38.5924574Z * Where:
-2026-11-14T16:08:38.5925747Z Build file '/home/runner/work/SpeakFast/SpeakFast/.base/app/build.gradle.kts' line: 40
-2026-11-14T16:08:38.5926419Z 
-2026-11-14T16:08:38.5926694Z * What went wrong:
-2026-11-14T16:08:38.5927182Z Script compilation errors:
-2026-11-14T16:08:38.5927548Z 
-2026-11-14T16:08:38.5928134Z   Line 40:             val keystoreBytes = android.util.Base64.decode(keystoreBase64, android.util.Base64.NO_WRAP)
-2026-11-14T16:08:38.5929215Z                                                    ^ Unresolved reference 'util' on receiver of type 'BaseAppModuleExtension'.
-2026-11-14T16:08:38.5929881Z 
-2026-11-14T16:08:38.5930460Z   Line 40:             val keystoreBytes = android.util.Base64.decode(keystoreBase64, android.util.Base64.NO_WRAP)
-2026-11-14T16:08:38.5931593Z                                                                                               ^ Unresolved reference 'util' on receiver of type 'BaseAppModuleExtension'.
-2026-11-14T16:08:38.5932294Z 
-2026-11-14T16:08:38.5932546Z 2 errors
-2026-11-14T16:08:38.5932873Z 
-2026-11-14T16:08:38.5933130Z * Try:
-2026-11-14T16:08:38.5933608Z > Run with --debug option to get more log output.
-2026-11-14T16:08:38.5934505Z > Run with --scan to get full insights from a Build Scan (powered by Develocity).
-2026-11-14T16:08:38.5935263Z > Get more help at https://help.gradle.org.
-2026-11-14T16:08:38.5935707Z 
-2026-11-14T16:08:38.5935976Z * Exception is:
-2026-11-14T16:08:38.5940253Z ScriptCompilationException(scriptCompilationErrors=[ScriptCompilationError(message=Unresolved reference 'util' on receiver of type 'BaseAppModuleExtension'., location=SourceLocation(path=/home/runner/.gradle/caches/9.9.0/kotlin-dsl/ic/807e61c2796108a0b1271bfc879ffde0/sources/build.gradle.kts, line=40, column=41, lineEnd=40, columnEnd=45, lineContent=            val keystoreBytes = android.util.Base64.decode(keystoreBase64, android.util.Base64.NO_WRAP))), ScriptCompilationError(message=Unresolved reference 'util' on receiver of type 'BaseAppModuleExtension'., location=SourceLocation(path=/home/runner/.gradle/caches/9.9.0/kotlin-dsl/ic/807e61c2796108a0b1271bfc879ffde0/sources/build.gradle.kts, line=40, column=84, lineEnd=40, columnEnd=88, lineContent=            val keystoreBytes = android.util.Base64.decode(keystoreBase64, android.util.Base64.NO_WRAP)))])
-2026-11-14T16:08:38.5945625Z 	at org.gradle.kotlin.dsl.support.DefaultKotlinCompiler.compileKotlinScriptToDirectory(KotlinCompiler.kt:164)
-2026-11-14T16:08:38.5947214Z 	at org.gradle.kotlin.dsl.support.DefaultKotlinCompiler.compileKotlinScriptToDirectory(KotlinCompiler.kt:106)
-2026-11-14T16:08:38.5948800Z 	at org.gradle.kotlin.dsl.execution.ResidualProgramCompiler$compileScript$1.invoke_A6FCAhw$lambda$0(ResidualProgramCompiler.kt:716)
-2026-11-14T16:08:38.5950445Z 	at org.gradle.kotlin.dsl.provider.StandardKotlinScriptEvaluator$InterpreterHost$runCompileBuildOperation$1.call(KotlinScriptEvaluator.kt:230)
-2026-11-14T16:08:38.5952190Z 	at org.gradle.kotlin.dsl.provider.StandardKotlinScriptEvaluator$InterpreterHost$runCompileBuildOperation$1.call(KotlinScriptEvaluator.kt:227)
-2026-11-14T16:08:38.5953867Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:210)
+2026-11-14T16:11:09.3632194Z   echo "::error::KEYSTORE_BASE64 secret is not set."
+2026-11-14T16:11:09.3652455Z   echo "::error::Could not read any alias from the keystore. Check that KEYSTORE_PASSWORD is correct."
+2026-11-14T16:11:28.1277755Z AAPT2 aapt2-8.7.2-12006047-linux Daemon #0: starting
+2026-11-14T16:11:28.1308731Z Aapt output file /home/runner/work/SpeakFast/SpeakFast/app/build/intermediates/linked_resources_binary_format/release/processReleaseResources/linked-resources-binary-format-release.ap_
+2026-11-14T16:11:45.1725630Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/ui/SettingsScreen.kt:19:38 Unresolved reference 'hideFromAccessibility'.
+2026-11-14T16:11:45.1729567Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/ui/SettingsScreen.kt:40:26 Unresolved reference 'hideFromAccessibility'.
+2026-11-14T16:11:45.1731352Z > Task :app:compileReleaseKotlin FAILED
+2026-11-14T16:11:45.2729495Z 
+2026-11-14T16:11:45.2730197Z AAPT2 aapt2-8.7.2-12006047-linux Daemon #0: shutdown
+2026-11-14T16:11:45.2768024Z FAILURE: Build failed with an exception.
+2026-11-14T16:11:45.2768735Z gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_4-1794672674140.json
+2026-11-14T16:11:45.2769369Z 
+2026-11-14T16:11:45.2769732Z * What went wrong:
+2026-11-14T16:11:45.2770357Z Execution failed for task ':app:compileReleaseKotlin' (registered by plugin 'org.jetbrains.kotlin.android').
+2026-11-14T16:11:45.2771340Z > A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
+2026-11-14T16:11:45.2772091Z    > Compilation error. See log for more details
+2026-11-14T16:11:45.2772347Z 
+2026-11-14T16:11:45.2772447Z * Try:
+2026-11-14T16:11:45.2772736Z > Run with --debug option to get more log output.
+2026-11-14T16:11:45.2773223Z > Run with --scan to get full insights from a Build Scan (powered by Develocity).
+2026-11-14T16:11:45.2773714Z > Get more help at https://help.gradle.org.
+2026-11-14T16:11:45.2773962Z 
+2026-11-14T16:11:45.2774264Z * Exception is:
+2026-11-14T16:11:45.2775591Z org.gradle.api.tasks.TaskExecutionException: Execution failed for task ':app:compileReleaseKotlin' (registered by plugin 'org.jetbrains.kotlin.android').
+2026-11-14T16:11:45.2777833Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.lambda$doExecute$1(DefaultTaskNodeExecutor.java:367)
+2026-11-14T16:11:45.2779319Z 	at org.gradle.internal.Try$Failure.ifSuccessfulOrElse(Try.java:288)
+2026-11-14T16:11:45.2780710Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.doExecute(DefaultTaskNodeExecutor.java:365)
+2026-11-14T16:11:45.2781983Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.executeTrackingTaskIdentity(DefaultTaskNodeExecutor.java:332)
+2026-11-14T16:11:45.2784158Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.executeFinalizingProperties(DefaultTaskNodeExecutor.java:318)
+2026-11-14T16:11:45.2786478Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.executeSkippingWithNoActions(DefaultTaskNodeExecutor.java:289)
+2026-11-14T16:11:45.2788783Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.executeSkippingOnlyIf(DefaultTaskNodeExecutor.java:272)
+2026-11-14T16:11:45.2790887Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.executeCatchingFailures(DefaultTaskNodeExecutor.java:228)
+2026-11-14T16:11:45.2793047Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.executeWithFallbackOperationId(DefaultTaskNodeExecutor.java:197)
+2026-11-14T16:11:45.2794718Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.executeWithLifecycle(DefaultTaskNodeExecutor.java:171)
+2026-11-14T16:11:45.2796123Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.access$000(DefaultTaskNodeExecutor.java:67)
+2026-11-14T16:11:45.2798631Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor$1.run(DefaultTaskNodeExecutor.java:136)
+2026-11-14T16:11:45.2800381Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOperationRunner.java:30)
+2026-11-14T16:11:45.2802097Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOperationRunner.java:27)
+2026-11-14T16:11:45.2804020Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:67)
