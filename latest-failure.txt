@@ -1,129 +1,129 @@
-=== FAILURE LOG FOR RUN: 43572893689 ===
+=== FAILURE LOG FOR RUN: 43576128228 ===
 === FAILED JOB: Build Signed Release APK ===
-=== DATE: Sat Nov 14 07:50:52 UTC 2026 ===
+=== DATE: Sat Nov 14 08:31:38 UTC 2026 ===
 === UNIVERSAL ERROR BLOCK (Kotlin, AAPT, XML, Gradle) ===
 
-2026-11-14T07:50:12.3285918Z   echo "::error::KEYSTORE_BASE64 secret is not set."
-2026-11-14T07:50:12.3296425Z   echo "::error::Could not read any alias from the keystore. Check that KEYSTORE_PASSWORD is correct."
-2026-11-14T07:50:25.2984008Z AAPT2 aapt2-8.7.2-12006047-linux Daemon #0: starting
-2026-11-14T07:50:25.3004434Z Aapt output file /home/runner/work/SpeakFast/SpeakFast/app/build/intermediates/linked_resources_binary_format/release/processReleaseResources/linked-resources-binary-format-release.ap_
-2026-11-14T07:50:34.1764571Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:1 Expecting a top level declaration
-2026-11-14T07:50:34.1768779Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:2 Expecting a top level declaration
-2026-11-14T07:50:34.1769801Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:10 Expecting a top level declaration
-2026-11-14T07:50:34.1770842Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:18 Expecting a top level declaration
-2026-11-14T07:50:34.1771968Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:22 Expecting a top level declaration
-2026-11-14T07:50:34.1773002Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:25 Expecting a top level declaration
-2026-11-14T07:50:34.1774101Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:26 Expecting a top level declaration
-2026-11-14T07:50:34.1775109Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:29 Expecting a top level declaration
-2026-11-14T07:50:34.1776349Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:30 Expecting a top level declaration
-2026-11-14T07:50:34.1777383Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:34 Expecting a top level declaration
-2026-11-14T07:50:34.1778416Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:35 Expecting a top level declaration
-2026-11-14T07:50:34.1779623Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:39 Expecting a top level declaration
-2026-11-14T07:50:34.1780653Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:40 Expecting a top level declaration
-2026-11-14T07:50:34.1781684Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:43 Expecting a top level declaration
-2026-11-14T07:50:34.1782714Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:44 Expecting a top level declaration
-2026-11-14T07:50:34.1783992Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:51 Expecting a top level declaration
-2026-11-14T07:50:34.1784980Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:52 Expecting a top level declaration
-2026-11-14T07:50:34.1785994Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:61 Expecting a top level declaration
-2026-11-14T07:50:34.1787018Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:62 Expecting a top level declaration
-2026-11-14T07:50:34.1788043Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:82 Expecting a top level declaration
-2026-11-14T07:50:34.1789060Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:83 Expecting a top level declaration
-2026-11-14T07:50:34.1790081Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:86 Expecting a top level declaration
-2026-11-14T07:50:34.1791108Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:87 Expecting a top level declaration
-2026-11-14T07:50:34.1792133Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:92 Expecting a top level declaration
-2026-11-14T07:50:34.1792838Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:97 Expecting a top level declaration
-2026-11-14T07:50:34.1793710Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:99 Expecting a top level declaration
-2026-11-14T07:50:34.1794696Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:107 Expecting a top level declaration
-2026-11-14T07:50:34.1795600Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:115 Expecting a top level declaration
-2026-11-14T07:50:34.1796498Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:118 Expecting a top level declaration
-2026-11-14T07:50:34.1797411Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:122 Expecting a top level declaration
-2026-11-14T07:50:34.1798347Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:123 Expecting a top level declaration
-2026-11-14T07:50:34.1799495Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:125 Expecting a top level declaration
-2026-11-14T07:50:34.1800443Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:129 Expecting a top level declaration
-2026-11-14T07:50:34.1801500Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:136 Expecting a top level declaration
-2026-11-14T07:50:34.1802399Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:144 Expecting a top level declaration
-2026-11-14T07:50:34.1803300Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:150 Expecting a top level declaration
-2026-11-14T07:50:34.1804369Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:154 Expecting a top level declaration
-2026-11-14T07:50:34.1805270Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:158 Expecting a top level declaration
-2026-11-14T07:50:34.1805967Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:163 Expecting a top level declaration
-2026-11-14T07:50:34.1806517Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:169 Expecting a top level declaration
-2026-11-14T07:50:34.1807064Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:179 Expecting a top level declaration
-2026-11-14T07:50:34.1807603Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:183 Expecting a top level declaration
-2026-11-14T07:50:34.1808157Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:188 Expecting a top level declaration
-2026-11-14T07:50:34.1808698Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:190 Expecting a top level declaration
-2026-11-14T07:50:34.1809237Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:192 Expecting a top level declaration
-2026-11-14T07:50:34.1809907Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:193 Expecting a top level declaration
-2026-11-14T07:50:34.1810832Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:198 Expecting a top level declaration
-2026-11-14T07:50:34.1811774Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:203 Expecting a top level declaration
-2026-11-14T07:50:34.1812742Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:213 Expecting a top level declaration
-2026-11-14T07:50:34.1813721Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:220 Expecting a top level declaration
-2026-11-14T07:50:34.1814438Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:228 Expecting a top level declaration
-2026-11-14T07:50:34.1814988Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:233 Expecting a top level declaration
-2026-11-14T07:50:34.1815532Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:238 Expecting a top level declaration
-2026-11-14T07:50:34.1816446Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:243 Expecting a top level declaration
-2026-11-14T07:50:34.1817378Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:245 Expecting a top level declaration
-2026-11-14T07:50:34.1818323Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:248 Expecting a top level declaration
-2026-11-14T07:50:34.1819419Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:255 Expecting a top level declaration
-2026-11-14T07:50:34.1820323Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:264 Expecting a top level declaration
-2026-11-14T07:50:34.1820885Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:265 Expecting a top level declaration
-2026-11-14T07:50:34.1821432Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:273 Expecting a top level declaration
-2026-11-14T07:50:34.1821983Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:282 Expecting a top level declaration
-2026-11-14T07:50:34.1822527Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:287 Expecting a top level declaration
-2026-11-14T07:50:34.1823078Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:293 Expecting a top level declaration
-2026-11-14T07:50:34.1823938Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:301 Expecting a top level declaration
-2026-11-14T07:50:34.1824843Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:305 Expecting a top level declaration
-2026-11-14T07:50:34.1825753Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:307 Expecting a top level declaration
-2026-11-14T07:50:34.1826676Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:310 Expecting a top level declaration
-2026-11-14T07:50:34.1828413Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:314 Expecting a top level declaration
-2026-11-14T07:50:34.1829306Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:323 Expecting a top level declaration
-2026-11-14T07:50:34.1830214Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:326 Expecting a top level declaration
-2026-11-14T07:50:34.1831133Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:331 Expecting a top level declaration
-2026-11-14T07:50:34.1832037Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:339 Expecting a top level declaration
-2026-11-14T07:50:34.1832935Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:343 Expecting a top level declaration
-2026-11-14T07:50:34.1833953Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:346 Expecting a top level declaration
-2026-11-14T07:50:34.1834858Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:350 Expecting a top level declaration
-2026-11-14T07:50:34.1835774Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:356 Expecting a top level declaration
-2026-11-14T07:50:34.1836870Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:358 Expecting a top level declaration
-2026-11-14T07:50:34.1837783Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:1:366 Expecting a top level declaration
-2026-11-14T07:50:34.1838704Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:2:1 Expecting a top level declaration
-2026-11-14T07:50:34.1839749Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:2:8 Expecting a top level declaration
-2026-11-14T07:50:34.1840679Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:2:15 Expecting a top level declaration
-2026-11-14T07:50:34.1841634Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:2:16 imports are only allowed in the beginning of file
-2026-11-14T07:50:34.1842615Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:21:24 Expecting member declaration
-2026-11-14T07:50:34.1843600Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt:21:24 Missing '}
-2026-11-14T07:50:34.2718838Z > Task :app:kspReleaseKotlin FAILED
-2026-11-14T07:50:34.2719140Z AAPT2 aapt2-8.7.2-12006047-linux Daemon #0: shutdown
-2026-11-14T07:50:34.2719493Z gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_4-1794642615922.json
-2026-11-14T07:50:34.3717828Z 
-2026-11-14T07:50:34.3717900Z 
-2026-11-14T07:50:34.3718886Z [Incubating] Problems report is available at: file:///home/runner/work/SpeakFast/SpeakFast/build/reports/problems/problems-report.html
-2026-11-14T07:50:34.3724206Z FAILURE: Build failed with an exception.
-2026-11-14T07:50:34.3724425Z 
-2026-11-14T07:50:34.3724518Z * What went wrong:
-2026-11-14T07:50:34.3724972Z Execution failed for task ':app:kspReleaseKotlin' (registered by plugin 'org.jetbrains.kotlin.android').
-2026-11-14T07:50:34.3725743Z > A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
-2026-11-14T07:50:34.3726360Z    > Compilation error. See log for more details
-2026-11-14T07:50:34.3726554Z 
-2026-11-14T07:50:34.3726635Z * Try:
-2026-11-14T07:50:34.3726869Z > Run with --debug option to get more log output.
-2026-11-14T07:50:34.3727277Z > Run with --scan to get full insights from a Build Scan (powered by Develocity).
-2026-11-14T07:50:34.3727684Z > Get more help at https://help.gradle.org.
-2026-11-14T07:50:34.3727878Z 
-2026-11-14T07:50:34.3727964Z * Exception is:
-2026-11-14T07:50:34.3728507Z org.gradle.api.tasks.TaskExecutionException: Execution failed for task ':app:kspReleaseKotlin' (registered by plugin 'org.jetbrains.kotlin.android').
-2026-11-14T07:50:34.3729384Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.lambda$doExecute$1(DefaultTaskNodeExecutor.java:367)
-2026-11-14T07:50:34.3730009Z 	at org.gradle.internal.Try$Failure.ifSuccessfulOrElse(Try.java:288)
-2026-11-14T07:50:34.3730434Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.doExecute(DefaultTaskNodeExecutor.java:365)
-2026-11-14T07:50:34.3730962Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.executeTrackingTaskIdentity(DefaultTaskNodeExecutor.java:332)
-2026-11-14T07:50:34.3731551Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.executeFinalizingProperties(DefaultTaskNodeExecutor.java:318)
-2026-11-14T07:50:34.3732119Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.executeSkippingWithNoActions(DefaultTaskNodeExecutor.java:289)
-2026-11-14T07:50:34.3732675Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.executeSkippingOnlyIf(DefaultTaskNodeExecutor.java:272)
-2026-11-14T07:50:34.3733777Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.executeCatchingFailures(DefaultTaskNodeExecutor.java:228)
-2026-11-14T07:50:34.3734470Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.executeWithFallbackOperationId(DefaultTaskNodeExecutor.java:197)
-2026-11-14T07:50:34.3735028Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.executeWithLifecycle(DefaultTaskNodeExecutor.java:171)
-2026-11-14T07:50:34.3735649Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.access$000(DefaultTaskNodeExecutor.java:67)
-2026-11-14T07:50:34.3736102Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor$1.run(DefaultTaskNodeExecutor.java:136)
-2026-11-14T07:50:34.3736576Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOperationRunner.java:30)
-2026-11-14T07:50:34.3737025Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOperationRunner.java:27)
-2026-11-14T07:50:34.3737482Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:67)
-2026-11-14T07:50:34.3737933Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:60)
+2026-11-14T08:30:51.8147425Z   echo "::error::KEYSTORE_BASE64 secret is not set."
+2026-11-14T08:30:51.8163901Z   echo "::error::Could not read any alias from the keystore. Check that KEYSTORE_PASSWORD is correct."
+2026-11-14T08:31:08.2008527Z AAPT2 aapt2-8.7.2-12006047-linux Daemon #0: starting
+2026-11-14T08:31:08.2009262Z Aapt output file /home/runner/work/SpeakFast/SpeakFast/app/build/intermediates/linked_resources_binary_format/release/processReleaseResources/linked-resources-binary-format-release.ap_
+2026-11-14T08:31:20.5882249Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:1 Expecting a top level declaration
+2026-11-14T08:31:20.5891493Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:2 Expecting a top level declaration
+2026-11-14T08:31:20.5892494Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:10 Expecting a top level declaration
+2026-11-14T08:31:20.5893502Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:18 Expecting a top level declaration
+2026-11-14T08:31:20.5894494Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:22 Expecting a top level declaration
+2026-11-14T08:31:20.5895468Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:25 Expecting a top level declaration
+2026-11-14T08:31:20.5896674Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:26 Expecting a top level declaration
+2026-11-14T08:31:20.5897674Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:29 Expecting a top level declaration
+2026-11-14T08:31:20.5898794Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:30 Expecting a top level declaration
+2026-11-14T08:31:20.5899978Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:34 Expecting a top level declaration
+2026-11-14T08:31:20.5901269Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:35 Expecting a top level declaration
+2026-11-14T08:31:20.5902119Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:39 Expecting a top level declaration
+2026-11-14T08:31:20.5902906Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:40 Expecting a top level declaration
+2026-11-14T08:31:20.5904133Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:43 Expecting a top level declaration
+2026-11-14T08:31:20.5905235Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:44 Expecting a top level declaration
+2026-11-14T08:31:20.5906151Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:51 Expecting a top level declaration
+2026-11-14T08:31:20.5906920Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:52 Expecting a top level declaration
+2026-11-14T08:31:20.5908202Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:61 Expecting a top level declaration
+2026-11-14T08:31:20.5909181Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:62 Expecting a top level declaration
+2026-11-14T08:31:20.5910173Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:74 Expecting a top level declaration
+2026-11-14T08:31:20.5910957Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:75 Expecting a top level declaration
+2026-11-14T08:31:20.5911717Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:78 Expecting a top level declaration
+2026-11-14T08:31:20.5912467Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:79 Expecting a top level declaration
+2026-11-14T08:31:20.5913220Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:84 Expecting a top level declaration
+2026-11-14T08:31:20.5913977Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:89 Expecting a top level declaration
+2026-11-14T08:31:20.5914739Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:91 Expecting a top level declaration
+2026-11-14T08:31:20.5915493Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:99 Expecting a top level declaration
+2026-11-14T08:31:20.5916263Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:107 Expecting a top level declaration
+2026-11-14T08:31:20.5917019Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:110 Expecting a top level declaration
+2026-11-14T08:31:20.5917934Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:114 Expecting a top level declaration
+2026-11-14T08:31:20.5918750Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:115 Expecting a top level declaration
+2026-11-14T08:31:20.5919896Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:117 Expecting a top level declaration
+2026-11-14T08:31:20.5921100Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:121 Expecting a top level declaration
+2026-11-14T08:31:20.5922228Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:128 Expecting a top level declaration
+2026-11-14T08:31:20.5923322Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:136 Expecting a top level declaration
+2026-11-14T08:31:20.5924464Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:142 Expecting a top level declaration
+2026-11-14T08:31:20.5925674Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:146 Expecting a top level declaration
+2026-11-14T08:31:20.5926882Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:150 Expecting a top level declaration
+2026-11-14T08:31:20.5928026Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:155 Expecting a top level declaration
+2026-11-14T08:31:20.5929153Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:161 Expecting a top level declaration
+2026-11-14T08:31:20.5930416Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:171 Expecting a top level declaration
+2026-11-14T08:31:20.5931491Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:175 Expecting a top level declaration
+2026-11-14T08:31:20.5932791Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:180 Expecting a top level declaration
+2026-11-14T08:31:20.5933901Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:182 Expecting a top level declaration
+2026-11-14T08:31:20.5935188Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:184 Expecting a top level declaration
+2026-11-14T08:31:20.5936498Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:185 Expecting a top level declaration
+2026-11-14T08:31:20.5937854Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:190 Expecting a top level declaration
+2026-11-14T08:31:20.5939201Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:195 Expecting a top level declaration
+2026-11-14T08:31:20.5940670Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:205 Expecting a top level declaration
+2026-11-14T08:31:20.5942018Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:212 Expecting a top level declaration
+2026-11-14T08:31:20.5943385Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:220 Expecting a top level declaration
+2026-11-14T08:31:20.5944739Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:225 Expecting a top level declaration
+2026-11-14T08:31:20.5946108Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:230 Expecting a top level declaration
+2026-11-14T08:31:20.5947639Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:235 Expecting a top level declaration
+2026-11-14T08:31:20.5948966Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:237 Expecting a top level declaration
+2026-11-14T08:31:20.5950246Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:240 Expecting a top level declaration
+2026-11-14T08:31:20.5951595Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:247 Expecting a top level declaration
+2026-11-14T08:31:20.5952779Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:256 Expecting a top level declaration
+2026-11-14T08:31:20.5953950Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:257 Expecting a top level declaration
+2026-11-14T08:31:20.5955138Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:265 Expecting a top level declaration
+2026-11-14T08:31:20.5956328Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:274 Expecting a top level declaration
+2026-11-14T08:31:20.5957460Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:279 Expecting a top level declaration
+2026-11-14T08:31:20.5958540Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:285 Expecting a top level declaration
+2026-11-14T08:31:20.5959307Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:293 Expecting a top level declaration
+2026-11-14T08:31:20.5960235Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:297 Expecting a top level declaration
+2026-11-14T08:31:20.5961012Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:299 Expecting a top level declaration
+2026-11-14T08:31:20.5961771Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:302 Expecting a top level declaration
+2026-11-14T08:31:20.5962519Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:306 Expecting a top level declaration
+2026-11-14T08:31:20.5963284Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:315 Expecting a top level declaration
+2026-11-14T08:31:20.5964036Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:318 Expecting a top level declaration
+2026-11-14T08:31:20.5965331Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:323 Expecting a top level declaration
+2026-11-14T08:31:20.5966663Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:331 Expecting a top level declaration
+2026-11-14T08:31:20.5967971Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:335 Expecting a top level declaration
+2026-11-14T08:31:20.5969281Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:338 Expecting a top level declaration
+2026-11-14T08:31:20.5970818Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:342 Expecting a top level declaration
+2026-11-14T08:31:20.5972202Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:348 Expecting a top level declaration
+2026-11-14T08:31:20.5973558Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:350 Expecting a top level declaration
+2026-11-14T08:31:20.5975082Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:1:358 Expecting a top level declaration
+2026-11-14T08:31:20.5976403Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:2:1 Expecting a top level declaration
+2026-11-14T08:31:20.5977544Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:2:8 Expecting a top level declaration
+2026-11-14T08:31:20.5978307Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:2:15 Expecting a top level declaration
+2026-11-14T08:31:20.5979254Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:2:16 imports are only allowed in the beginning of file
+2026-11-14T08:31:20.5980744Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:39:16 Expecting member declaration
+2026-11-14T08:31:20.5981934Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/MainActivity.kt:39:17 Missing '}
+2026-11-14T08:31:20.6883154Z > Task :app:kspReleaseKotlin FAILED
+2026-11-14T08:31:20.6883954Z AAPT2 aapt2-8.7.2-12006047-linux Daemon #0: shutdown
+2026-11-14T08:31:20.6884871Z gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_4-1794645055489.json
+2026-11-14T08:31:20.8880859Z 
+2026-11-14T08:31:20.8881799Z [Incubating] Problems report is available at: file:///home/runner/work/SpeakFast/SpeakFast/build/reports/problems/problems-report.html
+2026-11-14T08:31:20.8887364Z 
+2026-11-14T08:31:20.8887696Z FAILURE: Build failed with an exception.
+2026-11-14T08:31:20.8888080Z 
+2026-11-14T08:31:20.8888324Z * What went wrong:
+2026-11-14T08:31:20.8889012Z Execution failed for task ':app:kspReleaseKotlin' (registered by plugin 'org.jetbrains.kotlin.android').
+2026-11-14T08:31:20.8890518Z > A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
+2026-11-14T08:31:20.8891610Z    > Compilation error. See log for more details
+2026-11-14T08:31:20.8891960Z 
+2026-11-14T08:31:20.8895389Z 
+2026-11-14T08:31:20.8896537Z Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+2026-11-14T08:31:20.8897053Z 
+2026-11-14T08:31:20.8897625Z You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+2026-11-14T08:31:20.8898368Z 
+2026-11-14T08:31:20.8899056Z For more on this, please refer to https://docs.gradle.org/9.9.0/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+2026-11-14T08:31:20.8900139Z 37 actionable tasks: 37 executed
+2026-11-14T08:31:20.8910113Z * Try:
+2026-11-14T08:31:20.8910519Z > Run with --debug option to get more log output.
+2026-11-14T08:31:20.8911150Z > Run with --scan to get full insights from a Build Scan (powered by Develocity).
+2026-11-14T08:31:20.8911802Z > Get more help at https://help.gradle.org.
+2026-11-14T08:31:20.8912109Z 
+2026-11-14T08:31:20.8912254Z * Exception is:
+2026-11-14T08:31:20.8913135Z org.gradle.api.tasks.TaskExecutionException: Execution failed for task ':app:kspReleaseKotlin' (registered by plugin 'org.jetbrains.kotlin.android').
+2026-11-14T08:31:20.8914611Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.lambda$doExecute$1(DefaultTaskNodeExecutor.java:367)
+2026-11-14T08:31:20.8915667Z 	at org.gradle.internal.Try$Failure.ifSuccessfulOrElse(Try.java:288)
+2026-11-14T08:31:20.8916656Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.doExecute(DefaultTaskNodeExecutor.java:365)
+2026-11-14T08:31:20.8918073Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.executeTrackingTaskIdentity(DefaultTaskNodeExecutor.java:332)
+2026-11-14T08:31:20.8920075Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.executeFinalizingProperties(DefaultTaskNodeExecutor.java:318)
+2026-11-14T08:31:20.8921644Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.executeSkippingWithNoActions(DefaultTaskNodeExecutor.java:289)
+2026-11-14T08:31:20.8923320Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.executeSkippingOnlyIf(DefaultTaskNodeExecutor.java:272)
+2026-11-14T08:31:20.8924735Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.executeCatchingFailures(DefaultTaskNodeExecutor.java:228)
+2026-11-14T08:31:20.8926183Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.executeWithFallbackOperationId(DefaultTaskNodeExecutor.java:197)
