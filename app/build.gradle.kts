@@ -35,19 +35,11 @@ android {
 
     signingConfigs {
         create("release") {
-            val keystoreBase64 = System.getenv("KEYSTORE_BASE64")
-                ?: error("KEYSTORE_BASE64 env var not set")
-            val keystoreBytes = android.util.Base64.decode(keystoreBase64, android.util.Base64.NO_WRAP)
-            val keystoreFile = file("$buildDir/release.keystore")
-            keystoreFile.parentFile.mkdirs()
-            keystoreFile.writeBytes(keystoreBytes)
-
-            storeFile = keystoreFile
-            storePassword = System.getenv("KEYSTORE_PASSWORD")
-                ?: error("KEYSTORE_PASSWORD env var not set")
+            val storeFile = file(System.getenv("KEYSTORE_PATH") ?: "release.keystore")
+            storeFile = storeFile
+            storePassword = System.getenv("KEYSTORE_PASSWORD") ?: "dummy"
             keyAlias = System.getenv("KEY_ALIAS") ?: "speakfast-release"
-            keyPassword = System.getenv("KEY_PASSWORD")
-                ?: error("KEY_PASSWORD env var not set")
+            keyPassword = System.getenv("KEY_PASSWORD") ?: "dummy"
         }
     }
 
