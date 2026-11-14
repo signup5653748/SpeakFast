@@ -34,7 +34,7 @@ android {
     }
 
     signingConfigs {
-        create("debug") {
+        getByName("debug") {
             val debugKeystore = file("../keystore/debug.keystore")
             if (debugKeystore.exists()) {
                 storeFile = debugKeystore
@@ -44,9 +44,8 @@ android {
             }
         }
         create("release") {
-            val storeFilePath = System.getenv("KEYSTORE_PATH") ?: "release.keystore"
-            val storeFile = file(storeFilePath)
-            storeFile = storeFile
+            val keystoreFile = file(System.getenv("KEYSTORE_PATH") ?: "release.keystore")
+            storeFile = keystoreFile
             storePassword = System.getenv("KEYSTORE_PASSWORD") ?: ""
             keyAlias = System.getenv("KEY_ALIAS") ?: ""
             keyPassword = System.getenv("KEY_PASSWORD") ?: ""
