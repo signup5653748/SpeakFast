@@ -1,7 +1,45 @@
-=== FAILURE LOG FOR RUN: 43615198076 ===
+=== FAILURE LOG FOR RUN: 43615595219 ===
 === FAILED JOB: Build Signed Release APK ===
-=== DATE: Sat Nov 14 16:22:58 UTC 2026 ===
+=== DATE: Sat Nov 14 16:27:44 UTC 2026 ===
 === UNIVERSAL ERROR BLOCK (Kotlin, AAPT, XML, Gradle) ===
 
-2026-11-14T16:22:26.7899338Z   echo "::error::KEYSTORE_BASE64 secret is not set."
-2026-11-14T16:22:26.7903077Z   echo "::error::Could not read any alias from the keystore. Check that KEYSTORE_PASSWORD is correct."
+2026-11-14T16:26:44.2288225Z   echo "::error::KEYSTORE_BASE64 secret is not set."
+2026-11-14T16:26:44.2301788Z   echo "::error::Could not read any alias from the keystore. Check that KEYSTORE_PASSWORD is correct."
+2026-11-14T16:27:03.3808654Z Downloading https://dl.google.com/dl/android/maven2/com/android/tools/build/aaptcompiler/8.7.2/aaptcompiler-8.7.2.jar to /home/runner/.gradle/.tmp/gradle_download6425840282134027239bin
+2026-11-14T16:27:03.4891230Z Downloading https://dl.google.com/dl/android/maven2/com/android/tools/build/aapt2-proto/8.7.2-12006047/aapt2-proto-8.7.2-12006047.jar to /home/runner/.gradle/.tmp/gradle_download944657445280217988bin
+2026-11-14T16:27:04.5885344Z Caching disabled for InstrumentationAnalysisTransform: /home/runner/.gradle/caches/modules-2/files-2.1/com.android.tools.build/aaptcompiler/8.7.2/1611b0b107be8db5957172ed2658c958d25690de/aaptcompiler-8.7.2.jar because:
+2026-11-14T16:27:04.9849144Z Caching disabled for InstrumentationAnalysisTransform: /home/runner/.gradle/caches/modules-2/files-2.1/com.android.tools.build/aapt2-proto/8.7.2-12006047/343ec66c023995b766d53fc5d4d5d836d694512e/aapt2-proto-8.7.2-12006047.jar because:
+2026-11-14T16:27:07.5014930Z Caching disabled for MergeInstrumentationAnalysisTransform: /home/runner/.gradle/caches/modules-2/files-2.1/com.android.tools.build/aaptcompiler/8.7.2/1611b0b107be8db5957172ed2658c958d25690de/aaptcompiler-8.7.2.jar because:
+2026-11-14T16:27:07.6190532Z Caching disabled for ExternalDependencyInstrumentingArtifactTransform: /home/runner/.gradle/caches/modules-2/files-2.1/com.android.tools.build/aaptcompiler/8.7.2/1611b0b107be8db5957172ed2658c958d25690de/aaptcompiler-8.7.2.jar because:
+2026-11-14T16:27:08.9950558Z Caching disabled for MergeInstrumentationAnalysisTransform: /home/runner/.gradle/caches/modules-2/files-2.1/com.android.tools.build/aapt2-proto/8.7.2-12006047/343ec66c023995b766d53fc5d4d5d836d694512e/aapt2-proto-8.7.2-12006047.jar because:
+2026-11-14T16:27:09.1109978Z Caching disabled for ExternalDependencyInstrumentingArtifactTransform: /home/runner/.gradle/caches/modules-2/files-2.1/com.android.tools.build/aapt2-proto/8.7.2-12006047/343ec66c023995b766d53fc5d4d5d836d694512e/aapt2-proto-8.7.2-12006047.jar because:
+2026-11-14T16:27:25.6742220Z FAILURE: Build failed with an exception.
+2026-11-14T16:27:25.6755220Z gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_4-1794673611121.json
+2026-11-14T16:27:25.6756298Z 
+2026-11-14T16:27:25.6756305Z 
+2026-11-14T16:27:25.6756581Z * Where:
+2026-11-14T16:27:25.6757412Z [Incubating] Problems report is available at: file:///home/runner/work/SpeakFast/SpeakFast/build/reports/problems/problems-report.html
+2026-11-14T16:27:25.6758544Z Build file '/home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts' line: 37
+2026-11-14T16:27:25.6759013Z 
+2026-11-14T16:27:25.6759176Z 
+2026-11-14T16:27:25.6759562Z Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+2026-11-14T16:27:25.6760276Z * What went wrong:
+2026-11-14T16:27:25.6760511Z 
+2026-11-14T16:27:25.6760998Z Cannot add a SigningConfig with name 'debug' as a SigningConfig with that name already exists.
+2026-11-14T16:27:25.6761990Z You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+2026-11-14T16:27:25.6762740Z 
+2026-11-14T16:27:25.6762747Z 
+2026-11-14T16:27:25.6763061Z * Try:
+2026-11-14T16:27:25.6764114Z For more on this, please refer to https://docs.gradle.org/9.9.0/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+2026-11-14T16:27:25.6765234Z > Run with --debug option to get more log output.
+2026-11-14T16:27:25.6765926Z > Run with --scan to get full insights from a Build Scan (powered by Develocity).
+2026-11-14T16:27:25.6766596Z > Get more help at https://help.gradle.org.
+2026-11-14T16:27:25.6767022Z 
+2026-11-14T16:27:25.6767274Z * Exception is:
+2026-11-14T16:27:25.6768118Z org.gradle.api.InvalidUserDataException: Cannot add a SigningConfig with name 'debug' as a SigningConfig with that name already exists.
+2026-11-14T16:27:25.6769518Z 	at org.gradle.api.internal.DefaultNamedDomainObjectCollection.assertElementNotPresent(DefaultNamedDomainObjectCollection.java:232)
+2026-11-14T16:27:25.6770933Z 	at org.gradle.api.internal.AbstractNamedDomainObjectContainer.create(AbstractNamedDomainObjectContainer.java:84)
+2026-11-14T16:27:25.6771904Z 	at Build_gradle$2.execute$lambda$1(build.gradle.kts:37)
+2026-11-14T16:27:25.6772806Z 	at com.android.build.gradle.internal.dsl.CommonExtensionImpl.signingConfigs(CommonExtensionImpl.kt:399)
+2026-11-14T16:27:25.6774166Z 	at com.android.build.gradle.internal.dsl.BaseAppModuleExtension.signingConfigs(BaseAppModuleExtension.kt)
+2026-11-14T16:27:25.6775501Z 	at Build_gradle$2.execute(build.gradle.kts:36)
