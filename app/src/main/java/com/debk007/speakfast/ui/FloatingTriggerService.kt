@@ -92,12 +92,14 @@ class FloatingTriggerService : Service() {
         started = false
         bubble.visibility = View.GONE
 
+        // FIX: Remove FLAG_NOT_FOCUSABLE so SelectionView receives touch events
         val overlayParams = WindowManager.LayoutParams(
             WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT,
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
-            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
+            WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
             PixelFormat.TRANSLUCENT
         )
+
         val sv = SelectionView(this)
         selectionView = sv
         wm.addView(sv, overlayParams)
@@ -205,22 +207,38 @@ class FloatingTriggerService : Service() {
         private val fill = Paint().apply { color = Color.parseColor("#554A6FE3"); style = Paint.Style.FILL }
         private val stroke = Paint().apply { color = Color.parseColor("#34A853"); style = Paint.Style.STROKE; strokeWidth = 6f }
         private var rect: Rect? = null
-        private var dx = 0f; private var dy = 0f
+        private var startX = 0f; private var startY = 0f
+        private val screenOffset = IntArray(2)
 
         constructor(c: Context) : super(c)
 
         override fun onTouchEvent(e: MotionEvent): Boolean {
             when (e.action) {
-                MotionEvent.ACTION_DOWN -> { dx = e.x; dy = e.y; rect = Rect() }
-                MotionEvent.ACTION_MOVE -> {
-                    rect = Rect(min(dx, e.x).toInt(), min(dy, e.y).toInt(), max(dx, e.x).toInt(), max(dy, e.y).toInt())
+                MotionEvent.ACTION_DOWN -> {
+                    startX = e.rawX
+                    startY = e.rawY
+                    rect = Rect()
                     invalidate()
+                    true
+                }
+                MotionEvent.ACTION_MOVE -> {
+                    val left = min(startX, e.rawX).toInt()
+                    val top = min(startY, e.rawY).toInt()
+                    val right = max(startX, e.rawX).toInt()
+                    val bottom = max(startY, e.rawY).toInt()
+                    rect = Rect(left, top, right, bottom)
+                    invalidate()
+                    true
                 }
                 MotionEvent.ACTION_UP -> {
                     val r = rect
                     rect = null
                     invalidate()
-                    if (r != null && r.width() > 40 && r.height() > 40) sendRect(r)
+                    if (r != null && r.width() > 40 && r.height() > 40) {
+                        // Convert to screen coordinates (SelectionView is full-screen, so rawX/rawY are already screen coords)
+                        sendRect(r)
+                    }
+                    true
                 }
             }
             return true

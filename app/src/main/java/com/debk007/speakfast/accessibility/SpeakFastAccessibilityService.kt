@@ -82,7 +82,10 @@ class SpeakFastAccessibilityService : AccessibilityService() {
 
     override fun onInterrupt() {}
 
-    override fun onAccessibilityEvent(event: AccessibilityEvent?) {}
+    override fun onAccessibilityEvent(event: AccessibilityEvent?) {
+        // Ignore events from our own package to prevent reading the Settings screen
+        if (event?.packageName?.toString() == packageName) return
+    }
 
     private fun readWholeScreen() {
         val root = rootInActiveWindow ?: return
