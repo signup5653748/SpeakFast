@@ -8,6 +8,7 @@ import com.debk007.speakfast.util.SelectionManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -17,7 +18,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideSettingsManager(context: Context): SettingsManager {
+    fun provideSettingsManager(@ApplicationContext context: Context): SettingsManager {
         return SettingsManager(context)
     }
 
@@ -30,7 +31,7 @@ object AppModule {
     @Provides
     @Singleton
     fun provideSpeechManager(
-        context: Context,
+        @ApplicationContext context: Context,
         settingsManager: SettingsManager
     ): SpeechManager {
         val speechManager = SpeechManager(context, settingsManager)
