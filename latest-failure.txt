@@ -1,39 +1,38 @@
-=== FAILURE LOG FOR RUN: 43598054108 ===
+=== FAILURE LOG FOR RUN: 43602912643 ===
 === FAILED JOB: Build Signed Release APK ===
-=== DATE: Sat Nov 14 13:07:10 UTC 2026 ===
+=== DATE: Sat Nov 14 14:05:02 UTC 2026 ===
 === UNIVERSAL ERROR BLOCK (Kotlin, AAPT, XML, Gradle) ===
 
-2026-11-14T13:06:16.6166006Z   echo "::error::KEYSTORE_BASE64 secret is not set."
-2026-11-14T13:06:16.6171324Z   echo "::error::Could not read any alias from the keystore. Check that KEYSTORE_PASSWORD is correct."
-2026-11-14T13:06:58.9776266Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:40:41: Unresolved reference 'util' on receiver of type 'BaseAppModuleExtension'.
-2026-11-14T13:06:58.9798787Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:40:84: Unresolved reference 'util' on receiver of type 'BaseAppModuleExtension'.
-2026-11-14T13:06:58.9835783Z FAILURE: Build failed with an exception.
-2026-11-14T13:06:58.9837718Z 
-2026-11-14T13:06:58.9837932Z * Where:
-2026-11-14T13:06:58.9838422Z Build file '/home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts' line: 40
-2026-11-14T13:06:58.9838880Z 
-2026-11-14T13:06:58.9839097Z * What went wrong:
-2026-11-14T13:06:58.9839699Z Script compilation errors:
-2026-11-14T13:06:58.9839999Z 
-2026-11-14T13:06:58.9840439Z   Line 40:             val keystoreBytes = android.util.Base64.decode(keystoreBase64, android.util.Base64.NO_WRAP)
-2026-11-14T13:06:58.9841841Z                                                    ^ Unresolved reference 'util' on receiver of type 'BaseAppModuleExtension'.
-2026-11-14T13:06:58.9842350Z 
-2026-11-14T13:06:58.9842783Z   Line 40:             val keystoreBytes = android.util.Base64.decode(keystoreBase64, android.util.Base64.NO_WRAP)
-2026-11-14T13:06:58.9843670Z                                                                                               ^ Unresolved reference 'util' on receiver of type 'BaseAppModuleExtension'.
-2026-11-14T13:06:58.9844224Z 
-2026-11-14T13:06:58.9844399Z 2 errors
-2026-11-14T13:06:58.9844613Z 
-2026-11-14T13:06:58.9844789Z * Try:
-2026-11-14T13:06:58.9845163Z > Run with --stacktrace option to get the stack trace.
-2026-11-14T13:06:58.9845673Z > Run with --info or --debug option to get more log output.
-2026-11-14T13:06:58.9846268Z > Run with --scan to get full insights from a Build Scan (powered by Develocity).
-2026-11-14T13:06:58.9846818Z > Get more help at https://help.gradle.org.
-2026-11-14T13:06:58.9847133Z 
-2026-11-14T13:06:58.9847326Z BUILD FAILED in 41s
-2026-11-14T13:06:58.9850334Z Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
-2026-11-14T13:06:58.9850812Z 
-2026-11-14T13:06:58.9851353Z You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
-2026-11-14T13:06:58.9851992Z 
-2026-11-14T13:06:58.9852668Z For more on this, please refer to https://docs.gradle.org/9.9.0/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
-2026-11-14T13:06:59.3984640Z ##[error]Process completed with exit code 1.
-2026-11-14T13:06:59.4078341Z Post job cleanup.
+2026-11-14T14:04:37.4528728Z   echo "::error::KEYSTORE_BASE64 secret is not set."
+2026-11-14T14:04:37.4539054Z   echo "::error::Could not read any alias from the keystore. Check that KEYSTORE_PASSWORD is correct."
+2026-11-14T14:04:47.7476716Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:39:13: 'val' cannot be reassigned.
+2026-11-14T14:04:47.8492056Z FAILURE: Build failed with an exception.
+2026-11-14T14:04:47.8496917Z 
+2026-11-14T14:04:47.8500277Z 
+2026-11-14T14:04:47.8500979Z [Incubating] Problems report is available at: file:///home/runner/work/SpeakFast/SpeakFast/build/reports/problems/problems-report.html
+2026-11-14T14:04:47.8501693Z * Where:
+2026-11-14T14:04:47.8502288Z Build file '/home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts' line: 39
+2026-11-14T14:04:47.8502759Z 
+2026-11-14T14:04:47.8503020Z * What went wrong:
+2026-11-14T14:04:47.8503420Z Script compilation error:
+2026-11-14T14:04:47.8503740Z 
+2026-11-14T14:04:47.8504035Z   Line 39:             storeFile = storeFile
+2026-11-14T14:04:47.8504507Z                        ^ 'val' cannot be reassigned.
+2026-11-14T14:04:47.8504863Z 
+2026-11-14T14:04:47.8505109Z 1 error
+2026-11-14T14:04:47.8505377Z 
+2026-11-14T14:04:47.8505619Z * Try:
+2026-11-14T14:04:47.8506025Z > Run with --debug option to get more log output.
+2026-11-14T14:04:47.8506607Z > Run with --scan to get full insights from a Build Scan (powered by Develocity).
+2026-11-14T14:04:47.8507211Z > Get more help at https://help.gradle.org.
+2026-11-14T14:04:47.8507834Z 
+2026-11-14T14:04:47.8551804Z * Exception is:
+2026-11-14T14:04:47.8569286Z ScriptCompilationException(scriptCompilationErrors=[ScriptCompilationError(message='val' cannot be reassigned., location=SourceLocation(path=/home/runner/.gradle/caches/9.9.0/kotlin-dsl/ic/ecf7e30b3b07b4580ee1ede6cc11ad9c/sources/build.gradle.kts, line=39, column=13, lineEnd=39, columnEnd=22, lineContent=            storeFile = storeFile))])
+2026-11-14T14:04:47.8606784Z 	at org.gradle.kotlin.dsl.support.DefaultKotlinCompiler.compileKotlinScriptToDirectory(KotlinCompiler.kt:164)
+2026-11-14T14:04:47.8628283Z 
+2026-11-14T14:04:47.8628908Z 	at org.gradle.kotlin.dsl.support.DefaultKotlinCompiler.compileKotlinScriptToDirectory(KotlinCompiler.kt:106)
+2026-11-14T14:04:47.8629793Z Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+2026-11-14T14:04:47.8630667Z 	at org.gradle.kotlin.dsl.execution.ResidualProgramCompiler$compileScript$1.invoke_A6FCAhw$lambda$0(ResidualProgramCompiler.kt:716)
+2026-11-14T14:04:47.8631315Z 
+2026-11-14T14:04:47.8631899Z 	at org.gradle.kotlin.dsl.provider.StandardKotlinScriptEvaluator$InterpreterHost$runCompileBuildOperation$1.call(KotlinScriptEvaluator.kt:230)
+2026-11-14T14:04:47.8632947Z You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
