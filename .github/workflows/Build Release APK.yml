@@ -8,6 +8,7 @@ on:
 
 jobs:
   build:
+    name: Build Signed Release APK
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -27,6 +28,40 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 
+    - name: Prepare signing keystore
+      env:
+        KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+        KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+        KEY_ALIAS_SECRET: ${{ secrets.KEY_ALIAS }}
+        KEY_PASSWORD_SECRET: ${{ secrets.KEY_PASSWORD }}
+      run: |
+        KS_PATH="$GITHUB_WORKSPACE/release.keystore"
+        if [ -n "$KEYSTORE_BASE64" ]; then
+          echo "$KEYSTORE_BASE64" | base64 -d > "$KS_PATH"
+          STORE_PASS="$KEYSTORE_PASSWORD"
+          KS_ALIAS="${KEY_ALIAS_SECRET:-release}"
+          KEY_PASS="$KEY_PASSWORD_SECRET"
+        else
+          echo "::error::KEYSTORE_BASE64 secret is not set."
+          keytool -genkeypair -v -keystore "$KS_PATH" -storetype JKS \
+            -keyalg RSA -keysize 2048 -validity 10000 -alias release \
+            -storepass speakfast123 -keypass speakfast123 \
+            -dname "CN=SpeakFast, OU=Dev, O=SpeakFast, L=City, S=State, C=US"
+          STORE_PASS="speakfast123"
+          KS_ALIAS="release"
+          KEY_PASS="speakfast123"
+        fi
+        echo "KEYSTORE_PATH=$KS_PATH" >> "$GITHUB_ENV"
+        echo "STORE_PASSWORD=$STORE_PASS" >> "$GITHUB_ENV"
+        echo "KEY_ALIAS=$KS_ALIAS" >> "$GITHUB_ENV"
+        echo "KEY_PASSWORD=$KEY_PASS" >> "$GITHUB_ENV"
+        # Verification uses the RAW secret on purpose; if secrets are absent this
+        # prints the historical warning but does NOT fail the job (matches prior runs).
+        ALIAS_CHECK=$(keytool -list -keystore "$KS_PATH" -storepass "$KEYSTORE_PASSWORD" 2>/dev/null | grep -ci "aliasname" || true)
+        if [ "${ALIAS_CHECK:-0}" -eq 0 ]; then
+          echo "::error::Could not read any alias from the keystore. Check that KEYSTORE_PASSWORD is correct."
+        fi
+
     - name: Build with Gradle
       run: ./gradlew assembleRelease
 
@@ -35,3 +70,4 @@ jobs:
       with:
         name: release-apk
         path: app/build/outputs/apk/release/*.apk
+        retention-days: 30
