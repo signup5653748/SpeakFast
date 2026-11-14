@@ -24,247 +24,91 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class SpeakFastAccessibilityService : AccessibilityService() {
 
-    @Inject
-    lateinit var speechManager: SpeechManager
-
+    @Inject lateinit var speechManager: SpeechManager
     private val mainHandler = Handler(Looper.getMainLooper())
 
-    private val readReceiver = object : BroadcastReceiver() {
+    private val commandReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            if (intent.action != FloatingTriggerService.ACTION_READ) {
-                return
+            when (intent.action) {
+                FloatingTriggerService.ACTION_READ -> readWholeScreen()
+                FloatingTriggerService.ACTION_STOP -> speechManager.stop()
             }
-            Log.d(TAG, "Read requested by floating trigger")
-            readWholeScreen()
         }
     }
 
     private val ocrListener = object : OcrFallback.OnTextRecognizedListener {
-        override fun onTextRecognized(text: String) {
-            if (text.isBlank()) {
-                Log.w(TAG, "OCR produced no text")
-                return
-            }
-            speechManager.speakText(text)
-        }
-
-        override fun onError(error: Exception) {
-            Log.e(TAG, "OCR failed: ${error.message}", error)
-        }
+        override fun onTextRecognized(text: String) { if (text.isNotBlank()) speechManager.speakText(text) }
+        override fun onError(error: Exception) { Log.e(TAG, "OCR failed", error) }
     }
 
     override fun onServiceConnected() {
         super.onServiceConnected()
         val info = AccessibilityServiceInfo().apply {
-            this.flags = AccessibilityServiceInfo.FLAG_RETRIEVE_INTERACTIVE_WINDOWS
-            this.eventTypes = AccessibilityEvent.TYPE_VIEW_FOCUSED or
-                    AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED or
-                    AccessibilityEvent.TYPE_VIEW_CLICKED or
-                    AccessibilityEvent.TYPE_VIEW_SELECTED or
-                    AccessibilityEvent.TYPE_VIEW_TEXT_CHANGED or
-                    AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED
-            this.feedbackType = AccessibilityServiceInfo.FEEDBACK_SPOKEN
-            this.notificationTimeout = 100
+            flags = AccessibilityServiceInfo.FLAG_RETRIEVE_INTERACTIVE_WINDOWS
+            eventTypes = 0
+            feedbackType = AccessibilityServiceInfo.FEEDBACK_SPOKEN
+            notificationTimeout = 100
         }
-        this.setServiceInfo(info)
-
+        setServiceInfo(info)
         speechManager.initialize()
-        registerReadReceiver()
-
-        Log.d(TAG, "Accessibility service connected")
-    }
-
-    override fun onInterrupt() {
-        speechManager.shutdown()
-    }
-
-    override fun onAccessibilityEvent(event: AccessibilityEvent?) {
-        when (event?.eventType) {
-            AccessibilityEvent.TYPE_VIEW_FOCUSED -> handleViewFocused(event)
-            AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED -> handleWindowContentChanged(event)
-            AccessibilityEvent.TYPE_VIEW_CLICKED -> handleViewClicked(event)
-            AccessibilityEvent.TYPE_VIEW_SELECTED -> handleViewSelected(event)
-            AccessibilityEvent.TYPE_VIEW_TEXT_CHANGED -> handleTextChanged(event)
-            AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> handleWindowStateChanged(event)
+        val filter = IntentFilter().apply {
+            addAction(FloatingTriggerService.ACTION_READ)
+            addAction(FloatingTriggerService.ACTION_STOP)
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            registerReceiver(commandReceiver, filter, Context.RECEIVER_NOT_EXPORTED)
+        } else {
+            registerReceiver(commandReceiver, filter)
         }
     }
 
-    private fun handleViewFocused(event: AccessibilityEvent) {
-        val node = event.source ?: return
-        handleSelection(node)
-    }
+    override fun onInterrupt() {}
 
-    private fun handleWindowContentChanged(event: AccessibilityEvent) {
-        val root = getRootInActiveWindow() ?: return
-        handleSelection(root)
-    }
-
-    private fun handleViewClicked(event: AccessibilityEvent) {
-        val node = event.source ?: return
-        handleSelection(node)
-    }
-
-    private fun handleViewSelected(event: AccessibilityEvent) {
-        val node = event.source ?: return
-        handleSelection(node)
-    }
-
-    private fun handleTextChanged(event: AccessibilityEvent) {
-        val node = event.source ?: return
-        handleSelection(node)
-    }
-
-    private fun handleWindowStateChanged(event: AccessibilityEvent) {
-        val root = getRootInActiveWindow() ?: return
-        handleSelection(root)
-    }
-
-    private fun handleSelection(node: AccessibilityNodeInfo) {
-        val text = node.text?.toString() ?: node.contentDescription?.toString() ?: ""
-        if (text.isNotEmpty()) {
-            speakText(text)
-        }
-    }
+    override fun onAccessibilityEvent(event: AccessibilityEvent?) {}
 
     private fun readWholeScreen() {
-        val root = rootInActiveWindow
-        if (root == null) {
-            Log.w(TAG, "No active window, nothing to read")
-            return
-        }
-
-        val probeRect = Rect(0, 0, SCREEN_PROBE_WIDTH_PX, SCREEN_PROBE_HEIGHT_PX)
+        val root = rootInActiveWindow ?: return
         val nodes = mutableListOf<AccessibilityNodeInfo>()
-
         try {
-            ScreenNodeReader.findIntersectingNodes(root, probeRect, nodes)
-            val sortedNodes = BoundsSorter.sortNodesForReading(nodes)
-            val texts = sortedNodes.mapNotNull { node -> node.readableText() }
-
-            if (texts.isEmpty()) {
-                Log.w(TAG, "No text nodes found, falling back to OCR")
-                triggerOcrFallback(screenRect())
-                return
-            }
-
-            speechManager.speakText(texts.joinToString(" "))
+            ScreenNodeReader.findIntersectingNodes(root, Rect(0, 0, 10000, 10000), nodes)
+            val sorted = BoundsSorter.sortNodesForReading(nodes)
+            val texts = sorted.mapNotNull { it.text?.toString() ?: it.contentDescription?.toString() }.filter { it.isNotBlank() }
+            if (texts.isEmpty()) triggerOcrFallback(screenRect())
+            else speechManager.speakText(texts.joinToString(" "))
         } finally {
-            recycleNodes(nodes, root)
+            nodes.forEach { it.recycle() }
+            if (nodes.none { it === root }) root.recycle()
         }
-    }
-
-    private fun AccessibilityNodeInfo.readableText(): String? {
-        val nodeText = text?.toString()
-        if (!nodeText.isNullOrBlank()) {
-            return nodeText
-        }
-        val description = contentDescription?.toString()
-        return if (description.isNullOrBlank()) null else description
     }
 
     private fun screenRect(): Rect {
-        val metrics = resources.displayMetrics
-        return Rect(0, 0, metrics.widthPixels, metrics.heightPixels)
+        val m = resources.displayMetrics
+        return Rect(0, 0, m.widthPixels, m.heightPixels)
     }
 
-    private fun recycleNodes(nodes: List<AccessibilityNodeInfo>, root: AccessibilityNodeInfo) {
-        nodes.forEach { node -> node.recycle() }
-        if (nodes.none { node -> node === root }) {
-            root.recycle()
-        }
-    }
-
-    private fun registerReadReceiver() {
-        val filter = IntentFilter(FloatingTriggerService.ACTION_READ)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            registerReceiver(readReceiver, filter, Context.RECEIVER_NOT_EXPORTED)
-        } else {
-            registerReceiver(readReceiver, filter)
-        }
-        Log.d(TAG, "Read receiver registered for ${FloatingTriggerService.ACTION_READ}")
-    }
-
-    private fun triggerOcrFallback(readingRect: Rect) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
-            Log.w(TAG, "OCR fallback requires Android 11 or newer")
-            return
-        }
-
-        val info = serviceInfo
-        val canTakeScreenshot = info != null &&
-                (info.capabilities and AccessibilityServiceInfo.CAPABILITY_CAN_TAKE_SCREENSHOT != 0)
-        if (!canTakeScreenshot) {
-            Log.e(TAG, "Screenshot capability not granted, OCR fallback unavailable")
-            return
-        }
-
-        val executor = Executor { command -> mainHandler.post(command) }
-        takeScreenshot(
-            Display.DEFAULT_DISPLAY,
-            executor,
-            object : AccessibilityService.TakeScreenshotCallback {
-                override fun onSuccess(result: AccessibilityService.ScreenshotResult) {
-                    handleScreenshot(result, readingRect)
-                }
-
-                override fun onFailure(errorCode: Int) {
-                    Log.e(TAG, "Screenshot request failed with code $errorCode")
-                }
+    private fun triggerOcrFallback(rect: Rect) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) return
+        val info = serviceInfo ?: return
+        if ((info.capabilities and AccessibilityServiceInfo.CAPABILITY_CAN_TAKE_SCREENSHOT) == 0) return
+        takeScreenshot(Display.DEFAULT_DISPLAY, Executor { mainHandler.post(it) }, object : TakeScreenshotCallback {
+            override fun onSuccess(result: ScreenshotResult) {
+                val hw = Bitmap.wrapHardwareBuffer(result.hardwareBuffer, result.colorSpace)
+                result.hardwareBuffer.close()
+                if (hw == null) return
+                val sw = hw.copy(Bitmap.Config.ARGB_8888, false)
+                hw.recycle()
+                if (sw == null) return
+                try { OcrFallback.recognizeText(sw, rect, ocrListener) } finally { sw.recycle() }
             }
-        )
-    }
-
-    private fun handleScreenshot(result: AccessibilityService.ScreenshotResult, readingRect: Rect) {
-        val softwareBitmap = result.toSoftwareBitmap() ?: return
-
-        try {
-            OcrFallback.recognizeText(softwareBitmap, readingRect, ocrListener)
-        } catch (e: Exception) {
-            Log.e(TAG, "OCR fallback failed: ${e.message}", e)
-        } finally {
-            softwareBitmap.recycle()
-        }
-    }
-
-    private fun AccessibilityService.ScreenshotResult.toSoftwareBitmap(): Bitmap? {
-        val hardwareBitmap = Bitmap.wrapHardwareBuffer(hardwareBuffer, colorSpace)
-        hardwareBuffer.close()
-
-        if (hardwareBitmap == null) {
-            Log.e(TAG, "Could not wrap screenshot hardware buffer")
-            return null
-        }
-
-        val softwareBitmap = hardwareBitmap.copy(Bitmap.Config.ARGB_8888, false)
-        hardwareBitmap.recycle()
-
-        if (softwareBitmap == null) {
-            Log.e(TAG, "Could not copy screenshot for OCR")
-        }
-
-        return softwareBitmap
-    }
-
-    private fun speakText(text: String) {
-        speechManager.speakText(text)
+            override fun onFailure(errorCode: Int) { Log.e(TAG, "Screenshot failed: $errorCode") }
+        })
     }
 
     override fun onDestroy() {
-        try {
-            unregisterReceiver(readReceiver)
-        } catch (e: IllegalArgumentException) {
-            Log.w(TAG, "Read receiver was not registered", e)
-        }
-
+        try { unregisterReceiver(commandReceiver) } catch (e: Exception) {}
         speechManager.shutdown()
-
         super.onDestroy()
-        Log.d(TAG, "Accessibility service destroyed")
     }
 
-    companion object {
-        private const val TAG = "SpeakFast"
-        private const val SCREEN_PROBE_WIDTH_PX = 10000
-        private const val SCREEN_PROBE_HEIGHT_PX = 10000
-    }
+    companion object { private const val TAG = "SpeakFast" }
 }

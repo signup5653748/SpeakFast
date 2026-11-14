@@ -1,47 +1,45 @@
 package com.debk007.speakfast.ui
 
 import android.app.Service
-import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.PixelFormat
+import android.graphics.drawable.GradientDrawable
 import android.os.IBinder
-import android.provider.Settings
-import android.util.Log
 import android.view.Gravity
+import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
-import android.widget.Button
-import android.widget.Toast
+import android.widget.LinearLayout
+import android.widget.TextView
+import com.debk007.speakfast.MainActivity
+import kotlin.math.abs
 
-/**
- * Shows a single floating "Read" button over every app.
- *
- * The button is intentionally simple: no drag handling, no long-press menu.
- * Tapping it notifies [com.debk007.speakfast.accessibility.SpeakFastAccessibilityService]
- * through a package-scoped broadcast so the service can read the current selection.
- */
 class FloatingTriggerService : Service() {
 
-    private var windowManager: WindowManager? = null
-    private var triggerView: View? = null
+    companion object {
+        const val ACTION_READ = "com.debk007.speakfast.ACTION_READ"
+        const val ACTION_STOP = "com.debk007.speakfast.ACTION_STOP"
+    }
+
+    private lateinit var windowManager: WindowManager
+    private lateinit var params: WindowManager.LayoutParams
+    private lateinit var container: LinearLayout
+    private lateinit var controlBar: LinearLayout
+    private var barVisible = false
+
+    override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onCreate() {
         super.onCreate()
+        windowManager = getSystemService(WINDOW_SERVICE) as WindowManager
+        buildUi()
+    }
 
-        if (!Settings.canDrawOverlays(this)) {
-            Log.w(TAG, "SYSTEM_ALERT_WINDOW not granted - stopping floating trigger service")
-            stopSelf()
-            return
-        }
+    private fun dp(v: Int): Int = (v * resources.displayMetrics.density).toInt()
 
-        val manager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        val button = Button(this).apply {
-            text = TRIGGER_LABEL
-            isAllCaps = false
-            setOnClickListener { onTriggerClicked() }
-        }
-
-        val params = WindowManager.LayoutParams(
+    private fun buildUi() {
+        params = WindowManager.LayoutParams(
             WindowManager.LayoutParams.WRAP_CONTENT,
             WindowManager.LayoutParams.WRAP_CONTENT,
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
@@ -49,69 +47,91 @@ class FloatingTriggerService : Service() {
             PixelFormat.TRANSLUCENT
         ).apply {
             gravity = Gravity.TOP or Gravity.START
-            x = EDGE_MARGIN_PX
-            y = EDGE_MARGIN_PX
+            x = dp(16); y = dp(200)
         }
 
-        triggerView = button
-        windowManager = manager
-
-        try {
-            manager.addView(button, params)
-            Log.d(TAG, "Floating trigger button added")
-        } catch (e: Exception) {
-            Log.e(TAG, "Failed to add floating trigger button", e)
-            triggerView = null
-            windowManager = null
-            stopSelf()
+        controlBar = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER_VERTICAL
+            setBackgroundColor(Color.parseColor("#E6202124"))
+            visibility = View.GONE
         }
-    }
+        controlBar.addView(barButton("⚙") {
+            startActivity(Intent(this@FloatingTriggerService, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+        })
+        controlBar.addView(barButton("▶") { send(ACTION_READ) })
+        controlBar.addView(barButton("■") { send(ACTION_STOP) })
 
-    @Suppress("UnusedParameter") // signature fixed by Service; the system may restart us with a null intent
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        return START_NOT_STICKY
-    }
-
-    @Suppress("UnusedParameter") // binding is not supported for the floating trigger
-    override fun onBind(intent: Intent?): IBinder? {
-        return null
-    }
-
-    private fun onTriggerClicked() {
-        Toast.makeText(this, TOAST_READING, Toast.LENGTH_SHORT).show()
-
-        val readIntent = Intent(ACTION_READ).setPackage(packageName)
-        sendBroadcast(readIntent)
-
-        Log.d(TAG, "Read requested - broadcast $ACTION_READ sent")
-    }
-
-    override fun onDestroy() {
-        val view = triggerView
-        val manager = windowManager
-
-        if (view != null && manager != null) {
-            try {
-                manager.removeView(view)
-                Log.d(TAG, "Floating trigger button removed")
-            } catch (e: Exception) {
-                Log.e(TAG, "Failed to remove floating trigger button", e)
+        val button = TextView(this).apply {
+            text = "🔊"
+            textSize = 20f
+            setTextColor(Color.WHITE)
+            gravity = Gravity.CENTER
+            val size = dp(52)
+            width = size; height = size
+            background = GradientDrawable().apply {
+                shape = GradientDrawable.OVAL
+                setColor(Color.parseColor("#4A6FE3"))
             }
         }
 
-        triggerView = null
-        windowManager = null
+        container = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER_VERTICAL
+            addView(controlBar)
+            addView(button)
+        }
 
-        super.onDestroy()
+        var startX = 0; var startY = 0; var touchX = 0f; var touchY = 0f; var dragged = false
+        button.setOnTouchListener { _, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    startX = params.x; startY = params.y
+                    touchX = event.rawX; touchY = event.rawY
+                    dragged = false; true
+                }
+                MotionEvent.ACTION_MOVE -> {
+                    val dx = event.rawX - touchX; val dy = event.rawY - touchY
+                    if (abs(dx) > 8 || abs(dy) > 8) dragged = true
+                    if (dragged) {
+                        params.x = startX + dx.toInt()
+                        params.y = startY + dy.toInt()
+                        windowManager.updateViewLayout(container, params)
+                    }
+                    true
+                }
+                MotionEvent.ACTION_UP -> {
+                    if (!dragged) toggleBar()
+                    true
+                }
+                else -> false
+            }
+        }
+
+        windowManager.addView(container, params)
     }
 
-    companion object {
-        private const val TAG = "SpeakFastFloatingTrigger"
-        private const val TRIGGER_LABEL = "🎯 Read"
-        private const val TOAST_READING = "Reading..."
-        private const val EDGE_MARGIN_PX = 24
+    private fun barButton(icon: String, onClick: () -> Unit): TextView = TextView(this).apply {
+        text = icon
+        textSize = 18f
+        setTextColor(Color.WHITE)
+        gravity = Gravity.CENTER
+        val pad = dp(14)
+        setPadding(pad, pad, pad, pad)
+        setOnClickListener { onClick() }
+    }
 
-        /** Package-scoped action consumed by SpeakFastAccessibilityService. */
-        const val ACTION_READ = "com.debk007.speakfast.action.READ_SELECTION"
+    private fun toggleBar() {
+        barVisible = !barVisible
+        controlBar.visibility = if (barVisible) View.VISIBLE else View.GONE
+    }
+
+    private fun send(action: String) {
+        sendBroadcast(Intent(action).setPackage(packageName))
+    }
+
+    override fun onDestroy() {
+        if (::container.isInitialized) windowManager.removeView(container)
+        super.onDestroy()
     }
 }

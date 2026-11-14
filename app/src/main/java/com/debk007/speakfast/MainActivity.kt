@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -31,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import com.debk007.speakfast.presentation.App
+import com.debk007.speakfast.presentation.ui.theme.SpeakFastTheme
 import com.debk007.speakfast.ui.FloatingTriggerService
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -38,7 +38,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent { MainScreen() }
+        setContent { SpeakFastTheme { MainScreen() } }
     }
 
     @Composable
@@ -49,44 +49,32 @@ class MainActivity : ComponentActivity() {
         val lifecycleOwner = LocalLifecycleOwner.current
         DisposableEffect(lifecycleOwner) {
             val observer = LifecycleEventObserver { _, event ->
-                if (event == Lifecycle.Event.ON_RESUME) {
-                    refreshTrigger = !refreshTrigger
-                }
+                if (event == Lifecycle.Event.ON_RESUME) refreshTrigger = !refreshTrigger
             }
             lifecycleOwner.lifecycle.addObserver(observer)
-            onDispose {
-                lifecycleOwner.lifecycle.removeObserver(observer)
-            }
+            onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
         }
 
-        val accessibilityEnabled = remember(refreshTrigger) {
-            isAccessibilityServiceEnabled(context)
-        }
-        val overlayGranted = remember(refreshTrigger) {
-            Settings.canDrawOverlays(context)
-        }
+        val accessibilityEnabled = remember(refreshTrigger) { isAccessibilityServiceEnabled(context) }
+        val overlayGranted = remember(refreshTrigger) { Settings.canDrawOverlays(context) }
 
         Column(
             modifier = Modifier.fillMaxSize().padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                Text("Accessibility Service:", style = MaterialTheme.typography.bodyLarge)
-                Text(if (accessibilityEnabled) "Enabled" else "Disabled", color = if (accessibilityEnabled) Color.Green else Color.Red)
+                Text("Accessibility Service:")
+                Text(if (accessibilityEnabled) "Enabled" else "Disabled", color = if (accessibilityEnabled) Color(0xFF81C995) else Color(0xFFF28B82))
             }
-
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                Text("Overlay Permission:", style = MaterialTheme.typography.bodyLarge)
-                Text(if (overlayGranted) "Granted" else "Not Granted", color = if (overlayGranted) Color.Green else Color.Red)
+                Text("Overlay Permission:")
+                Text(if (overlayGranted) "Granted" else "Not Granted", color = if (overlayGranted) Color(0xFF81C995) else Color(0xFFF28B82))
             }
-
             if (!accessibilityEnabled) {
-                Button(
-                    onClick = { context.startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)) },
-                    modifier = Modifier.fillMaxWidth()
-                ) { Text("Enable Accessibility Service") }
+                Button(onClick = { context.startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)) }, modifier = Modifier.fillMaxWidth()) {
+                    Text("Enable Accessibility Service")
+                }
             }
-
             Button(
                 onClick = {
                     if (Settings.canDrawOverlays(context)) {
@@ -98,7 +86,6 @@ class MainActivity : ComponentActivity() {
                 },
                 modifier = Modifier.fillMaxWidth()
             ) { Text("Start Floating Trigger") }
-
             App()
         }
     }
