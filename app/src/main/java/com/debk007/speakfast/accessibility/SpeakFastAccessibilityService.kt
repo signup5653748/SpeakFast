@@ -29,17 +29,7 @@ class SpeakFastAccessibilityService : AccessibilityService() {
 
     private val mainHandler = Handler(Looper.getMainLooper())
 
-    private var selectionStartX = 0f
-    private var selectionStartY = 0f
-    private var selectionEndX = 0f
-    private var selectionEndY = 0f
-
-    /**
-     * Receives the package-scoped broadcast sent by [FloatingTriggerService] when the
-     * floating "Read" button is tapped.
-     */
     private val readReceiver = object : BroadcastReceiver() {
-        @Suppress("UnusedParameter") // the service reads its own active window, no context needed
         override fun onReceive(context: Context, intent: Intent) {
             if (intent.action != FloatingTriggerService.ACTION_READ) {
                 return
@@ -71,7 +61,7 @@ class SpeakFastAccessibilityService : AccessibilityService() {
                     AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED or
                     AccessibilityEvent.TYPE_VIEW_CLICKED or
                     AccessibilityEvent.TYPE_VIEW_SELECTED or
-                    AccessibilityEvent.TYPE_TEXT_CHANGED or
+                    AccessibilityEvent.TYPE_VIEW_TEXT_CHANGED or
                     AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED
             this.feedbackType = AccessibilityServiceInfo.FEEDBACK_SPOKEN
             this.notificationTimeout = 100
@@ -84,26 +74,18 @@ class SpeakFastAccessibilityService : AccessibilityService() {
         Log.d(TAG, "Accessibility service connected")
     }
 
+    override fun onInterrupt() {
+        speechManager.shutdown()
+    }
+
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
         when (event?.eventType) {
-            AccessibilityEvent.TYPE_VIEW_FOCUSED -> {
-                handleViewFocused(event)
-            }
-            AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED -> {
-                handleWindowContentChanged(event)
-            }
-            AccessibilityEvent.TYPE_VIEW_CLICKED -> {
-                handleViewClicked(event)
-            }
-            AccessibilityEvent.TYPE_VIEW_SELECTED -> {
-                handleViewSelected(event)
-            }
-            AccessibilityEvent.TYPE_VIEW_TEXT_CHANGED -> {
-                handleTextChanged(event)
-            }
-            AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> {
-                handleWindowStateChanged(event)
-            }
+            AccessibilityEvent.TYPE_VIEW_FOCUSED -> handleViewFocused(event)
+            AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED -> handleWindowContentChanged(event)
+            AccessibilityEvent.TYPE_VIEW_CLICKED -> handleViewClicked(event)
+            AccessibilityEvent.TYPE_VIEW_SELECTED -> handleViewSelected(event)
+            AccessibilityEvent.TYPE_VIEW_TEXT_CHANGED -> handleTextChanged(event)
+            AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> handleWindowStateChanged(event)
         }
     }
 
@@ -138,59 +120,12 @@ class SpeakFastAccessibilityService : AccessibilityService() {
     }
 
     private fun handleSelection(node: AccessibilityNodeInfo) {
-        val bounds = Rect()
-        node.getBoundsInScreen(bounds)
-
-        val boundsList = mutableListOf<Rect>()
-        for (i in 0..2) {
-            val sampleBounds = Rect()
-            node.getBoundsInScreen(sampleBounds)
-            boundsList.add(sampleBounds)
-        }
-
-        val finalBounds = boundsList.last()
-
-        if (isInSelectionArea(finalBounds)) {
-            val text = node.text?.toString() ?: node.contentDescription?.toString() ?: ""
-
-            if (text.isNotEmpty()) {
-                speakText(text)
-            }
+        val text = node.text?.toString() ?: node.contentDescription?.toString() ?: ""
+        if (text.isNotEmpty()) {
+            speakText(text)
         }
     }
 
-    private fun isInSelectionArea(bounds: Rect): Boolean {
-        return bounds.left <= selectionEndX && bounds.right > selectionStartX &&
-                bounds.top <= selectionEndY && bounds.bottom > selectionStartY
-    }
-
-    fun triggerRead(selectionRect: Rect) {
-        val root = getRootInActiveWindow() ?: return
-
-        val intersectingNodes = mutableListOf<AccessibilityNodeInfo>()
-        ScreenNodeReader.findIntersectingNodes(root, selectionRect, intersectingNodes)
-
-        val sortedNodes = BoundsSorter.sortNodesForReading(intersectingNodes)
-
-        val textNodes = mutableListOf<String>()
-        for (node in sortedNodes) {
-            val text = node.text?.toString() ?: node.contentDescription?.toString() ?: ""
-            if (text.isNotEmpty()) {
-                textNodes.add(text)
-            }
-        }
-
-        if (textNodes.isNotEmpty()) {
-            val combinedText = textNodes.joinToString(" ")
-            speakText(combinedText)
-        } else {
-            triggerOcrFallback(selectionRect)
-        }
-    }
-
-    /**
-     * Reads every text node currently visible on screen. Triggered by the floating button.
-     */
     private fun readWholeScreen() {
         val root = rootInActiveWindow
         if (root == null) {
@@ -279,7 +214,6 @@ class SpeakFastAccessibilityService : AccessibilityService() {
         )
     }
 
-    @Suppress("NewApi") // only reachable through the API 30+ screenshot path in triggerOcrFallback
     private fun handleScreenshot(result: AccessibilityService.ScreenshotResult, readingRect: Rect) {
         val softwareBitmap = result.toSoftwareBitmap() ?: return
 
@@ -288,12 +222,10 @@ class SpeakFastAccessibilityService : AccessibilityService() {
         } catch (e: Exception) {
             Log.e(TAG, "OCR fallback failed: ${e.message}", e)
         } finally {
-            // OcrFallback crops synchronously, so the software copy is no longer referenced here.
             softwareBitmap.recycle()
         }
     }
 
-    @Suppress("NewApi") // Bitmap.wrapHardwareBuffer is API 30+, guarded by the caller
     private fun AccessibilityService.ScreenshotResult.toSoftwareBitmap(): Bitmap? {
         val hardwareBitmap = Bitmap.wrapHardwareBuffer(hardwareBuffer, colorSpace)
         hardwareBuffer.close()
@@ -315,10 +247,6 @@ class SpeakFastAccessibilityService : AccessibilityService() {
 
     private fun speakText(text: String) {
         speechManager.speakText(text)
-    }
-
-    override fun onInterrupt() {
-        speechManager.shutdown()
     }
 
     override fun onDestroy() {

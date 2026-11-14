@@ -8,14 +8,14 @@ import android.provider.Settings
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -25,11 +25,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
-import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.compose.ui.platform.LocalContext
+import com.debk007.speakfast.presentation.App
+import com.debk007.speakfast.ui.FloatingTriggerService
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,7 +44,6 @@ class MainActivity : ComponentActivity() {
         val context = LocalContext.current
         var refreshTrigger by remember { mutableStateOf(false) }
 
-        // Observe lifecycle to refresh UI when returning from settings
         val lifecycleOwner = LocalLifecycleOwner.current
         DisposableEffect(lifecycleOwner) {
             val observer = LifecycleEventObserver { _, event ->
@@ -56,7 +57,6 @@ class MainActivity : ComponentActivity() {
             }
         }
 
-        // Re-read permissions on every refreshTrigger change
         val accessibilityEnabled = remember(refreshTrigger) {
             isAccessibilityServiceEnabled(context)
         }
@@ -68,35 +68,32 @@ class MainActivity : ComponentActivity() {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp),
-            verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(16.dp)
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // Accessibility Service status
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = androidx.compose.foundation.layout.Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text("Accessibility Service:", style = androidx.compose.material3.MaterialTheme.typography.bodyLarge)
+                Text("Accessibility Service:", style = MaterialTheme.typography.bodyLarge)
                 Text(
                     if (accessibilityEnabled) "Enabled" else "Disabled",
                     color = if (accessibilityEnabled) Color.Green else Color.Red,
-                    style = androidx.compose.material3.MaterialTheme.typography.bodyLarge
+                    style = MaterialTheme.typography.bodyLarge
                 )
             }
 
-            // Overlay permission status
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = androidx.compose.foundation.layout.Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text("Overlay Permission:", style = androidx.compose.material3.MaterialTheme.typography.bodyLarge)
+                Text("Overlay Permission:", style = MaterialTheme.typography.bodyLarge)
                 Text(
                     if (overlayGranted) "Granted" else "Not Granted",
                     color = if (overlayGranted) Color.Green else Color.Red,
-                    style = androidx.compose.material3.MaterialTheme.typography.bodyLarge
+                    style = MaterialTheme.typography.bodyLarge
                 )
             }
 
-            // Enable Accessibility Service button (only if disabled)
             if (!accessibilityEnabled) {
                 Button(
                     onClick = {
@@ -105,14 +102,13 @@ class MainActivity : ComponentActivity() {
                     },
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text("Enable Accessibility Service", style = androidx.compose.material3.MaterialTheme.typography.labelLarge)
+                    Text("Enable Accessibility Service", style = MaterialTheme.typography.labelLarge)
                 }
             }
 
-            // Start Floating Trigger button
             Button(
                 onClick = {
-                    if (Settings.canDrawOverlays(this)) {
+                    if (Settings.canDrawOverlays(context)) {
                         val serviceIntent = Intent(context, FloatingTriggerService::class.java)
                         context.startService(serviceIntent)
                         Toast.makeText(context, "Trigger Started", Toast.LENGTH_SHORT).show()
@@ -126,8 +122,10 @@ class MainActivity : ComponentActivity() {
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Start Floating Trigger", style = androidx.compose.material3.MaterialTheme.typography.labelLarge)
+                Text("Start Floating Trigger", style = MaterialTheme.typography.labelLarge)
             }
+
+            App()
         }
     }
 
