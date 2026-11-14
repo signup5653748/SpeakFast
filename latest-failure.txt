@@ -1,7 +1,7 @@
-=== FAILURE LOG FOR RUN: 43615210446 ===
+=== FAILURE LOG FOR RUN: 43615198076 ===
 === FAILED JOB: Build Signed Release APK ===
-=== DATE: Sat Nov 14 16:22:56 UTC 2026 ===
+=== DATE: Sat Nov 14 16:22:58 UTC 2026 ===
 === UNIVERSAL ERROR BLOCK (Kotlin, AAPT, XML, Gradle) ===
 
-2026-11-14T16:22:34.4511345Z   echo "::error::KEYSTORE_BASE64 secret is not set."
-2026-11-14T16:22:34.4514636Z   echo "::error::Could not read any alias from the keystore. Check that KEYSTORE_PASSWORD is correct."
+2026-11-14T16:22:26.7899338Z   echo "::error::KEYSTORE_BASE64 secret is not set."
+2026-11-14T16:22:26.7903077Z   echo "::error::Could not read any alias from the keystore. Check that KEYSTORE_PASSWORD is correct."
