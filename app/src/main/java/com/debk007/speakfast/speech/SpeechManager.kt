@@ -3,14 +3,17 @@ package com.debk007.speakfast.speech
 import android.content.Context
 import android.speech.tts.TextToSpeech
 import android.speech.tts.UtteranceProgressListener
+import android.speech.tts.Voice
 import android.util.Log
 import com.debk007.speakfast.data.SettingsManager
-import com.debk007.speakfast.model.Language
 import com.debk007.speakfast.model.Settings
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.util.Locale
 import javax.inject.Inject
@@ -26,6 +29,9 @@ class SpeechManager @Inject constructor(
     private var isPlaying = false
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
+    private val _localesState = MutableStateFlow<List<Locale>>(emptyList())
+    val localesState: StateFlow<List<Locale>> = _localesState.asStateFlow()
+
     init {
         scope.launch {
             settingsManager.settingsFlow.collect { if (isInitialized) updateSpeechSettings() }
@@ -36,8 +42,11 @@ class SpeechManager @Inject constructor(
         if (isInitialized) return
         textToSpeech = TextToSpeech(context) { status ->
             if (status == TextToSpeech.SUCCESS) {
-                updateSpeechSettings()
                 isInitialized = true
+                _localesState.value = (textToSpeech?.availableLanguages ?: emptyList())
+                    .distinctBy { it.toLanguageTag() }
+                    .sortedBy { it.displayLanguage }
+                updateSpeechSettings()
                 textToSpeech?.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
                     override fun onStart(utteranceId: String?) {}
                     override fun onDone(utteranceId: String?) {
@@ -54,6 +63,15 @@ class SpeechManager @Inject constructor(
             }
         }
     }
+
+    fun voicesFor(locale: Locale): List<Voice> =
+        (textToSpeech?.voices ?: emptySet())
+            .filter { it.locale.toLanguageTag() == locale.toLanguageTag() }
+            .sortedBy { it.name }
+
+    fun isOnline(voice: Voice): Boolean = runCatching {
+        voice.isNetworkVoiceRequired || (voice.features?.contains("networkTts") == true)
+    }.getOrDefault(false)
 
     fun speakScreen(text: String) {
         if (!isInitialized) { initialize(); return }
@@ -80,29 +98,19 @@ class SpeechManager @Inject constructor(
     fun refreshSettings() { if (isInitialized) updateSpeechSettings() }
 
     private fun updateSpeechSettings() {
-        val settings = settingsManager.getSettings()
-        val locale = Locale(Language.fromCode(settings.languageCode).localeCode)
-        when (textToSpeech?.setLanguage(locale)) {
-            TextToSpeech.LANG_MISSING_DATA, TextToSpeech.LANG_NOT_SUPPORTED -> textToSpeech?.setLanguage(Locale.US)
-            else -> {}
-        }
-        applyVoiceVariant(settings)
-    }
-
-    private fun applyVoiceVariant(settings: Settings) {
         val tts = textToSpeech ?: return
-        val lang = Locale(Language.fromCode(settings.languageCode).localeCode).language
-        val localeVoices = tts.voices?.filter { it.locale.language == lang } ?: emptyList()
-        val picked = when (settings.voice) {
-            "male" -> localeVoices.firstOrNull { it.name.contains("male", true) || it.name.contains("man", true) }
-            "female" -> localeVoices.firstOrNull { it.name.contains("female", true) || it.name.contains("woman", true) }
-            else -> null
-        } ?: tts.defaultVoice ?: localeVoices.firstOrNull()
-        picked?.let { runCatching { tts.voice = it } }
-        val pitchMul = when (settings.voice) { "child" -> 1.4f; "elder" -> 0.85f; else -> 1.0f }
-        val rateMul = when (settings.voice) { "child" -> 1.05f; "elder" -> 0.9f; else -> 1.0f }
-        tts.setPitch(settings.pitch * pitchMul)
-        tts.setSpeechRate(settings.speechRate * rateMul)
+        val settings = settingsManager.getSettings()
+        val locale = Locale.forLanguageTag(settings.languageCode)
+        val result = tts.setLanguage(locale)
+        if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+            tts.setLanguage(Locale.US)
+        }
+        val saved = tts.voices?.firstOrNull { it.name == settings.voice }
+        val fallback = voicesFor(locale).firstOrNull { !isOnline(it) } ?: voicesFor(locale).firstOrNull() ?: tts.defaultVoice
+        val target = if (saved != null && saved.locale.toLanguageTag() == locale.toLanguageTag()) saved else fallback
+        target?.let { runCatching { tts.voice = it } }
+        tts.setSpeechRate(settings.speechRate)
+        tts.setPitch(settings.pitch)
     }
 
     fun shutdown() { stop(); textToSpeech?.shutdown(); textToSpeech = null; isInitialized = false }

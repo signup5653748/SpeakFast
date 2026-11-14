@@ -1,134 +1,81 @@
 package com.debk007.speakfast.presentation.viewmodel
 
+import android.speech.tts.Voice
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.debk007.speakfast.data.SettingsManager
 import com.debk007.speakfast.model.Settings
 import com.debk007.speakfast.model.TriggerMethod
+import com.debk007.speakfast.speech.SpeechManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-data class SettingsUiState(
-    val isLoading: Boolean = false,
-    val settings: Settings? = null,
-    val errorMessage: String? = null
-)
-
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    private val settingsManager: SettingsManager
+    private val settingsManager: SettingsManager,
+    private val speechManager: SpeechManager
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(SettingsUiState())
-    val uiState: StateFlow<SettingsUiState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(UiState())
+    val uiState = _uiState
 
     init {
-        loadSettings()
-    }
-
-    private fun loadSettings() {
         viewModelScope.launch {
-            _uiState.value = _uiState.value.copy(isLoading = true)
-            settingsManager.settingsFlow.collect { settings ->
-                _uiState.value = _uiState.value.copy(
-                    isLoading = false,
-                    settings = settings,
-                    errorMessage = null
-                )
-            }
+            settingsManager.settingsFlow
+                .distinctUntilChanged()
+                .collect { settings ->
+                    _uiState.update { it.copy(settings = settings) }
+                }
+        }
+        viewModelScope.launch {
+            speechManager.localesState
+                .distinctUntilChanged()
+                .collect { locales ->
+                    _uiState.update { it.copy(availableLocales = locales) }
+                }
         }
     }
 
     fun updateLanguage(languageCode: String) {
-        viewModelScope.launch {
-            _uiState.value = _uiState.value.copy(isLoading = true, errorMessage = null)
-            when (val result = settingsManager.updateLanguage(languageCode)) {
-                is SettingsManager.SettingsResult.Success -> {
-                    _uiState.value = _uiState.value.copy(isLoading = false)
-                }
-                is SettingsManager.SettingsResult.Error -> {
-                    _uiState.value = _uiState.value.copy(
-                        isLoading = false,
-                        errorMessage = result.message
-                    )
-                }
-            }
-        }
+        val current = _uiState.value.settings ?: return
+        settingsManager.updateSettings(current.copy(languageCode = languageCode))
     }
 
-    fun updateVoice(voice: String) {
-        viewModelScope.launch {
-            _uiState.value = _uiState.value.copy(isLoading = true, errorMessage = null)
-            when (val result = settingsManager.updateVoice(voice)) {
-                is SettingsManager.SettingsResult.Success -> {
-                    _uiState.value = _uiState.value.copy(isLoading = false)
-                }
-                is SettingsManager.SettingsResult.Error -> {
-                    _uiState.value = _uiState.value.copy(
-                        isLoading = false,
-                        errorMessage = result.message
-                    )
-                }
-            }
-        }
+    fun updateVoice(voiceName: String) {
+        val current = _uiState.value.settings ?: return
+        settingsManager.updateSettings(current.copy(voice = voiceName))
     }
 
     fun updateSpeechRate(rate: Float) {
-        viewModelScope.launch {
-            _uiState.value = _uiState.value.copy(isLoading = true, errorMessage = null)
-            when (val result = settingsManager.updateSpeechRate(rate)) {
-                is SettingsManager.SettingsResult.Success -> {
-                    _uiState.value = _uiState.value.copy(isLoading = false)
-                }
-                is SettingsManager.SettingsResult.Error -> {
-                    _uiState.value = _uiState.value.copy(
-                        isLoading = false,
-                        errorMessage = result.message
-                    )
-                }
-            }
-        }
+        val current = _uiState.value.settings ?: return
+        settingsManager.updateSettings(current.copy(speechRate = rate))
     }
 
     fun updatePitch(pitch: Float) {
-        viewModelScope.launch {
-            _uiState.value = _uiState.value.copy(isLoading = true, errorMessage = null)
-            when (val result = settingsManager.updatePitch(pitch)) {
-                is SettingsManager.SettingsResult.Success -> {
-                    _uiState.value = _uiState.value.copy(isLoading = false)
-                }
-                is SettingsManager.SettingsResult.Error -> {
-                    _uiState.value = _uiState.value.copy(
-                        isLoading = false,
-                        errorMessage = result.message
-                    )
-                }
-            }
-        }
+        val current = _uiState.value.settings ?: return
+        settingsManager.updateSettings(current.copy(pitch = pitch))
     }
 
-    fun updateTriggerMethod(triggerMethod: TriggerMethod) {
-        viewModelScope.launch {
-            _uiState.value = _uiState.value.copy(isLoading = true, errorMessage = null)
-            when (val result = settingsManager.updateTriggerMethod(triggerMethod)) {
-                is SettingsManager.SettingsResult.Success -> {
-                    _uiState.value = _uiState.value.copy(isLoading = false)
-                }
-                is SettingsManager.SettingsResult.Error -> {
-                    _uiState.value = _uiState.value.copy(
-                        isLoading = false,
-                        errorMessage = result.message
-                    )
-                }
-            }
-        }
+    fun updateTriggerMethod(method: TriggerMethod) {
+        val current = _uiState.value.settings ?: return
+        settingsManager.updateSettings(current.copy(triggerMethod = method))
     }
 
-    fun clearError() {
-        _uiState.value = _uiState.value.copy(errorMessage = null)
+    fun voicesForSelectedLocale(): List<Voice> {
+        val localeCode = _uiState.value.settings?.languageCode ?: "en-US"
+        val locale = java.util.Locale.forLanguageTag(localeCode)
+        return speechManager.voicesFor(locale)
     }
+
+    fun isOnlineVoice(voice: Voice): Boolean = speechManager.isOnline(voice)
+
+    data class UiState(
+        val settings: Settings? = null,
+        val availableLocales: List<java.util.Locale> = emptyList()
+    )
 }
