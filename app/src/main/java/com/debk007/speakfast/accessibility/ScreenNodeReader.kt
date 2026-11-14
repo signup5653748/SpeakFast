@@ -10,7 +10,9 @@ object ScreenNodeReader {
         selectionBounds: Rect,
         intersectingNodes: MutableList<AccessibilityNodeInfo>
     ) {
-        if (root.boundsInScreen.intersectsWith(selectionBounds)) {
+        val rect = android.graphics.Rect()
+        root.getBoundsInScreen(rect)
+        if (rect.intersectsWith(selectionBounds)) {
             intersectingNodes.add(root)
         }
 
@@ -29,7 +31,9 @@ object ScreenNodeReader {
         selectionBounds: Rect,
         result: MutableList<String>
     ) {
-        if (root.boundsInScreen.intersectsWith(selectionBounds)) {
+        val rect = android.graphics.Rect()
+        root.getBoundsInScreen(rect)
+        if (rect.intersectsWith(selectionBounds)) {
             val text = root.text?.toString() ?: root.contentDescription?.toString() ?: ""
             if (text.isNotEmpty()) {
                 result.add(text)

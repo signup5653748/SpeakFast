@@ -22,7 +22,7 @@ object OcrFallback {
 
         val recognizer: TextRecognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
 
-        recognizer.processImage(croppedBitmap)
+        recognizer.process(croppedBitmap)
             .addOnSuccessListener { visionText ->
                 val recognizedText = visionText.text
                 listener.onTextRecognized(recognizedText)

@@ -38,7 +38,7 @@ enum class Language(
 
 @Serializable
 enum class Voice(
-    val name: String,
+    val voiceId: String,
     val displayName: String
 ) {
     DEFAULT("default", "Default"),

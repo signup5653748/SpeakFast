@@ -66,7 +66,7 @@ class SpeakFastAccessibilityService : AccessibilityService() {
     override fun onServiceConnected() {
         super.onServiceConnected()
         val info = AccessibilityServiceInfo().apply {
-            this.flags = AccessibilityServiceInfo.FLAG_REQUEST_TOUCH_EXPLORATION_GESTURE
+            this.flags = AccessibilityServiceInfo.FLAG_RETRIEVE_INTERACTIVE_WINDOWS
             this.eventTypes = AccessibilityEvent.TYPE_VIEW_FOCUSED or
                     AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED or
                     AccessibilityEvent.TYPE_VIEW_CLICKED or
@@ -98,7 +98,7 @@ class SpeakFastAccessibilityService : AccessibilityService() {
             AccessibilityEvent.TYPE_VIEW_SELECTED -> {
                 handleViewSelected(event)
             }
-            AccessibilityEvent.TYPE_TEXT_CHANGED -> {
+            AccessibilityEvent.TYPE_VIEW_TEXT_CHANGED -> {
                 handleTextChanged(event)
             }
             AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> {
@@ -315,6 +315,10 @@ class SpeakFastAccessibilityService : AccessibilityService() {
 
     private fun speakText(text: String) {
         speechManager.speakText(text)
+    }
+
+    override fun onInterrupt() {
+        speechManager.shutdown()
     }
 
     override fun onDestroy() {

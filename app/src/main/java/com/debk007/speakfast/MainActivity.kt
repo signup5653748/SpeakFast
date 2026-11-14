@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
@@ -28,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.platform.LocalContext
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,6 +39,7 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     private fun MainScreen() {
+        val context = LocalContext.current
         var refreshTrigger by remember { mutableStateOf(false) }
 
         // Observe lifecycle to refresh UI when returning from settings
@@ -55,10 +58,10 @@ class MainActivity : ComponentActivity() {
 
         // Re-read permissions on every refreshTrigger change
         val accessibilityEnabled = remember(refreshTrigger) {
-            isAccessibilityServiceEnabled(this)
+            isAccessibilityServiceEnabled(context)
         }
         val overlayGranted = remember(refreshTrigger) {
-            Settings.canDrawOverlays(this)
+            Settings.canDrawOverlays(context)
         }
 
         Column(
@@ -98,7 +101,7 @@ class MainActivity : ComponentActivity() {
                 Button(
                     onClick = {
                         val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
-                        startActivity(intent)
+                        context.startActivity(intent)
                     },
                     modifier = Modifier.fillMaxWidth()
                 ) {
@@ -110,15 +113,15 @@ class MainActivity : ComponentActivity() {
             Button(
                 onClick = {
                     if (Settings.canDrawOverlays(this)) {
-                        val serviceIntent = Intent(this, FloatingTriggerService::class.java)
-                        startService(serviceIntent)
-                        Toast.makeText(this, "Trigger Started", Toast.LENGTH_SHORT).show()
+                        val serviceIntent = Intent(context, FloatingTriggerService::class.java)
+                        context.startService(serviceIntent)
+                        Toast.makeText(context, "Trigger Started", Toast.LENGTH_SHORT).show()
                     } else {
                         val overlayPermissionIntent = Intent(
                             Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                            Uri.parse("package:$packageName")
+                            Uri.parse("package:${context.packageName}")
                         )
-                        startActivity(overlayPermissionIntent)
+                        context.startActivity(overlayPermissionIntent)
                     }
                 },
                 modifier = Modifier.fillMaxWidth()
