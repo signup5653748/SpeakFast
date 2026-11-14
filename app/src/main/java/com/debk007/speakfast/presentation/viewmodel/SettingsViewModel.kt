@@ -75,6 +75,10 @@ class SettingsViewModel @Inject constructor(
         viewModelScope.launch { settingsManager.updateOcrEnabled(enabled) }
     }
 
+    fun updateReadExactSelection(enabled: Boolean) {
+        viewModelScope.launch { settingsManager.updateReadExactSelection(enabled) }
+    }
+
     fun updateTriggerMethod(triggerMethod: TriggerMethod) {
         viewModelScope.launch { settingsManager.updateTriggerMethod(triggerMethod) }
     }

@@ -101,11 +101,15 @@ class SpeakFastAccessibilityService : AccessibilityService() {
 
     private fun readRect(rect: Rect) {
         val root = rootInActiveWindow ?: return
+        val precise = settingsManager.getSettings().readExactSelection
         val nodes = mutableListOf<AccessibilityNodeInfo>()
         try {
             ScreenNodeReader.findIntersectingNodes(root, rect, nodes)
             val sorted = BoundsSorter.sortNodesForReading(nodes)
-            val texts = sorted.mapNotNull { it.text?.toString() ?: it.contentDescription?.toString() }.filter { it.isNotBlank() }
+            val texts = sorted.mapNotNull { node ->
+                val t = PreciseTextExtractor.extract(node, rect, precise)
+                t.ifBlank { null }
+            }
             if (texts.isEmpty()) triggerOcrFallback(rect)
             else speechManager.speakScreen(texts.joinToString(" "))
         } finally {

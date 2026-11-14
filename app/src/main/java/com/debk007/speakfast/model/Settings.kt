@@ -9,6 +9,7 @@ data class Settings(
     val speechRate: Float = 1.0f,
     val pitch: Float = 1.0f,
     val ocrEnabled: Boolean = false,
+    val readExactSelection: Boolean = true,
     val triggerMethod: TriggerMethod = TriggerMethod.QUICK_SETTINGS_TILE
 )
 

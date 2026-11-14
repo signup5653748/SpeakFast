@@ -89,6 +89,18 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
+            Text("Read exact selection", style = MaterialTheme.typography.bodyLarge)
+            Switch(
+                checked = settings?.readExactSelection ?: true,
+                onCheckedChange = { viewModel.updateReadExactSelection(it) }
+            )
+        }
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Text("OCR Mode (read images)", style = MaterialTheme.typography.bodyLarge)
             Switch(
                 checked = settings?.ocrEnabled ?: false,

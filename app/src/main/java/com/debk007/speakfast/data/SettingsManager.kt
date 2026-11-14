@@ -1,7 +1,6 @@
 package com.debk007.speakfast.data
 
 import android.content.Context
-import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
@@ -27,6 +26,7 @@ class SettingsManager(private val context: Context) {
         val SPEECH_RATE_KEY = floatPreferencesKey("speech_rate")
         val PITCH_KEY = floatPreferencesKey("pitch")
         val OCR_ENABLED_KEY = booleanPreferencesKey("ocr_enabled")
+        val READ_EXACT_SELECTION_KEY = booleanPreferencesKey("read_exact_selection")
         val TRIGGER_METHOD_KEY = stringPreferencesKey("trigger_method")
     }
 
@@ -41,6 +41,7 @@ class SettingsManager(private val context: Context) {
             speechRate = this[SPEECH_RATE_KEY] ?: 1.0f,
             pitch = this[PITCH_KEY] ?: 1.0f,
             ocrEnabled = this[OCR_ENABLED_KEY] ?: false,
+            readExactSelection = this[READ_EXACT_SELECTION_KEY] ?: true,
             triggerMethod = TriggerMethod.fromString(this[TRIGGER_METHOD_KEY] ?: "quick_settings_tile")
         )
     }
@@ -67,6 +68,11 @@ class SettingsManager(private val context: Context) {
 
     suspend fun updateOcrEnabled(enabled: Boolean): Settings {
         context.dataStore.edit { it[OCR_ENABLED_KEY] = enabled }
+        return getSettings()
+    }
+
+    suspend fun updateReadExactSelection(enabled: Boolean): Settings {
+        context.dataStore.edit { it[READ_EXACT_SELECTION_KEY] = enabled }
         return getSettings()
     }
 
