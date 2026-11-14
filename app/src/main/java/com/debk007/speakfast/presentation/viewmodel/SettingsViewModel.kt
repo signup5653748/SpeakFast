@@ -9,11 +9,17 @@ import com.debk007.speakfast.model.TriggerMethod
 import com.debk007.speakfast.speech.SpeechManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.util.Locale
 import javax.inject.Inject
+
+data class SettingsUiState(
+    val isLoading: Boolean = false,
+    val settings: Settings? = null,
+    val errorMessage: String? = null
+)
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
@@ -21,61 +27,57 @@ class SettingsViewModel @Inject constructor(
     private val speechManager: SpeechManager
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(UiState())
-    val uiState = _uiState
+    private val _uiState = MutableStateFlow(SettingsUiState())
+    val uiState: StateFlow<SettingsUiState> = _uiState.asStateFlow()
 
-    init {
+    val ttsLocales: StateFlow<List<Locale>> = speechManager.localesState
+
+    init { loadSettings() }
+
+    private fun loadSettings() {
         viewModelScope.launch {
-            settingsManager.settingsFlow
-                .distinctUntilChanged()
-                .collect { settings ->
-                    _uiState.update { it.copy(settings = settings) }
-                }
-        }
-        viewModelScope.launch {
-            speechManager.localesState
-                .distinctUntilChanged()
-                .collect { locales ->
-                    _uiState.update { it.copy(availableLocales = locales) }
-                }
+            settingsManager.settingsFlow.collect { settings ->
+                _uiState.value = _uiState.value.copy(isLoading = false, settings = settings, errorMessage = null)
+            }
         }
     }
 
-    fun updateLanguage(languageCode: String) {
-        val current = _uiState.value.settings ?: return
-        settingsManager.updateSettings(current.copy(languageCode = languageCode))
+    fun voicesFor(locale: Locale): List<Voice> = speechManager.voicesFor(locale)
+    fun isOnline(voice: Voice): Boolean = speechManager.isOnline(voice)
+
+    fun updateLanguage(tag: String) {
+        viewModelScope.launch {
+            settingsManager.updateLanguage(tag)
+            val locale = Locale.forLanguageTag(tag)
+            val preferred = speechManager.voicesFor(locale).firstOrNull { !speechManager.isOnline(it) }
+                ?: speechManager.voicesFor(locale).firstOrNull()
+            preferred?.let { settingsManager.updateVoice(it.name) }
+            speechManager.refreshSettings()
+        }
     }
 
-    fun updateVoice(voiceName: String) {
-        val current = _uiState.value.settings ?: return
-        settingsManager.updateSettings(current.copy(voice = voiceName))
+    fun updateVoice(name: String) {
+        viewModelScope.launch {
+            settingsManager.updateVoice(name)
+            speechManager.refreshSettings()
+        }
     }
 
     fun updateSpeechRate(rate: Float) {
-        val current = _uiState.value.settings ?: return
-        settingsManager.updateSettings(current.copy(speechRate = rate))
+        viewModelScope.launch { settingsManager.updateSpeechRate(rate); speechManager.refreshSettings() }
     }
 
     fun updatePitch(pitch: Float) {
-        val current = _uiState.value.settings ?: return
-        settingsManager.updateSettings(current.copy(pitch = pitch))
+        viewModelScope.launch { settingsManager.updatePitch(pitch); speechManager.refreshSettings() }
     }
 
-    fun updateTriggerMethod(method: TriggerMethod) {
-        val current = _uiState.value.settings ?: return
-        settingsManager.updateSettings(current.copy(triggerMethod = method))
+    fun updateOcrEnabled(enabled: Boolean) {
+        viewModelScope.launch { settingsManager.updateOcrEnabled(enabled) }
     }
 
-    fun voicesForSelectedLocale(): List<Voice> {
-        val localeCode = _uiState.value.settings?.languageCode ?: "en-US"
-        val locale = java.util.Locale.forLanguageTag(localeCode)
-        return speechManager.voicesFor(locale)
+    fun updateTriggerMethod(triggerMethod: TriggerMethod) {
+        viewModelScope.launch { settingsManager.updateTriggerMethod(triggerMethod) }
     }
 
-    fun isOnlineVoice(voice: Voice): Boolean = speechManager.isOnline(voice)
-
-    data class UiState(
-        val settings: Settings? = null,
-        val availableLocales: List<java.util.Locale> = emptyList()
-    )
+    fun clearError() { _uiState.value = _uiState.value.copy(errorMessage = null) }
 }

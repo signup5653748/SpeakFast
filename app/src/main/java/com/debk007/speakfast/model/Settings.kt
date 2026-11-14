@@ -8,6 +8,7 @@ data class Settings(
     val voice: String = "",
     val speechRate: Float = 1.0f,
     val pitch: Float = 1.0f,
+    val ocrEnabled: Boolean = false,
     val triggerMethod: TriggerMethod = TriggerMethod.QUICK_SETTINGS_TILE
 )
 

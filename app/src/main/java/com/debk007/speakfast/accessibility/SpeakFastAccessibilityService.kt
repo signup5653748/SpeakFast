@@ -15,6 +15,7 @@ import android.util.Log
 import android.view.Display
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
+import com.debk007.speakfast.data.SettingsManager
 import com.debk007.speakfast.speech.SpeechManager
 import com.debk007.speakfast.ui.FloatingTriggerService
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,6 +26,7 @@ import javax.inject.Inject
 class SpeakFastAccessibilityService : AccessibilityService() {
 
     @Inject lateinit var speechManager: SpeechManager
+    @Inject lateinit var settingsManager: SettingsManager
     private val mainHandler = Handler(Looper.getMainLooper())
 
     private val commandReceiver = object : BroadcastReceiver() {
@@ -118,6 +120,10 @@ class SpeakFastAccessibilityService : AccessibilityService() {
     }
 
     private fun triggerOcrFallback(rect: Rect) {
+        if (!settingsManager.getSettings().ocrEnabled) {
+            Log.w(TAG, "OCR mode is disabled by user, skipping OCR fallback")
+            return
+        }
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) return
         val info = serviceInfo ?: return
         if ((info.capabilities and AccessibilityServiceInfo.CAPABILITY_CAN_TAKE_SCREENSHOT) == 0) return
