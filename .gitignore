@@ -13,6 +13,3 @@
 .externalNativeBuild
 .cxx
 local.properties
-
-# GitHub Actions workflows
-.github/workflows/

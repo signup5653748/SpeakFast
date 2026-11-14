@@ -1,0 +1,70 @@
+name: Build Debug APK
+
+on:
+  push:
+    branches: [ main, master, devel ]
+  pull_request:
+    branches: [ main, master, devel ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build Debug APK
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'gradle'
+
+      - name: Generate Debug Keystore (if missing)
+        run: |
+          mkdir -p keystore
+          if [ ! -f keystore/debug.keystore ]; then
+            echo "Generating debug keystore..."
+            keytool -genkeypair -v \
+              -keystore keystore/debug.keystore \
+              -alias androiddebugkey \
+              -keyalg RSA \
+              -keysize 2048 \
+              -validity 10000 \
+              -storepass android \
+              -keypass android \
+              -dname "CN=Android Debug,O=Android,C=US" \
+              -noprompt
+            echo "Debug keystore generated at keystore/debug.keystore"
+          else
+            echo "Debug keystore already exists"
+          fi
+
+      - name: Grant execute permission to gradlew
+        run: chmod +x gradlew
+
+      - name: Build Debug APK
+        run: ./gradlew assembleDebug --no-daemon --stacktrace
+
+      - name: Locate Debug APK
+        run: |
+          mkdir -p build-artifacts
+          FOUND=$(find . -path "*/build/outputs/apk/debug/*.apk" -not -path "*/build-artifacts/*" | head -1)
+          if [ -z "$FOUND" ]; then
+            echo "No debug APK found. Check the build log above."
+            exit 1
+          fi
+          REPO_NAME="${{ github.event.repository.name }}"
+          cp "$FOUND" "./build-artifacts/${REPO_NAME}-debug.apk"
+          echo "APK copied to build-artifacts/${REPO_NAME}-debug.apk"
+
+      - name: Upload Debug APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: SpeakFast-Debug-APK
+          path: build-artifacts/*.apk
+          retention-days: 30
