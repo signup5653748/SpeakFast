@@ -2,6 +2,7 @@ package com.debk007.speakfast.speech
 
 import android.content.Context
 import android.speech.tts.TextToSpeech
+import android.speech.tts.UtteranceProgressListener
 import android.util.Log
 import com.debk007.speakfast.data.SettingsManager
 import com.debk007.speakfast.model.Language
@@ -15,6 +16,9 @@ class SpeechManager @Inject constructor(
 ) {
     private var textToSpeech: TextToSpeech? = null
     private var isInitialized = false
+    private val sentences = mutableListOf<String>()
+    private var currentIndex = 0
+    private var isPlaying = false
 
     fun initialize() {
         if (isInitialized) return
@@ -22,21 +26,45 @@ class SpeechManager @Inject constructor(
             if (status == TextToSpeech.SUCCESS) {
                 updateSpeechSettings()
                 isInitialized = true
+                textToSpeech?.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
+                    override fun onStart(utteranceId: String?) {}
+                    override fun onDone(utteranceId: String?) {
+                        if (isPlaying) {
+                            currentIndex++
+                            if (currentIndex < sentences.size) speakCurrent() else isPlaying = false
+                        }
+                    }
+                    @Deprecated("Deprecated in Java")
+                    override fun onError(utteranceId: String?) { isPlaying = false }
+                })
             } else {
                 Log.e("SpeakFast", "TTS init failed: $status")
             }
         }
     }
 
-    fun speakText(text: String) {
-        if (!isInitialized || textToSpeech == null) { initialize(); return }
-        if (text.isBlank()) return
-        textToSpeech?.speak(text, TextToSpeech.QUEUE_ADD, null, "SpeakFastUtterance")
+    fun speakScreen(text: String) {
+        if (!isInitialized) { initialize(); return }
+        sentences.clear()
+        sentences.addAll(text.split(Regex("(?<=[.!?\\n])")).map { it.trim() }.filter { it.isNotEmpty() })
+        if (sentences.isEmpty()) sentences.add(text)
+        currentIndex = 0
+        isPlaying = true
+        speakCurrent()
     }
 
-    fun stop() {
-        textToSpeech?.stop()
+    fun speakText(text: String) = speakScreen(text)
+
+    private fun speakCurrent() {
+        if (currentIndex !in sentences.indices) { isPlaying = false; return }
+        textToSpeech?.speak(sentences[currentIndex], TextToSpeech.QUEUE_FLUSH, null, "sf_$currentIndex")
     }
+
+    fun pause() { isPlaying = false; textToSpeech?.stop() }
+    fun resume() { if (sentences.isNotEmpty()) { isPlaying = true; speakCurrent() } }
+    fun rewind() { if (sentences.isNotEmpty()) { currentIndex = (currentIndex - 1).coerceAtLeast(0); isPlaying = true; speakCurrent() } }
+    fun forward() { if (sentences.isNotEmpty()) { currentIndex = (currentIndex + 1).coerceAtMost(sentences.size - 1); isPlaying = true; speakCurrent() } }
+    fun stop() { isPlaying = false; sentences.clear(); currentIndex = 0; textToSpeech?.stop() }
 
     private fun updateSpeechSettings() {
         val settings = settingsManager.getSettings()
@@ -49,10 +77,5 @@ class SpeechManager @Inject constructor(
         textToSpeech?.setPitch(settings.pitch)
     }
 
-    fun shutdown() {
-        textToSpeech?.stop()
-        textToSpeech?.shutdown()
-        textToSpeech = null
-        isInitialized = false
-    }
+    fun shutdown() { stop(); textToSpeech?.shutdown(); textToSpeech = null; isInitialized = false }
 }

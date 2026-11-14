@@ -31,13 +31,24 @@ class SpeakFastAccessibilityService : AccessibilityService() {
         override fun onReceive(context: Context, intent: Intent) {
             when (intent.action) {
                 FloatingTriggerService.ACTION_READ -> readWholeScreen()
+                FloatingTriggerService.ACTION_READ_RECT -> {
+                    val r = Rect(
+                        intent.getIntExtra("left", 0), intent.getIntExtra("top", 0),
+                        intent.getIntExtra("right", 0), intent.getIntExtra("bottom", 0)
+                    )
+                    readRect(r)
+                }
+                FloatingTriggerService.ACTION_PAUSE -> speechManager.pause()
+                FloatingTriggerService.ACTION_RESUME -> speechManager.resume()
+                FloatingTriggerService.ACTION_REWIND -> speechManager.rewind()
+                FloatingTriggerService.ACTION_FORWARD -> speechManager.forward()
                 FloatingTriggerService.ACTION_STOP -> speechManager.stop()
             }
         }
     }
 
     private val ocrListener = object : OcrFallback.OnTextRecognizedListener {
-        override fun onTextRecognized(text: String) { if (text.isNotBlank()) speechManager.speakText(text) }
+        override fun onTextRecognized(text: String) { if (text.isNotBlank()) speechManager.speakScreen(text) }
         override fun onError(error: Exception) { Log.e(TAG, "OCR failed", error) }
     }
 
@@ -53,6 +64,11 @@ class SpeakFastAccessibilityService : AccessibilityService() {
         speechManager.initialize()
         val filter = IntentFilter().apply {
             addAction(FloatingTriggerService.ACTION_READ)
+            addAction(FloatingTriggerService.ACTION_READ_RECT)
+            addAction(FloatingTriggerService.ACTION_PAUSE)
+            addAction(FloatingTriggerService.ACTION_RESUME)
+            addAction(FloatingTriggerService.ACTION_REWIND)
+            addAction(FloatingTriggerService.ACTION_FORWARD)
             addAction(FloatingTriggerService.ACTION_STOP)
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -74,7 +90,22 @@ class SpeakFastAccessibilityService : AccessibilityService() {
             val sorted = BoundsSorter.sortNodesForReading(nodes)
             val texts = sorted.mapNotNull { it.text?.toString() ?: it.contentDescription?.toString() }.filter { it.isNotBlank() }
             if (texts.isEmpty()) triggerOcrFallback(screenRect())
-            else speechManager.speakText(texts.joinToString(" "))
+            else speechManager.speakScreen(texts.joinToString(" "))
+        } finally {
+            nodes.forEach { it.recycle() }
+            if (nodes.none { it === root }) root.recycle()
+        }
+    }
+
+    private fun readRect(rect: Rect) {
+        val root = rootInActiveWindow ?: return
+        val nodes = mutableListOf<AccessibilityNodeInfo>()
+        try {
+            ScreenNodeReader.findIntersectingNodes(root, rect, nodes)
+            val sorted = BoundsSorter.sortNodesForReading(nodes)
+            val texts = sorted.mapNotNull { it.text?.toString() ?: it.contentDescription?.toString() }.filter { it.isNotBlank() }
+            if (texts.isEmpty()) triggerOcrFallback(rect)
+            else speechManager.speakScreen(texts.joinToString(" "))
         } finally {
             nodes.forEach { it.recycle() }
             if (nodes.none { it === root }) root.recycle()
