@@ -1,39 +1,39 @@
-=== FAILURE LOG FOR RUN: 43596038523 ===
+=== FAILURE LOG FOR RUN: 43596054327 ===
 === FAILED JOB: Build Signed Release APK ===
-=== DATE: Sat Nov 14 12:42:19 UTC 2026 ===
+=== DATE: Sat Nov 14 12:42:30 UTC 2026 ===
 === UNIVERSAL ERROR BLOCK (Kotlin, AAPT, XML, Gradle) ===
 
-2026-11-14T12:41:47.5008378Z   echo "::error::KEYSTORE_BASE64 secret is not set."
-2026-11-14T12:41:47.5028700Z   echo "::error::Could not read any alias from the keystore. Check that KEYSTORE_PASSWORD is correct."
-2026-11-14T12:42:03.4294313Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:40:41: Unresolved reference 'util' on receiver of type 'BaseAppModuleExtension'.
-2026-11-14T12:42:03.4304939Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:40:84: Unresolved reference 'util' on receiver of type 'BaseAppModuleExtension'.
-2026-11-14T12:42:03.5272288Z FAILURE: Build failed with an exception.
-2026-11-14T12:42:03.5272973Z 
-2026-11-14T12:42:03.5273157Z * Where:
-2026-11-14T12:42:03.5273864Z Build file '/home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts' line: 40
-2026-11-14T12:42:03.5274527Z 
-2026-11-14T12:42:03.5274715Z * What went wrong:
-2026-11-14T12:42:03.5275184Z Script compilation errors:
-2026-11-14T12:42:03.5275775Z 
-2026-11-14T12:42:03.5275785Z 
-2026-11-14T12:42:03.5283967Z [Incubating] Problems report is available at: file:///home/runner/work/SpeakFast/SpeakFast/build/reports/problems/problems-report.html
-2026-11-14T12:42:03.5338508Z   Line 40:             val keystoreBytes = android.util.Base64.decode(keystoreBase64, android.util.Base64.NO_WRAP)
-2026-11-14T12:42:03.5373579Z                                                    ^ Unresolved reference 'util' on receiver of type 'BaseAppModuleExtension'.
-2026-11-14T12:42:03.5399057Z 
-2026-11-14T12:42:03.5420503Z   Line 40:             val keystoreBytes = android.util.Base64.decode(keystoreBase64, android.util.Base64.NO_WRAP)
-2026-11-14T12:42:03.5451151Z                                                                                               ^ Unresolved reference 'util' on receiver of type 'BaseAppModuleExtension'.
-2026-11-14T12:42:03.5452004Z 
-2026-11-14T12:42:03.5452181Z 2 errors
-2026-11-14T12:42:03.5452408Z 
-2026-11-14T12:42:03.5452877Z * Try:
-2026-11-14T12:42:03.5453373Z > Run with --debug option to get more log output.
-2026-11-14T12:42:03.5454255Z > Run with --scan to get full insights from a Build Scan (powered by Develocity).
-2026-11-14T12:42:03.5455119Z > Get more help at https://help.gradle.org.
-2026-11-14T12:42:03.5455538Z 
-2026-11-14T12:42:03.5455725Z * Exception is:
-2026-11-14T12:42:03.5461529Z ScriptCompilationException(scriptCompilationErrors=[ScriptCompilationError(message=Unresolved reference 'util' on receiver of type 'BaseAppModuleExtension'., location=SourceLocation(path=/home/runner/.gradle/caches/9.9.0/kotlin-dsl/ic/ecf7e30b3b07b4580ee1ede6cc11ad9c/sources/build.gradle.kts, line=40, column=41, lineEnd=40, columnEnd=45, lineContent=            val keystoreBytes = android.util.Base64.decode(keystoreBase64, android.util.Base64.NO_WRAP))), ScriptCompilationError(message=Unresolved reference 'util' on receiver of type 'BaseAppModuleExtension'., location=SourceLocation(path=/home/runner/.gradle/caches/9.9.0/kotlin-dsl/ic/ecf7e30b3b07b4580ee1ede6cc11ad9c/sources/build.gradle.kts, line=40, column=84, lineEnd=40, columnEnd=88, lineContent=            val keystoreBytes = android.util.Base64.decode(keystoreBase64, android.util.Base64.NO_WRAP)))])
-2026-11-14T12:42:03.5468295Z 	at org.gradle.kotlin.dsl.support.DefaultKotlinCompiler.compileKotlinScriptToDirectory(KotlinCompiler.kt:164)
-2026-11-14T12:42:03.5470158Z 	at org.gradle.kotlin.dsl.support.DefaultKotlinCompiler.compileKotlinScriptToDirectory(KotlinCompiler.kt:106)
-2026-11-14T12:42:03.5472067Z 	at org.gradle.kotlin.dsl.execution.ResidualProgramCompiler$compileScript$1.invoke_A6FCAhw$lambda$0(ResidualProgramCompiler.kt:716)
-2026-11-14T12:42:03.5474347Z 	at org.gradle.kotlin.dsl.provider.StandardKotlinScriptEvaluator$InterpreterHost$runCompileBuildOperation$1.call(KotlinScriptEvaluator.kt:230)
-2026-11-14T12:42:03.5476462Z 	at org.gradle.kotlin.dsl.provider.StandardKotlinScriptEvaluator$InterpreterHost$runCompileBuildOperation$1.call(KotlinScriptEvaluator.kt:227)
+2026-11-14T12:42:02.6274320Z   echo "::error::KEYSTORE_BASE64 secret is not set."
+2026-11-14T12:42:02.6290549Z   echo "::error::Could not read any alias from the keystore. Check that KEYSTORE_PASSWORD is correct."
+2026-11-14T12:42:15.5475604Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:40:41: Unresolved reference 'util' on receiver of type 'BaseAppModuleExtension'.
+2026-11-14T12:42:15.5476544Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:40:84: Unresolved reference 'util' on receiver of type 'BaseAppModuleExtension'.
+2026-11-14T12:42:15.6576294Z FAILURE: Build failed with an exception.
+2026-11-14T12:42:15.6597186Z 
+2026-11-14T12:42:15.6636201Z * Where:
+2026-11-14T12:42:15.6637354Z Build file '/home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts' line: 40
+2026-11-14T12:42:15.6637995Z 
+2026-11-14T12:42:15.6638273Z * What went wrong:
+2026-11-14T12:42:15.6638804Z Script compilation errors:
+2026-11-14T12:42:15.6639185Z 
+2026-11-14T12:42:15.6639819Z   Line 40:             val keystoreBytes = android.util.Base64.decode(keystoreBase64, android.util.Base64.NO_WRAP)
+2026-11-14T12:42:15.6640933Z                                                    ^ Unresolved reference 'util' on receiver of type 'BaseAppModuleExtension'.
+2026-11-14T12:42:15.6641596Z 
+2026-11-14T12:42:15.6642171Z   Line 40:             val keystoreBytes = android.util.Base64.decode(keystoreBase64, android.util.Base64.NO_WRAP)
+2026-11-14T12:42:15.6643333Z                                                                                               ^ Unresolved reference 'util' on receiver of type 'BaseAppModuleExtension'.
+2026-11-14T12:42:15.6644059Z 
+2026-11-14T12:42:15.6644320Z 2 errors
+2026-11-14T12:42:15.6644627Z 
+2026-11-14T12:42:15.6644897Z * Try:
+2026-11-14T12:42:15.6645529Z > Run with --debug option to get more log output.
+2026-11-14T12:42:15.6646302Z > Run with --scan to get full insights from a Build Scan (powered by Develocity).
+2026-11-14T12:42:15.6647096Z > Get more help at https://help.gradle.org.
+2026-11-14T12:42:15.6647546Z 
+2026-11-14T12:42:15.6647815Z * Exception is:
+2026-11-14T12:42:15.6652111Z ScriptCompilationException(scriptCompilationErrors=[ScriptCompilationError(message=Unresolved reference 'util' on receiver of type 'BaseAppModuleExtension'., location=SourceLocation(path=/home/runner/.gradle/caches/9.9.0/kotlin-dsl/ic/ecf7e30b3b07b4580ee1ede6cc11ad9c/sources/build.gradle.kts, line=40, column=41, lineEnd=40, columnEnd=45, lineContent=            val keystoreBytes = android.util.Base64.decode(keystoreBase64, android.util.Base64.NO_WRAP))), ScriptCompilationError(message=Unresolved reference 'util' on receiver of type 'BaseAppModuleExtension'., location=SourceLocation(path=/home/runner/.gradle/caches/9.9.0/kotlin-dsl/ic/ecf7e30b3b07b4580ee1ede6cc11ad9c/sources/build.gradle.kts, line=40, column=84, lineEnd=40, columnEnd=88, lineContent=            val keystoreBytes = android.util.Base64.decode(keystoreBase64, android.util.Base64.NO_WRAP)))])
+2026-11-14T12:42:15.6657059Z 	at org.gradle.kotlin.dsl.support.DefaultKotlinCompiler.compileKotlinScriptToDirectory(KotlinCompiler.kt:164)
+2026-11-14T12:42:15.6657781Z 
+2026-11-14T12:42:15.6658508Z 	at org.gradle.kotlin.dsl.support.DefaultKotlinCompiler.compileKotlinScriptToDirectory(KotlinCompiler.kt:106)
+2026-11-14T12:42:15.6659977Z 	at org.gradle.kotlin.dsl.execution.ResidualProgramCompiler$compileScript$1.invoke_A6FCAhw$lambda$0(ResidualProgramCompiler.kt:716)
+2026-11-14T12:42:15.6661602Z 	at org.gradle.kotlin.dsl.provider.StandardKotlinScriptEvaluator$InterpreterHost$runCompileBuildOperation$1.call(KotlinScriptEvaluator.kt:230)
+2026-11-14T12:42:15.6663261Z 	at org.gradle.kotlin.dsl.provider.StandardKotlinScriptEvaluator$InterpreterHost$runCompileBuildOperation$1.call(KotlinScriptEvaluator.kt:227)
+2026-11-14T12:42:15.6665065Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:210)
