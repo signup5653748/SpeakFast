@@ -1,9 +1,7 @@
 package com.debk007.speakfast.di
 
 import android.content.Context
-import com.debk007.speakfast.accessibility.SpeakFastAccessibilityService
 import com.debk007.speakfast.data.SettingsManager
-import com.debk007.speakfast.speech.SpeechManager
 import com.debk007.speakfast.util.SelectionManager
 import dagger.Module
 import dagger.Provides
@@ -26,25 +24,5 @@ object AppModule {
     @Singleton
     fun provideSelectionManager(): SelectionManager {
         return SelectionManager()
-    }
-
-    @Provides
-    @Singleton
-    fun provideSpeechManager(
-        @ApplicationContext context: Context,
-        settingsManager: SettingsManager
-    ): SpeechManager {
-        val speechManager = SpeechManager(context, settingsManager)
-        speechManager.initialize()
-        return speechManager
-    }
-
-    @Provides
-    @Singleton
-    fun provideAccessibilityService(
-        speechManager: SpeechManager,
-        selectionManager: SelectionManager
-    ): SpeakFastAccessibilityService {
-        return SpeakFastAccessibilityService()
     }
 }
