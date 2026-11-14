@@ -1,5 +1,5 @@
-[Earlier content for app/src/main/java/com/debk007/speakfast/SpeakFastApplication.kt (3054 chars, already written to disk). The module surface below may not show every signature you need — re-read with read_file before editing this file again, OR before importing/calling anything from it in another file. Do not recreate it from scratch and do not guess a function's parameters from memory.
-Module surface:
+package com.debk007.speakfast
+
 import android.app.Application
 import android.content.ContentValues
 import android.os.Build
@@ -14,8 +14,61 @@ import java.io.StringWriter
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+
 @HiltAndroidApp
 class SpeakFastApplication : Application() {
-    @Suppress("UNUSED_PARAMETER") // the service reads its own active window, no context needed
-    @Suppress("NewApi") // only reachable through the API 30+ screenshot path in triggerOcrFallback
-    @Suppress("NewApi") // Bitmap.wrapHardwareBuffer is API 30+, guarded by the caller]
+
+    override fun onCreate() {
+        super.onCreate()
+
+        // Set the global uncaught exception handler
+        val defaultHandler = Thread.getDefaultUncaughtExceptionHandler()
+        Thread.setDefaultUncaughtExceptionHandler { thread, throwable ->
+            saveCrashLogToDownloads(throwable)
+            defaultHandler?.uncaughtException(thread, throwable)
+        }
+    }
+
+    private fun saveCrashLogToDownloads(throwable: Throwable) {
+        val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+        val fileName = "SpeakFast_Crash_$timestamp.txt"
+
+        val sw = StringWriter()
+        val pw = PrintWriter(sw)
+        throwable.printStackTrace(pw)
+        val stackTrace = sw.toString()
+
+        val logContent = """
+            CRASH REPORT
+            Time: ${SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())}
+            Exception: ${throwable.javaClass.name}
+            Message: ${throwable.message}
+            
+            STACK TRACE:
+            $stackTrace
+        """.trimIndent()
+
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                val contentValues = ContentValues().apply {
+                    put(MediaStore.Downloads.DISPLAY_NAME, fileName)
+                    put(MediaStore.Downloads.MIME_TYPE, "text/plain")
+                    put(MediaStore.Downloads.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS)
+                }
+
+                val uri = contentResolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, contentValues)
+                uri?.let {
+                    contentResolver.openOutputStream(it)?.use { outputStream: OutputStream ->
+                        outputStream.write(logContent.toByteArray())
+                    }
+                }
+            } else {
+                val downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+                val file = java.io.File(downloadsDir, fileName)
+                file.writeText(logContent)
+            }
+        } catch (e: IOException) {
+            Log.e("SpeakFast", "Failed to save crash log to Downloads", e)
+        }
+    }
+}
