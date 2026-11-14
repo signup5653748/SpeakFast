@@ -69,6 +69,7 @@ class SpeechManager @Inject constructor(
             .filter { it.locale.toLanguageTag() == locale.toLanguageTag() }
             .sortedBy { it.name }
 
+    // FIXED: Use the correct Android API property 'requiresNetwork'
     fun isOnline(voice: Voice): Boolean = runCatching {
         voice.requiresNetwork || (voice.features?.contains("networkTts") == true)
     }.getOrDefault(false)
@@ -76,7 +77,7 @@ class SpeechManager @Inject constructor(
     fun speakScreen(text: String) {
         if (!isInitialized) { initialize(); return }
         sentences.clear()
-        sentences.addAll(text.split(Regex("(?<=[.!?\\n])")).map { it.trim() }.filter { it.isNotEmpty() })
+        sentences.addAll(text.split(Regex("(?<=[.!?n])")).map { it.trim() }.filter { it.isNotEmpty() })
         if (sentences.isEmpty()) sentences.add(text)
         currentIndex = 0
         isPlaying = true
