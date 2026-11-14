@@ -1,37 +1,37 @@
-=== FAILURE LOG FOR RUN: 43596112983 ===
+=== FAILURE LOG FOR RUN: 43597376092 ===
 === FAILED JOB: build ===
-=== DATE: Sat Nov 14 12:43:22 UTC 2026 ===
+=== DATE: Sat Nov 14 12:59:19 UTC 2026 ===
 === UNIVERSAL ERROR BLOCK (Kotlin, AAPT, XML, Gradle) ===
 
-2026-11-14T12:43:10.9414963Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:40:41: Unresolved reference 'util' on receiver of type 'BaseAppModuleExtension'.
-2026-11-14T12:43:10.9415925Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:40:84: Unresolved reference 'util' on receiver of type 'BaseAppModuleExtension'.
-2026-11-14T12:43:11.0416827Z FAILURE: Build failed with an exception.
-2026-11-14T12:43:11.0418238Z [Incubating] Problems report is available at: file:///home/runner/work/SpeakFast/SpeakFast/build/reports/problems/problems-report.html
-2026-11-14T12:43:11.0419212Z 
-2026-11-14T12:43:11.0419699Z * Where:
-2026-11-14T12:43:11.0453410Z Build file '/home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts' line: 40
-2026-11-14T12:43:11.0454040Z 
-2026-11-14T12:43:11.0465826Z 
-2026-11-14T12:43:11.0466618Z Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
-2026-11-14T12:43:11.0482366Z * What went wrong:
-2026-11-14T12:43:11.0482613Z 
-2026-11-14T12:43:11.0483067Z Script compilation errors:
-2026-11-14T12:43:11.0483828Z You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
-2026-11-14T12:43:11.0487793Z 
-2026-11-14T12:43:11.0487804Z 
-2026-11-14T12:43:11.0488595Z   Line 40:             val keystoreBytes = android.util.Base64.decode(keystoreBase64, android.util.Base64.NO_WRAP)
-2026-11-14T12:43:11.0489865Z For more on this, please refer to https://docs.gradle.org/9.9.0/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
-2026-11-14T12:43:11.0491034Z                                                    ^ Unresolved reference 'util' on receiver of type 'BaseAppModuleExtension'.
-2026-11-14T12:43:11.0535155Z 
-2026-11-14T12:43:11.0536851Z   Line 40:             val keystoreBytes = android.util.Base64.decode(keystoreBase64, android.util.Base64.NO_WRAP)
-2026-11-14T12:43:11.0538534Z                                                                                               ^ Unresolved reference 'util' on receiver of type 'BaseAppModuleExtension'.
-2026-11-14T12:43:11.0539106Z 
-2026-11-14T12:43:11.0569070Z 2 errors
-2026-11-14T12:43:11.0569689Z 
-2026-11-14T12:43:11.0571084Z * Try:
-2026-11-14T12:43:11.0572035Z > Run with --stacktrace option to get the stack trace.
-2026-11-14T12:43:11.0586931Z > Run with --info or --debug option to get more log output.
-2026-11-14T12:43:11.0588263Z > Run with --scan to get full insights from a Build Scan (powered by Develocity).
-2026-11-14T12:43:11.0596026Z > Get more help at https://help.gradle.org.
-2026-11-14T12:43:11.0596496Z 
-2026-11-14T12:43:11.0596720Z BUILD FAILED in 44s
+2026-11-14T12:59:09.1110023Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:40:41: Unresolved reference 'util' on receiver of type 'BaseAppModuleExtension'.
+2026-11-14T12:59:09.1112177Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:40:84: Unresolved reference 'util' on receiver of type 'BaseAppModuleExtension'.
+2026-11-14T12:59:09.2115807Z FAILURE: Build failed with an exception.
+2026-11-14T12:59:09.2116394Z 
+2026-11-14T12:59:09.2116630Z * Where:
+2026-11-14T12:59:09.2120626Z Build file '/home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts' line: 40
+2026-11-14T12:59:09.2121207Z 
+2026-11-14T12:59:09.2121566Z * What went wrong:
+2026-11-14T12:59:09.2122005Z Script compilation errors:
+2026-11-14T12:59:09.2122314Z 
+2026-11-14T12:59:09.2122796Z   Line 40:             val keystoreBytes = android.util.Base64.decode(keystoreBase64, android.util.Base64.NO_WRAP)
+2026-11-14T12:59:09.2123765Z                                                    ^ Unresolved reference 'util' on receiver of type 'BaseAppModuleExtension'.
+2026-11-14T12:59:09.2124304Z 
+2026-11-14T12:59:09.2124783Z   Line 40:             val keystoreBytes = android.util.Base64.decode(keystoreBase64, android.util.Base64.NO_WRAP)
+2026-11-14T12:59:09.2125794Z                                                                                               ^ Unresolved reference 'util' on receiver of type 'BaseAppModuleExtension'.
+2026-11-14T12:59:09.2126880Z [Incubating] Problems report is available at: file:///home/runner/work/SpeakFast/SpeakFast/build/reports/problems/problems-report.html
+2026-11-14T12:59:09.2132543Z 
+2026-11-14T12:59:09.2133705Z Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+2026-11-14T12:59:09.2137850Z 
+2026-11-14T12:59:09.2138412Z 2 errors
+2026-11-14T12:59:09.2139008Z 
+2026-11-14T12:59:09.2139218Z * Try:
+2026-11-14T12:59:09.2139855Z > Run with --stacktrace option to get the stack trace.
+2026-11-14T12:59:09.2140442Z > Run with --info or --debug option to get more log output.
+2026-11-14T12:59:09.2141166Z > Run with --scan to get full insights from a Build Scan (powered by Develocity).
+2026-11-14T12:59:09.2159244Z 
+2026-11-14T12:59:09.2169710Z > Get more help at https://help.gradle.org.
+2026-11-14T12:59:09.2170564Z You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+2026-11-14T12:59:09.2171700Z 
+2026-11-14T12:59:09.2171806Z 
+2026-11-14T12:59:09.2172663Z For more on this, please refer to https://docs.gradle.org/9.9.0/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+2026-11-14T12:59:09.2173671Z BUILD FAILED in 47s
