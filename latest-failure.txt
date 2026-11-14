@@ -1,68 +1,39 @@
-=== FAILURE LOG FOR RUN: 43595893206 ===
+=== FAILURE LOG FOR RUN: 43596038523 ===
 === FAILED JOB: Build Signed Release APK ===
-=== DATE: Sat Nov 14 12:40:56 UTC 2026 ===
+=== DATE: Sat Nov 14 12:42:19 UTC 2026 ===
 === UNIVERSAL ERROR BLOCK (Kotlin, AAPT, XML, Gradle) ===
 
-2026-11-14T12:40:14.5208048Z   echo "::error::KEYSTORE_BASE64 secret is not set."
-2026-11-14T12:40:14.5223030Z   echo "::error::Could not read any alias from the keystore. Check that KEYSTORE_PASSWORD is correct."
-2026-11-14T12:40:26.7537603Z AAPT2 aapt2-8.7.2-12006047-linux Daemon #0: starting
-2026-11-14T12:40:26.7559504Z Aapt output file /home/runner/work/SpeakFast/SpeakFast/.base/app/build/intermediates/linked_resources_binary_format/release/processReleaseResources/linked-resources-binary-format-release.ap_
-2026-11-14T12:40:38.6947715Z e: file:///home/runner/work/SpeakFast/SpeakFast/.base/app/src/main/java/com/debk007/speakfast/MainActivity.kt:115:50 Argument type mismatch: actual type is 'androidx.compose.foundation.layout.ColumnScope', but 'android.content.Context!' was expected.
-2026-11-14T12:40:38.6950516Z e: file:///home/runner/work/SpeakFast/SpeakFast/.base/app/src/main/java/com/debk007/speakfast/MainActivity.kt:116:61 Unresolved reference 'FloatingTriggerService'.
-2026-11-14T12:40:38.6952782Z e: file:///home/runner/work/SpeakFast/SpeakFast/.base/app/src/main/java/com/debk007/speakfast/MainActivity.kt:116:91 Cannot infer type for this parameter. Please specify it explicitly.
-2026-11-14T12:40:38.6953624Z > Task :app:compileReleaseKotlin FAILED
-2026-11-14T12:40:38.6954659Z e: file:///home/runner/work/SpeakFast/SpeakFast/.base/app/src/main/java/com/debk007/speakfast/MainActivity.kt:116:91 Unresolved reference. None of the following candidates is applicable because of a receiver type mismatch:
-2026-11-14T12:40:38.6955505Z AAPT2 aapt2-8.7.2-12006047-linux Daemon #0: shutdown
-2026-11-14T12:40:38.6955946Z val <T> KClass<T>.java: Class<T>
-2026-11-14T12:40:38.6956634Z e: file:///home/runner/work/SpeakFast/SpeakFast/.base/app/src/main/java/com/debk007/speakfast/accessibility/OcrFallback.kt:25:20 None of the following candidates is applicable:
-2026-11-14T12:40:38.6957474Z fun process(p0: MlImage): Task<Text!>
-2026-11-14T12:40:38.6957822Z fun process(p0: InputImage): Task<Text!>
-2026-11-14T12:40:38.6958481Z e: file:///home/runner/work/SpeakFast/SpeakFast/.base/app/src/main/java/com/debk007/speakfast/accessibility/OcrFallback.kt:26:14 Unresolved reference 'addOnSuccessListener'.
-2026-11-14T12:40:38.6959664Z e: file:///home/runner/work/SpeakFast/SpeakFast/.base/app/src/main/java/com/debk007/speakfast/accessibility/OcrFallback.kt:26:37 Cannot infer type for this parameter. Please specify it explicitly.
-2026-11-14T12:40:38.6960888Z e: file:///home/runner/work/SpeakFast/SpeakFast/.base/app/src/main/java/com/debk007/speakfast/accessibility/OcrFallback.kt:27:49 Unresolved reference 'text'.
-2026-11-14T12:40:38.6961822Z e: file:///home/runner/work/SpeakFast/SpeakFast/.base/app/src/main/java/com/debk007/speakfast/accessibility/OcrFallback.kt:30:37 Cannot infer type for this parameter. Please specify it explicitly.
-2026-11-14T12:40:38.6962787Z e: file:///home/runner/work/SpeakFast/SpeakFast/.base/app/src/main/java/com/debk007/speakfast/accessibility/ScreenNodeReader.kt:15:18 Unresolved reference 'intersectsWith'.
-2026-11-14T12:40:38.6963758Z e: file:///home/runner/work/SpeakFast/SpeakFast/.base/app/src/main/java/com/debk007/speakfast/accessibility/ScreenNodeReader.kt:36:18 Unresolved reference 'intersectsWith'.
-2026-11-14T12:40:38.6964729Z e: file:///home/runner/work/SpeakFast/SpeakFast/.base/app/src/main/java/com/debk007/speakfast/accessibility/SpeakFastAccessibilityService.kt:74:40 Unresolved reference 'TYPE_TEXT_CHANGED'.
-2026-11-14T12:40:38.6965664Z e: file:///home/runner/work/SpeakFast/SpeakFast/.base/app/src/main/java/com/debk007/speakfast/model/Settings.kt:3:16 Unresolved reference 'serialization'.
-2026-11-14T12:40:38.6966945Z e: file:///home/runner/work/SpeakFast/SpeakFast/.base/app/src/main/java/com/debk007/speakfast/model/Settings.kt:5:2 Cannot access 'typealias Serializable = Serializable': it is internal in file.
-2026-11-14T12:40:38.6968285Z e: file:///home/runner/work/SpeakFast/SpeakFast/.base/app/src/main/java/com/debk007/speakfast/model/Settings.kt:5:2 Illegal annotation class 'Serializable'.
-2026-11-14T12:40:38.6969221Z e: file:///home/runner/work/SpeakFast/SpeakFast/.base/app/src/main/java/com/debk007/speakfast/model/Settings.kt:14:2 Cannot access 'typealias Serializable = Serializable': it is internal in file.
-2026-11-14T12:40:38.6970159Z e: file:///home/runner/work/SpeakFast/SpeakFast/.base/app/src/main/java/com/debk007/speakfast/model/Settings.kt:14:2 Illegal annotation class 'Serializable'.
-2026-11-14T12:40:38.6971088Z e: file:///home/runner/work/SpeakFast/SpeakFast/.base/app/src/main/java/com/debk007/speakfast/model/Settings.kt:39:2 Cannot access 'typealias Serializable = Serializable': it is internal in file.
-2026-11-14T12:40:38.6972003Z e: file:///home/runner/work/SpeakFast/SpeakFast/.base/app/src/main/java/com/debk007/speakfast/model/Settings.kt:39:2 Illegal annotation class 'Serializable'.
-2026-11-14T12:40:38.6972921Z e: file:///home/runner/work/SpeakFast/SpeakFast/.base/app/src/main/java/com/debk007/speakfast/model/Settings.kt:51:2 Cannot access 'typealias Serializable = Serializable': it is internal in file.
-2026-11-14T12:40:38.6973826Z e: file:///home/runner/work/SpeakFast/SpeakFast/.base/app/src/main/java/com/debk007/speakfast/model/Settings.kt:51:2 Illegal annotation class 'Serializable'.
-2026-11-14T12:40:38.7949619Z gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_4-1794660017929.json
-2026-11-14T12:40:38.7987430Z 
-2026-11-14T12:40:38.7987454Z 
-2026-11-14T12:40:38.7988407Z FAILURE: Build failed with an exception.
-2026-11-14T12:40:38.7988653Z 
-2026-11-14T12:40:38.7988749Z * What went wrong:
-2026-11-14T12:40:38.7989225Z Execution failed for task ':app:compileReleaseKotlin' (registered by plugin 'org.jetbrains.kotlin.android').
-2026-11-14T12:40:38.7990223Z > A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
-2026-11-14T12:40:38.8031669Z [Incubating] Problems report is available at: file:///home/runner/work/SpeakFast/SpeakFast/.base/build/reports/problems/problems-report.html
-2026-11-14T12:40:38.8032390Z 
-2026-11-14T12:40:38.8053976Z    > Compilation error. See log for more details
-2026-11-14T12:40:38.8054612Z Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
-2026-11-14T12:40:38.8055071Z 
-2026-11-14T12:40:38.8055183Z * Try:
-2026-11-14T12:40:38.8055959Z 
-2026-11-14T12:40:38.8056625Z You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
-2026-11-14T12:40:38.8057359Z 
-2026-11-14T12:40:38.8057773Z For more on this, please refer to https://docs.gradle.org/9.9.0/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
-2026-11-14T12:40:38.8058277Z 38 actionable tasks: 38 executed
-2026-11-14T12:40:38.8058601Z > Run with --debug option to get more log output.
-2026-11-14T12:40:38.8058949Z > Run with --scan to get full insights from a Build Scan (powered by Develocity).
-2026-11-14T12:40:38.8059285Z > Get more help at https://help.gradle.org.
-2026-11-14T12:40:38.8059462Z 
-2026-11-14T12:40:38.8059551Z * Exception is:
-2026-11-14T12:40:38.8060031Z org.gradle.api.tasks.TaskExecutionException: Execution failed for task ':app:compileReleaseKotlin' (registered by plugin 'org.jetbrains.kotlin.android').
-2026-11-14T12:40:38.8060771Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.lambda$doExecute$1(DefaultTaskNodeExecutor.java:367)
-2026-11-14T12:40:38.8061320Z 	at org.gradle.internal.Try$Failure.ifSuccessfulOrElse(Try.java:288)
-2026-11-14T12:40:38.8061827Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.doExecute(DefaultTaskNodeExecutor.java:365)
-2026-11-14T12:40:38.8062652Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.executeTrackingTaskIdentity(DefaultTaskNodeExecutor.java:332)
-2026-11-14T12:40:38.8063722Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.executeFinalizingProperties(DefaultTaskNodeExecutor.java:318)
-2026-11-14T12:40:38.8064862Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.executeSkippingWithNoActions(DefaultTaskNodeExecutor.java:289)
-2026-11-14T12:40:38.8065713Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.executeSkippingOnlyIf(DefaultTaskNodeExecutor.java:272)
-2026-11-14T12:40:38.8066450Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.executeCatchingFailures(DefaultTaskNodeExecutor.java:228)
+2026-11-14T12:41:47.5008378Z   echo "::error::KEYSTORE_BASE64 secret is not set."
+2026-11-14T12:41:47.5028700Z   echo "::error::Could not read any alias from the keystore. Check that KEYSTORE_PASSWORD is correct."
+2026-11-14T12:42:03.4294313Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:40:41: Unresolved reference 'util' on receiver of type 'BaseAppModuleExtension'.
+2026-11-14T12:42:03.4304939Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:40:84: Unresolved reference 'util' on receiver of type 'BaseAppModuleExtension'.
+2026-11-14T12:42:03.5272288Z FAILURE: Build failed with an exception.
+2026-11-14T12:42:03.5272973Z 
+2026-11-14T12:42:03.5273157Z * Where:
+2026-11-14T12:42:03.5273864Z Build file '/home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts' line: 40
+2026-11-14T12:42:03.5274527Z 
+2026-11-14T12:42:03.5274715Z * What went wrong:
+2026-11-14T12:42:03.5275184Z Script compilation errors:
+2026-11-14T12:42:03.5275775Z 
+2026-11-14T12:42:03.5275785Z 
+2026-11-14T12:42:03.5283967Z [Incubating] Problems report is available at: file:///home/runner/work/SpeakFast/SpeakFast/build/reports/problems/problems-report.html
+2026-11-14T12:42:03.5338508Z   Line 40:             val keystoreBytes = android.util.Base64.decode(keystoreBase64, android.util.Base64.NO_WRAP)
+2026-11-14T12:42:03.5373579Z                                                    ^ Unresolved reference 'util' on receiver of type 'BaseAppModuleExtension'.
+2026-11-14T12:42:03.5399057Z 
+2026-11-14T12:42:03.5420503Z   Line 40:             val keystoreBytes = android.util.Base64.decode(keystoreBase64, android.util.Base64.NO_WRAP)
+2026-11-14T12:42:03.5451151Z                                                                                               ^ Unresolved reference 'util' on receiver of type 'BaseAppModuleExtension'.
+2026-11-14T12:42:03.5452004Z 
+2026-11-14T12:42:03.5452181Z 2 errors
+2026-11-14T12:42:03.5452408Z 
+2026-11-14T12:42:03.5452877Z * Try:
+2026-11-14T12:42:03.5453373Z > Run with --debug option to get more log output.
+2026-11-14T12:42:03.5454255Z > Run with --scan to get full insights from a Build Scan (powered by Develocity).
+2026-11-14T12:42:03.5455119Z > Get more help at https://help.gradle.org.
+2026-11-14T12:42:03.5455538Z 
+2026-11-14T12:42:03.5455725Z * Exception is:
+2026-11-14T12:42:03.5461529Z ScriptCompilationException(scriptCompilationErrors=[ScriptCompilationError(message=Unresolved reference 'util' on receiver of type 'BaseAppModuleExtension'., location=SourceLocation(path=/home/runner/.gradle/caches/9.9.0/kotlin-dsl/ic/ecf7e30b3b07b4580ee1ede6cc11ad9c/sources/build.gradle.kts, line=40, column=41, lineEnd=40, columnEnd=45, lineContent=            val keystoreBytes = android.util.Base64.decode(keystoreBase64, android.util.Base64.NO_WRAP))), ScriptCompilationError(message=Unresolved reference 'util' on receiver of type 'BaseAppModuleExtension'., location=SourceLocation(path=/home/runner/.gradle/caches/9.9.0/kotlin-dsl/ic/ecf7e30b3b07b4580ee1ede6cc11ad9c/sources/build.gradle.kts, line=40, column=84, lineEnd=40, columnEnd=88, lineContent=            val keystoreBytes = android.util.Base64.decode(keystoreBase64, android.util.Base64.NO_WRAP)))])
+2026-11-14T12:42:03.5468295Z 	at org.gradle.kotlin.dsl.support.DefaultKotlinCompiler.compileKotlinScriptToDirectory(KotlinCompiler.kt:164)
+2026-11-14T12:42:03.5470158Z 	at org.gradle.kotlin.dsl.support.DefaultKotlinCompiler.compileKotlinScriptToDirectory(KotlinCompiler.kt:106)
+2026-11-14T12:42:03.5472067Z 	at org.gradle.kotlin.dsl.execution.ResidualProgramCompiler$compileScript$1.invoke_A6FCAhw$lambda$0(ResidualProgramCompiler.kt:716)
+2026-11-14T12:42:03.5474347Z 	at org.gradle.kotlin.dsl.provider.StandardKotlinScriptEvaluator$InterpreterHost$runCompileBuildOperation$1.call(KotlinScriptEvaluator.kt:230)
+2026-11-14T12:42:03.5476462Z 	at org.gradle.kotlin.dsl.provider.StandardKotlinScriptEvaluator$InterpreterHost$runCompileBuildOperation$1.call(KotlinScriptEvaluator.kt:227)
