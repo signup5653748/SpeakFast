@@ -127,43 +127,35 @@ jobs:
           fi
         fi
         chmod +x gradlew
+
     - name: Install Detected Android SDK Platform
       if: needs.detect.outputs.compile_sdk != ''
       run: |
         yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses > /dev/null || true
         $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platforms;android-${{ needs.detect.outputs.compile_sdk }}" "build-tools;35.0.0" || true
-    - name: Decode Keystore and Auto-Detect Alias
-      working-directory: ${{ needs.detect.outputs.gradle_dir }}
+
+    - name: Decode Keystore
       run: |
         if [ -z "${{ secrets.KEYSTORE_BASE64 }}" ]; then
           echo "::error::KEYSTORE_BASE64 secret is not set."
           exit 1
         fi
-        echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > "${{ needs.detect.outputs.keystore_filename }}"
-        
-        DETECTED_ALIAS=$(keytool -list -keystore "${{ needs.detect.outputs.keystore_filename }}" \
-          -storepass "${{ secrets.KEYSTORE_PASSWORD }}" 2>/dev/null \
-          | grep "PrivateKeyEntry" | head -1 | cut -d, -f1)
-        if [ -z "$DETECTED_ALIAS" ]; then
-          echo "::error::Could not read any alias from the keystore. Check that KEYSTORE_PASSWORD is correct."
-          exit 1
-        fi
-        echo "DETECTED_KEY_ALIAS=$DETECTED_ALIAS" >> "$GITHUB_ENV"
+        echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > app/release.keystore
+        echo "KEYSTORE_PATH=$(pwd)/app/release.keystore" >> "$GITHUB_ENV"
+
     - name: Build with Gradle
       working-directory: ${{ needs.detect.outputs.gradle_dir }}
+      env:
+        KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+        KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+        KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
       run: |
-        export "${{ needs.detect.outputs.store_password_var }}"="${{ secrets.KEYSTORE_PASSWORD }}"
-        export "${{ needs.detect.outputs.key_password_var }}"="${{ secrets.KEY_PASSWORD }}"
-        export STORE_PASSWORD="${{ secrets.KEYSTORE_PASSWORD }}"
-        export KEY_PASSWORD="${{ secrets.KEY_PASSWORD }}"
-        export KEY_ALIAS="$DETECTED_KEY_ALIAS"
-        export KEYSTORE_PATH="$(pwd)/${{ needs.detect.outputs.keystore_filename }}"
-        cp "${{ needs.detect.outputs.keystore_filename }}" my-upload-key.jks 2>/dev/null || true
-        ./gradlew ${{ needs.detect.outputs.gradle_task }} --no-daemon --stacktrace --info
+        ./gradlew assembleRelease --no-daemon --stacktrace
+
     - name: Wipe Keystore from Runner
       if: always()
-      working-directory: ${{ needs.detect.outputs.gradle_dir }}
-      run: rm -f "${{ needs.detect.outputs.keystore_filename }}"
+      run: |
+        rm -f app/release.keystore
 
     - name: Locate and Prepare APK
       run: |
@@ -175,6 +167,7 @@ jobs:
         fi
         REPO_NAME="${{ github.event.repository.name }}"
         cp "$FOUND" "./build-artifacts/${REPO_NAME}-release.apk"
+
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4
       with:
