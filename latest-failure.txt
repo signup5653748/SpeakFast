@@ -1,6 +1,6 @@
-=== FAILURE LOG FOR RUN: 43950115293 ===
+=== FAILURE LOG FOR RUN: 43950123776 ===
 === FAILED JOB: Build Signed Release APK ===
-=== DATE: Mon Nov 16 20:29:09 UTC 2026 ===
+=== DATE: Mon Nov 16 20:29:10 UTC 2026 ===
 === UNIVERSAL ERROR BLOCK (Kotlin, AAPT, XML, Gradle) ===
 
-2026-11-16T20:28:53.7800614Z   echo "::error::KEYSTORE_BASE64 secret is not set."
+2026-11-16T20:28:56.4073894Z   echo "::error::KEYSTORE_BASE64 secret is not set."
