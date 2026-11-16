@@ -1,43 +1,6 @@
-=== FAILURE LOG FOR RUN: 43620657326 ===
+=== FAILURE LOG FOR RUN: 43950057661 ===
 === FAILED JOB: Build Signed Release APK ===
-=== DATE: Sat Nov 14 17:22:51 UTC 2026 ===
+=== DATE: Mon Nov 16 20:28:53 UTC 2026 ===
 === UNIVERSAL ERROR BLOCK (Kotlin, AAPT, XML, Gradle) ===
 
-2026-11-14T17:21:56.1181157Z   echo "::error::KEYSTORE_BASE64 secret is not set."
-2026-11-14T17:22:33.5845794Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/ui/SettingsScreen.kt:19:38 Unresolved reference 'hideFromAccessibility'.
-2026-11-14T17:22:33.5849492Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/ui/SettingsScreen.kt:40:26 Unresolved reference 'hideFromAccessibility'.
-2026-11-14T17:22:33.5851073Z > Task :app:compileReleaseKotlin FAILED
-2026-11-14T17:22:33.6844130Z gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_4-1794676921624.json
-2026-11-14T17:22:33.6855711Z 
-2026-11-14T17:22:33.6857383Z [Incubating] Problems report is available at: file:///home/runner/work/SpeakFast/SpeakFast/build/reports/problems/problems-report.html
-2026-11-14T17:22:33.7847443Z 
-2026-11-14T17:22:33.7848090Z FAILURE: Build failed with an exception.
-2026-11-14T17:22:33.7848511Z 
-2026-11-14T17:22:33.7848721Z * What went wrong:
-2026-11-14T17:22:33.7849756Z Execution failed for task ':app:compileReleaseKotlin' (registered by plugin 'org.jetbrains.kotlin.android').
-2026-11-14T17:22:33.7880285Z > A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
-2026-11-14T17:22:33.7894355Z    > Compilation error. See log for more details
-2026-11-14T17:22:33.7907388Z 
-2026-11-14T17:22:33.7921849Z * Try:
-2026-11-14T17:22:33.7929055Z > Run with --info or --debug option to get more log output.
-2026-11-14T17:22:33.7929618Z > Run with --scan to get full insights from a Build Scan (powered by Develocity).
-2026-11-14T17:22:33.7930126Z > Get more help at https://help.gradle.org.
-2026-11-14T17:22:33.7930372Z 
-2026-11-14T17:22:33.7930480Z * Exception is:
-2026-11-14T17:22:33.7931159Z org.gradle.api.tasks.TaskExecutionException: Execution failed for task ':app:compileReleaseKotlin' (registered by plugin 'org.jetbrains.kotlin.android').
-2026-11-14T17:22:33.7932258Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.lambda$doExecute$1(DefaultTaskNodeExecutor.java:367)
-2026-11-14T17:22:33.7933359Z 	at org.gradle.internal.Try$Failure.ifSuccessfulOrElse(Try.java:288)
-2026-11-14T17:22:33.7934120Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.doExecute(DefaultTaskNodeExecutor.java:365)
-2026-11-14T17:22:33.7935127Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.executeTrackingTaskIdentity(DefaultTaskNodeExecutor.java:332)
-2026-11-14T17:22:33.7936213Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.executeFinalizingProperties(DefaultTaskNodeExecutor.java:318)
-2026-11-14T17:22:33.7938232Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.executeSkippingWithNoActions(DefaultTaskNodeExecutor.java:289)
-2026-11-14T17:22:33.7939753Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.executeSkippingOnlyIf(DefaultTaskNodeExecutor.java:272)
-2026-11-14T17:22:33.7940797Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.executeCatchingFailures(DefaultTaskNodeExecutor.java:228)
-2026-11-14T17:22:33.7941909Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.executeWithFallbackOperationId(DefaultTaskNodeExecutor.java:197)
-2026-11-14T17:22:33.7943351Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.executeWithLifecycle(DefaultTaskNodeExecutor.java:171)
-2026-11-14T17:22:33.7944307Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.access$000(DefaultTaskNodeExecutor.java:67)
-2026-11-14T17:22:33.7945239Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor$1.run(DefaultTaskNodeExecutor.java:136)
-2026-11-14T17:22:33.7946106Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOperationRunner.java:30)
-2026-11-14T17:22:33.7947586Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOperationRunner.java:27)
-2026-11-14T17:22:33.7949209Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:67)
-2026-11-14T17:22:33.7950856Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:60)
+2026-11-16T20:28:38.1750023Z   echo "::error::KEYSTORE_BASE64 secret is not set."
