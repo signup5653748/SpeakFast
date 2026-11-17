@@ -6,9 +6,8 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.core.content.res.getColor
 
-private val DarkColors = darkColorScheme(
+private val DarkColorScheme = darkColorScheme(
     primary = Color(0xFF8AB4F8),
     onPrimary = Color(0xFF003171),
     secondary = Color(0xFFBEC6DC),
@@ -16,10 +15,14 @@ private val DarkColors = darkColorScheme(
     background = Color(0xFF1B1B1F),
     onBackground = Color(0xFFE3E2E6),
     surface = Color(0xFF1B1B1F),
-    onSurface = Color(0xFFE3E2E6)
+    onSurface = Color(0xFFE3E2E6),
+    error = Color(0xFFCF6679),
+    onError = Color(0xFFFFFFFF),
+    errorContainer = Color(0xFF93000A),
+    onErrorContainer = Color(0xFFFFDAD6)
 )
 
-private val LightColors = lightColorScheme(
+private val LightColorScheme = lightColorScheme(
     primary = Color(0xFF1A73E8),
     onPrimary = Color(0xFFFFFFFF),
     secondary = Color(0xFF5C6BC0),
@@ -27,18 +30,22 @@ private val LightColors = lightColorScheme(
     background = Color(0xFFF5F5F5),
     onBackground = Color(0xFF1D1D1D),
     surface = Color(0xFFFFFFFF),
-    onSurface = Color(0xFF1D1D1D)
+    onSurface = Color(0xFF1D1D1D),
+    error = Color(0xFFBA1A1A),
+    onError = Color(0xFFFFFFFF),
+    errorContainer = Color(0xFFFFDAD6),
+    onErrorContainer = Color(0xFF410002)
 )
 
 @Composable
 fun SpeakFastTheme(content: @Composable () -> Unit) {
     val context = LocalContext.current
-    val isDarkTheme = (context.resources.configuration.uiMode and 
-        android.content.res.Configuration.UI_MODE_NIGHT_MASK) == 
+    val isDarkTheme = (context.resources.configuration.uiMode and
+        android.content.res.Configuration.UI_MODE_NIGHT_MASK) ==
         android.content.res.Configuration.UI_MODE_NIGHT_YES
-    
-    val colorScheme = if (isDarkTheme) DarkColors else LightColors
-    
+
+    val colorScheme = if (isDarkTheme) DarkColorScheme else LightColorScheme
+
     MaterialTheme(
         colorScheme = colorScheme,
         typography = Typography,

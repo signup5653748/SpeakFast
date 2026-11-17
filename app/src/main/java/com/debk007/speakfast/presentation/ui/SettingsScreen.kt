@@ -52,14 +52,14 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
-            .background(MaterialTheme.colorScheme.background)
+            .background(MaterialTheme.colorScheme.surface)
             .clearAndSetSemantics { },
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Text(
             text = "Settings",
             style = MaterialTheme.typography.headlineLarge,
-            color = MaterialTheme.colorScheme.onBackground
+            color = MaterialTheme.colorScheme.onSurface
         )
 
         // FIX (error messages): show the ViewModel's errorMessage as a dismissible
@@ -95,7 +95,7 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
             Text(
                 text = "Loading TTS languages...",
                 style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onBackground
+                color = MaterialTheme.colorScheme.onSurface
             )
         } else {
             // LANGUAGE SETTING
@@ -107,7 +107,7 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                 Text(
                     text = "Language: ${currentLocale.displayLanguage}",
                     style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onBackground
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -150,7 +150,7 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                 Text(
                     text = "Voice Variant: $voiceLabel",
                     style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onBackground
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -197,7 +197,7 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
             Text(
                 text = "Speech Rate: ${String.format("%.1f", settings?.speechRate ?: 1.0f)}",
                 style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onBackground
+                color = MaterialTheme.colorScheme.onSurface
             )
             Slider(
                 value = settings?.speechRate ?: 1.0f,
@@ -220,7 +220,7 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
             Text(
                 text = "Pitch: ${String.format("%.1f", settings?.pitch ?: 1.0f)}",
                 style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onBackground
+                color = MaterialTheme.colorScheme.onSurface
             )
             Slider(
                 value = settings?.pitch ?: 1.0f,
@@ -243,7 +243,7 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
             Text(
                 text = "Read Exact Selection",
                 style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onBackground
+                color = MaterialTheme.colorScheme.onSurface
             )
             Switch(
                 checked = settings?.readExactSelection ?: true,
@@ -261,7 +261,7 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
             Text(
                 text = "OCR Mode (Read Images)",
                 style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onBackground
+                color = MaterialTheme.colorScheme.onSurface
             )
             Switch(
                 checked = settings?.ocrEnabled ?: false,
