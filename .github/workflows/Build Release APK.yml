@@ -138,6 +138,7 @@ jobs:
         $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platforms;android-${{ needs.detect.outputs.compile_sdk }}" "build-tools;35.0.0" || true
 
     - name: Decode Keystore
+      working-directory: ${{ needs.detect.outputs.gradle_dir }} # ✅ CRITICAL FIX: Ensures keystore is in the correct module directory
       run: |
         if [ -z "${{ secrets.KEYSTORE_BASE64 }}" ]; then
           echo "::error::KEYSTORE_BASE64 secret is not set."
@@ -171,8 +172,7 @@ jobs:
         cp "$FOUND" ./SpeakFast-release.apk
         echo "apk_path=./SpeakFast-release.apk" >> "$GITHUB_OUTPUT"
 
-    # ✅ NEW: Upload as GitHub Release (raw APK, no zip)
-    - name: Create GitHub Release
+    - name: Create GitHub Release (Latest)
       if: github.event_name == 'push' && github.ref == 'refs/heads/main'
       uses: softprops/action-gh-release@v2
       with:
@@ -190,7 +190,6 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    # ✅ Fallback: Keep artifact upload for PRs and other branches
     - name: Upload APK Artifact (for PRs)
       if: github.event_name == 'pull_request' || github.ref != 'refs/heads/main'
       uses: actions/upload-artifact@v4
