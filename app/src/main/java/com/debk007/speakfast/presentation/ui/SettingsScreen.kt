@@ -7,8 +7,14 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Slider
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,6 +23,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.debk007.speakfast.presentation.viewmodel.SettingsViewModel
 import java.util.Locale
@@ -27,10 +35,16 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
     val locales by viewModel.ttsLocales.collectAsState()
     val settings = uiState.settings
 
+    // FIX (language fallback edge case): if the saved languageCode is not in the
+    // TTS locale list, indexOf returns -1. coalesceAt(0) maps -1 -> 0 so the
+    // ◀/▶ buttons always wrap around the available locales and never index
+    // negatively or jump to arbitrary locales.
     val currentLocale = locales.firstOrNull { it.toLanguageTag() == (settings?.languageCode ?: "") }
         ?: Locale.forLanguageTag(settings?.languageCode ?: "en-US")
     val voices: List<Voice> = viewModel.voicesFor(currentLocale)
     val currentVoice = voices.firstOrNull { it.name == (settings?.voice ?: "") } ?: voices.firstOrNull()
+    val currentLocaleIndex = locales.indexOf(currentLocale).coerceAtLeast(0)
+    val currentVoiceIndex = voices.indexOf(currentVoice).coerceAtLeast(0)
 
     Column(
         modifier = Modifier
@@ -40,6 +54,32 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         Text("Settings", style = MaterialTheme.typography.headlineLarge)
+
+        // FIX (error messages): show the ViewModel's errorMessage as a dismissible
+        // red banner at the top of the screen.
+        val errorMessage = uiState.errorMessage
+        if (errorMessage != null) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = errorMessage,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.error,
+                    modifier = Modifier.weight(1f)
+                )
+                IconButton(onClick = { viewModel.clearError() }) {
+                    Icon(
+                        imageVector = Icons.Filled.Close,
+                        contentDescription = "Dismiss error",
+                        tint = MaterialTheme.colorScheme.error,
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
+            }
+        }
 
         if (locales.isEmpty()) {
             Text("Loading TTS languages...", style = MaterialTheme.typography.bodyLarge)
@@ -52,13 +92,17 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                 Text("Language: ${currentLocale.displayLanguage}", style = MaterialTheme.typography.bodyLarge)
                 Row {
                     Button(onClick = {
-                        val idx = (locales.indexOf(currentLocale) - 1 + locales.size) % locales.size
+                        val idx = (currentLocaleIndex - 1 + locales.size) % locales.size
                         viewModel.updateLanguage(locales[idx].toLanguageTag())
-                    }) { Text("◀") }
+                    }) {
+                        Text("◀", modifier = Modifier.semantics { contentDescription = "Previous language" })
+                    }
                     Button(onClick = {
-                        val idx = (locales.indexOf(currentLocale) + 1) % locales.size
+                        val idx = (currentLocaleIndex + 1) % locales.size
                         viewModel.updateLanguage(locales[idx].toLanguageTag())
-                    }) { Text("▶") }
+                    }) {
+                        Text("▶", modifier = Modifier.semantics { contentDescription = "Next language" })
+                    }
                 }
             }
 
@@ -72,18 +116,28 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                 } ?: "No voices"
                 Text("Voice: $label", style = MaterialTheme.typography.bodySmall)
                 Row {
-                    Button(onClick = {
-                        if (voices.isNotEmpty()) {
-                            val idx = (voices.indexOf(currentVoice) - 1 + voices.size) % voices.size
-                            viewModel.updateVoice(voices[idx].name)
-                        }
-                    }) { Text("◀") }
-                    Button(onClick = {
-                        if (voices.isNotEmpty()) {
-                            val idx = (voices.indexOf(currentVoice) + 1) % voices.size
-                            viewModel.updateVoice(voices[idx].name)
-                        }
-                    }) { Text("▶") }
+                    Button(
+                        onClick = {
+                            if (voices.isNotEmpty()) {
+                                val idx = (currentVoiceIndex - 1 + voices.size) % voices.size
+                                viewModel.updateVoice(voices[idx].name)
+                            }
+                        },
+                        enabled = voices.isNotEmpty()
+                    ) {
+                        Text("◀", modifier = Modifier.semantics { contentDescription = "Previous voice" })
+                    }
+                    Button(
+                        onClick = {
+                            if (voices.isNotEmpty()) {
+                                val idx = (currentVoiceIndex + 1) % voices.size
+                                viewModel.updateVoice(voices[idx].name)
+                            }
+                        },
+                        enabled = voices.isNotEmpty()
+                    ) {
+                        Text("▶", modifier = Modifier.semantics { contentDescription = "Next voice" })
+                    }
                 }
             }
         }
@@ -112,7 +166,35 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
             )
         }
 
-        Text("Speech Rate: ${String.format("%.1f", settings?.speechRate ?: 1.0f)}", style = MaterialTheme.typography.bodyLarge)
-        Text("Pitch: ${String.format("%.1f", settings?.pitch ?: 1.0f)}", style = MaterialTheme.typography.bodyLarge)
+        // FIX (speech rate control): was display-only Text, now a 0.5f–2.0f
+        // slider with 15 steps (0.1 increments) wired to the ViewModel.
+        Column {
+            Text(
+                "Speech Rate: ${String.format("%.1f", settings?.speechRate ?: 1.0f)}",
+                style = MaterialTheme.typography.bodyLarge
+            )
+            Slider(
+                value = settings?.speechRate ?: 1.0f,
+                onValueChange = { viewModel.updateSpeechRate(it) },
+                valueRange = 0.5f..2.0f,
+                steps = 15,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+
+        // FIX (pitch control): same treatment as speech rate.
+        Column {
+            Text(
+                "Pitch: ${String.format("%.1f", settings?.pitch ?: 1.0f)}",
+                style = MaterialTheme.typography.bodyLarge
+            )
+            Slider(
+                value = settings?.pitch ?: 1.0f,
+                onValueChange = { viewModel.updatePitch(it) },
+                valueRange = 0.5f..2.0f,
+                steps = 15,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
     }
 }

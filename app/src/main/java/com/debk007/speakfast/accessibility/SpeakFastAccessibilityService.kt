@@ -21,6 +21,11 @@ import com.debk007.speakfast.ui.FloatingTriggerService
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.concurrent.Executor
 import javax.inject.Inject
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SpeakFastAccessibilityService : AccessibilityService() {
@@ -28,6 +33,7 @@ class SpeakFastAccessibilityService : AccessibilityService() {
     @Inject lateinit var speechManager: SpeechManager
     @Inject lateinit var settingsManager: SettingsManager
     private val mainHandler = Handler(Looper.getMainLooper())
+    private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
 
     private val commandReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -54,6 +60,17 @@ class SpeakFastAccessibilityService : AccessibilityService() {
         override fun onError(error: Exception) { Log.e(TAG, "OCR failed", error) }
     }
 
+    /**
+     * FIX (stale play/pause state): notifies the floating player bar that
+     * speech has ended, so its play/pause button resets to "▶".
+     */
+    private fun sendTtsFinished() {
+        sendBroadcast(
+            Intent(FloatingTriggerService.ACTION_TTS_FINISHED)
+                .setPackage(packageName)
+        )
+    }
+
     override fun onServiceConnected() {
         super.onServiceConnected()
         val info = AccessibilityServiceInfo().apply {
@@ -64,6 +81,14 @@ class SpeakFastAccessibilityService : AccessibilityService() {
         }
         setServiceInfo(info)
         speechManager.initialize()
+        // FIX (stale play/pause state): broadcast ACTION_TTS_FINISHED to the
+        // floating player bar whenever speech stops, so its play/pause
+        // button resets to "▶" instead of staying stale.
+        serviceScope.launch {
+            speechManager.speechFinished.collect { finished ->
+                if (finished) sendTtsFinished()
+            }
+        }
         val filter = IntentFilter().apply {
             addAction(FloatingTriggerService.ACTION_READ)
             addAction(FloatingTriggerService.ACTION_READ_RECT)
@@ -149,6 +174,7 @@ class SpeakFastAccessibilityService : AccessibilityService() {
     }
 
     override fun onDestroy() {
+        serviceScope.cancel()
         try { unregisterReceiver(commandReceiver) } catch (e: Exception) {}
         speechManager.shutdown()
         super.onDestroy()

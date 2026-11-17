@@ -1,14 +1,17 @@
 package com.debk007.speakfast.ui
 
 import android.app.Service
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.PixelFormat
 import android.graphics.Rect
 import android.graphics.drawable.GradientDrawable
+import android.os.Build
 import android.os.IBinder
 import android.view.Gravity
 import android.view.MotionEvent
@@ -33,6 +36,7 @@ class FloatingTriggerService : Service() {
         const val ACTION_RESUME = "com.debk007.speakfast.ACTION_RESUME"
         const val ACTION_REWIND = "com.debk007.speakfast.ACTION_REWIND"
         const val ACTION_FORWARD = "com.debk007.speakfast.ACTION_FORWARD"
+        const val ACTION_TTS_FINISHED = "com.debk007.speakfast.ACTION_TTS_FINISHED"
     }
 
     private lateinit var wm: WindowManager
@@ -42,6 +46,23 @@ class FloatingTriggerService : Service() {
     private var selectionView: SelectionView? = null
     private var playerVisible = false
     private var started = false
+    private var isPausedByUser = false
+    private var playPauseButton: TextView? = null
+
+    /**
+     * FIX (stale play/pause state): receives ACTION_TTS_FINISHED from
+     * SpeakFastAccessibilityService so the play/pause button resets to "▶"
+     * when speech ends on its own (natural end of the last sentence, OCR
+     * result finishing, or an explicit stop).
+     */
+    private val ttsFinishedReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            if (intent.action != ACTION_TTS_FINISHED || !playerVisible) return
+            started = false
+            isPausedByUser = false
+            playPauseButton?.text = "▶"
+        }
+    }
 
     override fun onBind(intent: Intent?): IBinder? = null
 
@@ -49,6 +70,12 @@ class FloatingTriggerService : Service() {
         super.onCreate()
         wm = getSystemService(WINDOW_SERVICE) as WindowManager
         createBubble()
+        val filter = IntentFilter(ACTION_TTS_FINISHED)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            registerReceiver(ttsFinishedReceiver, filter, Context.RECEIVER_NOT_EXPORTED)
+        } else {
+            registerReceiver(ttsFinishedReceiver, filter)
+        }
     }
 
     private fun dp(v: Int): Int = (v * resources.displayMetrics.density).toInt()
@@ -90,6 +117,7 @@ class FloatingTriggerService : Service() {
     private fun showPlayer() {
         playerVisible = true
         started = false
+        isPausedByUser = false
         bubble.visibility = View.GONE
 
         // FIX: Remove FLAG_NOT_FOCUSABLE so SelectionView receives touch events
@@ -115,12 +143,16 @@ class FloatingTriggerService : Service() {
             orientation = LinearLayout.HORIZONTAL
             visibility = View.GONE
         }
-        extraGroup.addView(barButton("⚙") { startActivity(Intent(this@FloatingTriggerService, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)) })
-        extraGroup.addView(barButton("⏮") { send(ACTION_REWIND) })
-        extraGroup.addView(barButton("⏭") { send(ACTION_FORWARD) })
+        // FIX (accessibility): icon-only buttons now carry contentDescription
+        extraGroup.addView(barButton("⚙", "Settings") {
+            startActivity(Intent(this@FloatingTriggerService, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+        })
+        extraGroup.addView(barButton("⏮", "Rewind") { send(ACTION_REWIND) })
+        extraGroup.addView(barButton("⏭", "Forward") { send(ACTION_FORWARD) })
 
         val arrow = TextView(this).apply {
             text = "›"
+            contentDescription = "Toggle extra controls"
             textSize = 18f
             setTextColor(Color.WHITE)
             gravity = Gravity.CENTER
@@ -135,20 +167,38 @@ class FloatingTriggerService : Service() {
 
         val playPause = TextView(this).apply {
             text = "▶"
+            contentDescription = "Play or Pause"
             textSize = 18f
             setTextColor(Color.WHITE)
             gravity = Gravity.CENTER
             val pad = dp(12)
             setPadding(pad, pad, pad, pad)
             setOnClickListener {
-                if (!started) { started = true; send(ACTION_READ); text = "⏸" }
-                else if (text == "▶") { send(ACTION_RESUME); text = "⏸" }
-                else { send(ACTION_PAUSE); text = "▶" }
+                when {
+                    !started -> {
+                        started = true
+                        isPausedByUser = false
+                        send(ACTION_READ)
+                        text = "⏸"
+                    }
+                    isPausedByUser -> {
+                        isPausedByUser = false
+                        send(ACTION_RESUME)
+                        text = "⏸"
+                    }
+                    else -> {
+                        isPausedByUser = true
+                        send(ACTION_PAUSE)
+                        text = "▶"
+                    }
+                }
             }
         }
+        playPauseButton = playPause
 
         val stop = TextView(this).apply {
             text = "■"
+            contentDescription = "Stop"
             textSize = 18f
             setTextColor(Color.WHITE)
             gravity = Gravity.CENTER
@@ -158,6 +208,7 @@ class FloatingTriggerService : Service() {
             setOnClickListener {
                 send(ACTION_STOP)
                 started = false
+                isPausedByUser = false
                 hidePlayer()
             }
         }
@@ -182,11 +233,13 @@ class FloatingTriggerService : Service() {
         playerBar?.let { wm.removeView(it) }
         selectionView = null
         playerBar = null
+        playPauseButton = null
         bubble.visibility = View.VISIBLE
     }
 
-    private fun barButton(icon: String, onClick: () -> Unit): TextView = TextView(this).apply {
+    private fun barButton(icon: String, contentDescription: String, onClick: () -> Unit): TextView = TextView(this).apply {
         text = icon
+        this.contentDescription = contentDescription
         textSize = 18f
         setTextColor(Color.WHITE)
         gravity = Gravity.CENTER
@@ -250,6 +303,7 @@ class FloatingTriggerService : Service() {
     }
 
     override fun onDestroy() {
+        try { unregisterReceiver(ttsFinishedReceiver) } catch (e: Exception) {}
         if (playerVisible) hidePlayer()
         if (::bubble.isInitialized) wm.removeView(bubble)
         super.onDestroy()

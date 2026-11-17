@@ -32,9 +32,22 @@ class SpeechManager @Inject constructor(
     private val _localesState = MutableStateFlow<List<Locale>>(emptyList())
     val localesState: StateFlow<List<Locale>> = _localesState.asStateFlow()
 
+    // FIX (stale play/pause state): emits true whenever speech stops
+    // (natural end, pause, stop, or TTS error) so UIs can reset their state.
+    private val _speechFinished = MutableStateFlow(false)
+    val speechFinished: StateFlow<Boolean> = _speechFinished.asStateFlow()
+
     init {
         scope.launch {
             settingsManager.settingsFlow.collect { if (isInitialized) updateSpeechSettings() }
+        }
+    }
+
+    private fun notifySpeechFinished() {
+        _speechFinished.value = true
+        scope.launch {
+            kotlinx.coroutines.delay(150)
+            _speechFinished.value = false
         }
     }
 
@@ -52,11 +65,15 @@ class SpeechManager @Inject constructor(
                     override fun onDone(utteranceId: String?) {
                         if (isPlaying) {
                             currentIndex++
-                            if (currentIndex < sentences.size) speakCurrent() else isPlaying = false
+                            if (currentIndex < sentences.size) speakCurrent()
+                            else { isPlaying = false; notifySpeechFinished() }
                         }
                     }
                     @Deprecated("Deprecated in Java")
-                    override fun onError(utteranceId: String?) { isPlaying = false }
+                    override fun onError(utteranceId: String?) {
+                        isPlaying = false
+                        notifySpeechFinished()
+                    }
                 })
             } else {
                 Log.e("SpeakFast", "TTS init failed: $status")
@@ -90,11 +107,16 @@ class SpeechManager @Inject constructor(
         textToSpeech?.speak(sentences[currentIndex], TextToSpeech.QUEUE_FLUSH, null, "sf_$currentIndex")
     }
 
-    fun pause() { isPlaying = false; textToSpeech?.stop() }
+    fun pause() {
+        if (isPlaying) { isPlaying = false; textToSpeech?.stop(); notifySpeechFinished() }
+    }
     fun resume() { if (sentences.isNotEmpty()) { isPlaying = true; speakCurrent() } }
     fun rewind() { if (sentences.isNotEmpty()) { currentIndex = (currentIndex - 1).coerceAtLeast(0); isPlaying = true; speakCurrent() } }
     fun forward() { if (sentences.isNotEmpty()) { currentIndex = (currentIndex + 1).coerceAtMost(sentences.size - 1); isPlaying = true; speakCurrent() } }
-    fun stop() { isPlaying = false; sentences.clear(); currentIndex = 0; textToSpeech?.stop() }
+    fun stop() {
+        if (isPlaying || sentences.isNotEmpty()) notifySpeechFinished()
+        isPlaying = false; sentences.clear(); currentIndex = 0; textToSpeech?.stop()
+    }
     fun refreshSettings() { if (isInitialized) updateSpeechSettings() }
 
     private fun updateSpeechSettings() {
