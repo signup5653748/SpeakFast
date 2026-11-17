@@ -28,6 +28,7 @@ class SettingsManager(private val context: Context) {
         val OCR_ENABLED_KEY = booleanPreferencesKey("ocr_enabled")
         val READ_EXACT_SELECTION_KEY = booleanPreferencesKey("read_exact_selection")
         val TRIGGER_METHOD_KEY = stringPreferencesKey("trigger_method")
+        val TTS_ENGINE_KEY = stringPreferencesKey("tts_engine")
     }
 
     val settingsFlow: Flow<Settings> = context.dataStore.data.map { it.toSettings() }
@@ -42,7 +43,8 @@ class SettingsManager(private val context: Context) {
             pitch = this[PITCH_KEY] ?: 1.0f,
             ocrEnabled = this[OCR_ENABLED_KEY] ?: false,
             readExactSelection = this[READ_EXACT_SELECTION_KEY] ?: true,
-            triggerMethod = TriggerMethod.fromString(this[TRIGGER_METHOD_KEY] ?: "quick_settings_tile")
+            triggerMethod = TriggerMethod.fromString(this[TRIGGER_METHOD_KEY] ?: "quick_settings_tile"),
+            ttsEngine = this[TTS_ENGINE_KEY] ?: ""
         )
     }
 
@@ -78,6 +80,11 @@ class SettingsManager(private val context: Context) {
 
     suspend fun updateTriggerMethod(triggerMethod: TriggerMethod): Settings {
         context.dataStore.edit { it[TRIGGER_METHOD_KEY] = triggerMethod.name.lowercase() }
+        return getSettings()
+    }
+
+    suspend fun updateTtsEngine(engineName: String): Settings {
+        context.dataStore.edit { it[TTS_ENGINE_KEY] = engineName }
         return getSettings()
     }
 }

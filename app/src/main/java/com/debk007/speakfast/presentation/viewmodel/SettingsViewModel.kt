@@ -1,5 +1,6 @@
 package com.debk007.speakfast.presentation.viewmodel
 
+import android.speech.tts.TextToSpeech
 import android.speech.tts.Voice
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -31,6 +32,7 @@ class SettingsViewModel @Inject constructor(
     val uiState: StateFlow<SettingsUiState> = _uiState.asStateFlow()
 
     val ttsLocales: StateFlow<List<Locale>> = speechManager.localesState
+    val ttsEngines: StateFlow<List<TextToSpeech.EngineInfo>> = speechManager.enginesState
 
     init { loadSettings() }
 
@@ -81,6 +83,13 @@ class SettingsViewModel @Inject constructor(
 
     fun updateTriggerMethod(triggerMethod: TriggerMethod) {
         viewModelScope.launch { settingsManager.updateTriggerMethod(triggerMethod) }
+    }
+
+    fun updateTtsEngine(engineName: String) {
+        viewModelScope.launch {
+            settingsManager.updateTtsEngine(engineName)
+            speechManager.reinitializeWithEngine(engineName)
+        }
     }
 
     fun clearError() { _uiState.value = _uiState.value.copy(errorMessage = null) }

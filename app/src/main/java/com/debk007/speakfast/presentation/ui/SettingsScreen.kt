@@ -1,5 +1,6 @@
 package com.debk007.speakfast.presentation.ui
 
+import android.speech.tts.TextToSpeech
 import android.speech.tts.Voice
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -30,7 +31,12 @@ import java.util.Locale
 fun SettingsScreen(viewModel: SettingsViewModel) {
     val uiState by viewModel.uiState.collectAsState()
     val locales by viewModel.ttsLocales.collectAsState()
+    val engines by viewModel.ttsEngines.collectAsState()
     val settings = uiState.settings
+
+    // Safe Engine Selection
+    val safeEngineIndex = engines.indexOfFirst { it.name == (settings?.ttsEngine ?: "") }.coerceAtLeast(0)
+    val currentEngine = engines.getOrElse(safeEngineIndex) { null }
 
     // Safe Language Selection - prevents divide by zero when locales is empty
     val safeLocaleIndex = locales.indexOfFirst { it.toLanguageTag() == (settings?.languageCode ?: "") }.coerceAtLeast(0)
@@ -74,6 +80,43 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                     )
                     Button(onClick = { viewModel.clearError() }) {
                         Text("Dismiss")
+                    }
+                }
+            }
+
+            // TTS Engine Selector
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "TTS Engine: ${currentEngine?.label ?: "System Default"}",
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                Row {
+                    Button(
+                        onClick = {
+                            if (engines.isNotEmpty()) {
+                                val nextIndex = (safeEngineIndex - 1 + engines.size) % engines.size
+                                viewModel.updateTtsEngine(engines[nextIndex].name)
+                            }
+                        },
+                        enabled = engines.isNotEmpty()
+                    ) {
+                        Text("◀", modifier = Modifier.semantics { contentDescription = "Previous TTS engine" })
+                    }
+                    Button(
+                        onClick = {
+                            if (engines.isNotEmpty()) {
+                                val nextIndex = (safeEngineIndex + 1) % engines.size
+                                viewModel.updateTtsEngine(engines[nextIndex].name)
+                            }
+                        },
+                        enabled = engines.isNotEmpty()
+                    ) {
+                        Text("▶", modifier = Modifier.semantics { contentDescription = "Next TTS engine" })
                     }
                 }
             }

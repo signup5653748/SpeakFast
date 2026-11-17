@@ -32,6 +32,9 @@ class SpeechManager @Inject constructor(
     private val _localesState = MutableStateFlow<List<Locale>>(emptyList())
     val localesState: StateFlow<List<Locale>> = _localesState.asStateFlow()
 
+    private val _enginesState = MutableStateFlow<List<TextToSpeech.EngineInfo>>(emptyList())
+    val enginesState: StateFlow<List<TextToSpeech.EngineInfo>> = _enginesState.asStateFlow()
+
     // FIX (stale play/pause state): emits true whenever speech stops
     // (natural end, pause, stop, or TTS error) so UIs can reset their state.
     private val _speechFinished = MutableStateFlow(false)
@@ -53,33 +56,60 @@ class SpeechManager @Inject constructor(
 
     fun initialize() {
         if (isInitialized) return
-        textToSpeech = TextToSpeech(context) { status ->
-            if (status == TextToSpeech.SUCCESS) {
-                isInitialized = true
-                _localesState.value = (textToSpeech?.availableLanguages ?: emptyList())
-                    .distinctBy { it.toLanguageTag() }
-                    .sortedBy { it.displayLanguage }
-                updateSpeechSettings()
-                textToSpeech?.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
-                    override fun onStart(utteranceId: String?) {}
-                    override fun onDone(utteranceId: String?) {
-                        if (isPlaying) {
-                            currentIndex++
-                            if (currentIndex < sentences.size) speakCurrent()
-                            else { isPlaying = false; notifySpeechFinished() }
-                        }
-                    }
-                    @Deprecated("Deprecated in Java")
-                    override fun onError(utteranceId: String?) {
-                        isPlaying = false
-                        notifySpeechFinished()
-                    }
-                })
-                Log.d("SpeechManager", "TTS initialized successfully")
-            } else {
-                Log.e("SpeechManager", "TTS init failed: $status")
-            }
+        val settings = settingsManager.getSettings()
+        val engine = if (settings.ttsEngine.isNotEmpty()) settings.ttsEngine else ""
+        textToSpeech = if (engine.isNotEmpty()) {
+            TextToSpeech(context, { status -> onInit(status) }, engine)
+        } else {
+            TextToSpeech(context, { status -> onInit(status) })
         }
+        loadEngines()
+    }
+
+    private fun onInit(status: Int) {
+        if (status == TextToSpeech.SUCCESS) {
+            isInitialized = true
+            updateLocales()
+            updateSpeechSettings()
+            textToSpeech?.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
+                override fun onStart(utteranceId: String?) {}
+                override fun onDone(utteranceId: String?) {
+                    if (isPlaying) {
+                        currentIndex++
+                        if (currentIndex < sentences.size) speakCurrent()
+                        else { isPlaying = false; notifySpeechFinished() }
+                    }
+                }
+                @Deprecated("Deprecated in Java")
+                override fun onError(utteranceId: String?) {
+                    isPlaying = false
+                    notifySpeechFinished()
+                }
+            })
+            Log.d("SpeechManager", "TTS initialized successfully")
+        } else {
+            Log.e("SpeechManager", "TTS init failed: $status")
+        }
+    }
+
+    private fun loadEngines() {
+        val tts = TextToSpeech(context, { })
+        val engines = tts.engines
+        _enginesState.value = engines
+        tts.shutdown()
+    }
+
+    fun getEngines(): List<TextToSpeech.EngineInfo> = _enginesState.value
+
+    fun reinitializeWithEngine(engineName: String) {
+        shutdown()
+        textToSpeech = TextToSpeech(context, { status -> onInit(status) }, engineName)
+    }
+
+    private fun updateLocales() {
+        _localesState.value = (textToSpeech?.availableLanguages ?: emptyList())
+            .distinctBy { it.toLanguageTag() }
+            .sortedBy { it.displayLanguage }
     }
 
     fun voicesFor(locale: Locale): List<Voice> =
@@ -92,10 +122,10 @@ class SpeechManager @Inject constructor(
     }.getOrDefault(false)
 
     fun speakScreen(text: String) {
-        if (!isInitialized) { 
+        if (!isInitialized) {
             Log.w("SpeechManager", "TTS not initialized, initializing now")
-            initialize(); 
-            return 
+            initialize()
+            return
         }
         sentences.clear()
         sentences.addAll(text.split(Regex("(?<=[.!?\\n])")).map { it.trim() }.filter { it.isNotEmpty() })
