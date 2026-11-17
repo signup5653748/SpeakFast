@@ -29,6 +29,7 @@ jobs:
       uses: actions/checkout@v4
       with:
         lfs: true
+        fetch-depth: 0
 
     - name: Detect Everything
       id: detect
@@ -106,6 +107,7 @@ jobs:
       uses: actions/checkout@v4
       with:
         lfs: true
+        fetch-depth: 0
 
     - name: Set up JDK
       uses: actions/setup-java@v4
@@ -138,7 +140,7 @@ jobs:
         $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platforms;android-${{ needs.detect.outputs.compile_sdk }}" "build-tools;35.0.0" || true
 
     - name: Decode Keystore
-      working-directory: ${{ needs.detect.outputs.gradle_dir }} # ✅ CRITICAL FIX: Ensures keystore is in the correct module directory
+      working-directory: ${{ needs.detect.outputs.gradle_dir }}
       run: |
         if [ -z "${{ secrets.KEYSTORE_BASE64 }}" ]; then
           echo "::error::KEYSTORE_BASE64 secret is not set."
@@ -172,8 +174,16 @@ jobs:
         cp "$FOUND" ./SpeakFast-release.apk
         echo "apk_path=./SpeakFast-release.apk" >> "$GITHUB_OUTPUT"
 
+    - name: Get Latest Commit Message
+      id: commit_info
+      run: |
+        COMMIT_MSG=$(git log -1 --pretty=format:"%s")
+        echo "message<<EOF" >> $GITHUB_OUTPUT
+        echo "$COMMIT_MSG" >> $GITHUB_OUTPUT
+        echo "EOF" >> $GITHUB_OUTPUT
+
+    # ✅ ALWAYS upload as GitHub Release (no conditions)
     - name: Create GitHub Release (Latest)
-      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
       uses: softprops/action-gh-release@v2
       with:
         tag_name: latest
@@ -181,8 +191,11 @@ jobs:
         body: |
           🚀 **Latest signed release APK**
           
-          Built from commit: `${{ github.sha }}`
-          Date: ${{ github.event.head_commit.timestamp }}
+          📝 **Latest Commit:** ${{ steps.commit_info.outputs.message }}
+          🔗 **Commit Hash:** `${{ github.sha }}`
+          📅 **Date:** ${{ github.event.head_commit.timestamp || github.event.repository.updated_at }}
+          🌿 **Branch:** `${{ github.ref_name }}`
+          ⚡ **Trigger:** ${{ github.event_name }}
           
           **Download the `.apk` file below and install it on your Android device.**
         files: ${{ steps.find_apk.outputs.apk_path }}
@@ -190,8 +203,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Upload APK Artifact (for PRs)
-      if: github.event_name == 'pull_request' || github.ref != 'refs/heads/main'
+    # ✅ ALWAYS upload as artifact (backup)
+    - name: Upload APK Artifact
       uses: actions/upload-artifact@v4
       with:
         name: SpeakFast-APK
