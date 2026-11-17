@@ -7,12 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Surface
@@ -37,13 +32,14 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
     val locales by viewModel.ttsLocales.collectAsState()
     val settings = uiState.settings
 
-    val currentLocale = locales.firstOrNull { it.toLanguageTag() == (settings?.languageCode ?: "") }
-        ?: Locale.forLanguageTag(settings?.languageCode ?: "en-US")
-    val voices: List<Voice> = viewModel.voicesFor(currentLocale)
-    val currentVoice = voices.firstOrNull { it.name == (settings?.voice ?: "") } ?: voices.firstOrNull()
+    // Safe Language Selection - prevents divide by zero when locales is empty
+    val safeLocaleIndex = locales.indexOfFirst { it.toLanguageTag() == (settings?.languageCode ?: "") }.coerceAtLeast(0)
+    val currentLocale = locales.getOrElse(safeLocaleIndex) { Locale.getDefault() }
 
-    val currentLocaleIndex = locales.indexOf(currentLocale).coerceAtLeast(0)
-    val currentVoiceIndex = voices.indexOf(currentVoice).coerceAtLeast(0)
+    // Safe Voice Selection - prevents divide by zero when voices is empty
+    val voices = viewModel.voicesFor(currentLocale)
+    val safeVoiceIndex = voices.indexOfFirst { it.name == (settings?.voice ?: "") }.coerceAtLeast(0)
+    val currentVoice = voices.getOrElse(safeVoiceIndex) { null }
 
     Surface(
         modifier = Modifier
@@ -82,52 +78,63 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                 }
             }
 
+            // Language Selector with safe cycling
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Language: ${currentLocale.displayLanguage}",
+                    text = "Language: ${currentLocale.displayLanguage} (${currentLocale.displayCountry})",
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 Row {
                     Button(
                         onClick = {
-                            val nextIndex = (currentLocaleIndex - 1 + locales.size) % locales.size
-                            viewModel.updateLanguage(locales[nextIndex].toLanguageTag())
-                        }
+                            if (locales.isNotEmpty()) {
+                                val nextIndex = (safeLocaleIndex - 1 + locales.size) % locales.size
+                                viewModel.updateLanguage(locales[nextIndex].toLanguageTag())
+                            }
+                        },
+                        enabled = locales.isNotEmpty()
                     ) {
                         Text("◀", modifier = Modifier.semantics { contentDescription = "Previous language" })
                     }
                     Button(
                         onClick = {
-                            val nextIndex = (currentLocaleIndex + 1) % locales.size
-                            viewModel.updateLanguage(locales[nextIndex].toLanguageTag())
-                        }
+                            if (locales.isNotEmpty()) {
+                                val nextIndex = (safeLocaleIndex + 1) % locales.size
+                                viewModel.updateLanguage(locales[nextIndex].toLanguageTag())
+                            }
+                        },
+                        enabled = locales.isNotEmpty()
                     ) {
                         Text("▶", modifier = Modifier.semantics { contentDescription = "Next language" })
                     }
                 }
             }
 
+            // Voice Selector with safe cycling
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                val label = currentVoice?.let { "${it.name} [${if (viewModel.isOnline(it)) "online" else "offline"}]" } ?: "No voices"
+                val voiceLabel = currentVoice?.let {
+                    "${it.name} (${if (viewModel.isOnline(it)) "Online" else "Offline"})"
+                } ?: "No voices available"
+                
                 Text(
-                    text = "Voice: $label",
-                    style = MaterialTheme.typography.bodySmall,
+                    text = "Voice: $voiceLabel",
+                    style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 Row {
                     Button(
                         onClick = {
                             if (voices.isNotEmpty()) {
-                                val nextIndex = (currentVoiceIndex - 1 + voices.size) % voices.size
+                                val nextIndex = (safeVoiceIndex - 1 + voices.size) % voices.size
                                 viewModel.updateVoice(voices[nextIndex].name)
                             }
                         },
@@ -138,7 +145,7 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                     Button(
                         onClick = {
                             if (voices.isNotEmpty()) {
-                                val nextIndex = (currentVoiceIndex + 1) % voices.size
+                                val nextIndex = (safeVoiceIndex + 1) % voices.size
                                 viewModel.updateVoice(voices[nextIndex].name)
                             }
                         },
@@ -149,6 +156,7 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                 }
             }
 
+            // Speech Rate Slider
             Column(modifier = Modifier.fillMaxWidth()) {
                 Text(
                     text = "Speech Rate: ${String.format("%.1f", settings?.speechRate ?: 1.0f)}",
@@ -166,6 +174,7 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                 )
             }
 
+            // Pitch Slider
             Column(modifier = Modifier.fillMaxWidth()) {
                 Text(
                     text = "Pitch: ${String.format("%.1f", settings?.pitch ?: 1.0f)}",
@@ -183,6 +192,7 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                 )
             }
 
+            // Read Exact Selection Switch
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -199,6 +209,7 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                 )
             }
 
+            // OCR Mode Switch
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
