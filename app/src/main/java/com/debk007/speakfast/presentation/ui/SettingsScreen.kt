@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
@@ -23,7 +24,6 @@ import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.debk007.speakfast.presentation.viewmodel.SettingsViewModel
 import java.util.Locale
 
@@ -34,19 +34,7 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
     val engines by viewModel.ttsEngines.collectAsState()
     val settings = uiState.settings
 
-    // Safe Engine Selection
-    val safeEngineIndex = engines.indexOfFirst { it.name == (settings?.ttsEngine ?: "") }.coerceAtLeast(0)
-    val currentEngine = engines.getOrElse(safeEngineIndex) { null }
-
-    // Safe Language Selection - prevents divide by zero when locales is empty
-    val safeLocaleIndex = locales.indexOfFirst { it.toLanguageTag() == (settings?.languageCode ?: "") }.coerceAtLeast(0)
-    val currentLocale = locales.getOrElse(safeLocaleIndex) { Locale.getDefault() }
-
-    // Safe Voice Selection - prevents divide by zero when voices is empty
-    val voices = viewModel.voicesFor(currentLocale)
-    val safeVoiceIndex = voices.indexOfFirst { it.name == (settings?.voice ?: "") }.coerceAtLeast(0)
-    val currentVoice = voices.getOrElse(safeVoiceIndex) { null }
-
+    // ✅ SAFE: Wrap everything in a Surface with 'surface' color
     Surface(
         modifier = Modifier
             .fillMaxSize()
@@ -65,141 +53,120 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                 color = MaterialTheme.colorScheme.onSurface
             )
 
-            val errorMsg = uiState.errorMessage
-            if (!errorMsg.isNullOrBlank()) {
+            // 1. TTS ENGINE SELECTOR
+            if (engines.isNotEmpty()) {
+                val currentEngineName = settings?.ttsEngine ?: ""
+                val currentEngine = engines.firstOrNull { it.name == currentEngineName } ?: engines.firstOrNull()
+                val engineIndex = engines.indexOf(currentEngine).coerceAtLeast(0)
+
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = errorMsg,
-                        color = MaterialTheme.colorScheme.error,
-                        style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.weight(1f)
+                        text = "TTS Engine: ${currentEngine?.label ?: "System Default"}",
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onSurface
                     )
-                    Button(onClick = { viewModel.clearError() }) {
-                        Text("Dismiss")
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Button(
+                            onClick = {
+                                val idx = (engineIndex - 1 + engines.size) % engines.size
+                                viewModel.updateTtsEngine(engines[idx].name)
+                            },
+                            enabled = engines.size > 1
+                        ) { Text("◀", modifier = Modifier.semantics { contentDescription = "Previous TTS engine" }) }
+                        Button(
+                            onClick = {
+                                val idx = (engineIndex + 1) % engines.size
+                                viewModel.updateTtsEngine(engines[idx].name)
+                            },
+                            enabled = engines.size > 1
+                        ) { Text("▶", modifier = Modifier.semantics { contentDescription = "Next TTS engine" }) }
                     }
                 }
             }
 
-            // TTS Engine Selector
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
+            // 2. LANGUAGE & VOICE SELECTORS
+            if (locales.isEmpty()) {
                 Text(
-                    text = "TTS Engine: ${currentEngine?.label ?: "System Default"}",
+                    text = "Loading TTS languages...",
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurface
                 )
-                Row {
-                    Button(
-                        onClick = {
-                            if (engines.isNotEmpty()) {
-                                val nextIndex = (safeEngineIndex - 1 + engines.size) % engines.size
-                                viewModel.updateTtsEngine(engines[nextIndex].name)
-                            }
-                        },
-                        enabled = engines.isNotEmpty()
-                    ) {
-                        Text("◀", modifier = Modifier.semantics { contentDescription = "Previous TTS engine" })
+            } else {
+                val safeLocaleIndex = locales.indexOfFirst { it.toLanguageTag() == (settings?.languageCode ?: "") }.coerceAtLeast(0)
+                val currentLocale = locales.getOrElse(safeLocaleIndex) { Locale.getDefault() }
+                val voices = viewModel.voicesFor(currentLocale)
+                val safeVoiceIndex = voices.indexOfFirst { it.name == (settings?.voice ?: "") }.coerceAtLeast(0)
+                val currentVoice = voices.getOrElse(safeVoiceIndex) { null }
+
+                // Language
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "Language: ${currentLocale.displayLanguage}",
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Button(
+                            onClick = {
+                                val idx = (safeLocaleIndex - 1 + locales.size) % locales.size
+                                viewModel.updateLanguage(locales[idx].toLanguageTag())
+                            },
+                            enabled = locales.isNotEmpty()
+                        ) { Text("◀", modifier = Modifier.semantics { contentDescription = "Previous language" }) }
+                        Button(
+                            onClick = {
+                                val idx = (safeLocaleIndex + 1) % locales.size
+                                viewModel.updateLanguage(locales[idx].toLanguageTag())
+                            },
+                            enabled = locales.isNotEmpty()
+                        ) { Text("▶", modifier = Modifier.semantics { contentDescription = "Next language" }) }
                     }
-                    Button(
-                        onClick = {
-                            if (engines.isNotEmpty()) {
-                                val nextIndex = (safeEngineIndex + 1) % engines.size
-                                viewModel.updateTtsEngine(engines[nextIndex].name)
-                            }
-                        },
-                        enabled = engines.isNotEmpty()
-                    ) {
-                        Text("▶", modifier = Modifier.semantics { contentDescription = "Next TTS engine" })
+                }
+
+                // Voice
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    val voiceLabel = currentVoice?.let { "${it.name} (${if (viewModel.isOnline(it)) "Online" else "Offline"})" } ?: "No voices"
+                    Text(
+                        text = "Voice: $voiceLabel",
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Button(
+                            onClick = {
+                                if (voices.isNotEmpty()) {
+                                    val idx = (safeVoiceIndex - 1 + voices.size) % voices.size
+                                    viewModel.updateVoice(voices[idx].name)
+                                }
+                            },
+                            enabled = voices.isNotEmpty()
+                        ) { Text("◀", modifier = Modifier.semantics { contentDescription = "Previous voice" }) }
+                        Button(
+                            onClick = {
+                                if (voices.isNotEmpty()) {
+                                    val idx = (safeVoiceIndex + 1) % voices.size
+                                    viewModel.updateVoice(voices[idx].name)
+                                }
+                            },
+                            enabled = voices.isNotEmpty()
+                        ) { Text("▶", modifier = Modifier.semantics { contentDescription = "Next voice" }) }
                     }
                 }
             }
 
-            // Language Selector with safe cycling
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "Language: ${currentLocale.displayLanguage} (${currentLocale.displayCountry})",
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-                Row {
-                    Button(
-                        onClick = {
-                            if (locales.isNotEmpty()) {
-                                val nextIndex = (safeLocaleIndex - 1 + locales.size) % locales.size
-                                viewModel.updateLanguage(locales[nextIndex].toLanguageTag())
-                            }
-                        },
-                        enabled = locales.isNotEmpty()
-                    ) {
-                        Text("◀", modifier = Modifier.semantics { contentDescription = "Previous language" })
-                    }
-                    Button(
-                        onClick = {
-                            if (locales.isNotEmpty()) {
-                                val nextIndex = (safeLocaleIndex + 1) % locales.size
-                                viewModel.updateLanguage(locales[nextIndex].toLanguageTag())
-                            }
-                        },
-                        enabled = locales.isNotEmpty()
-                    ) {
-                        Text("▶", modifier = Modifier.semantics { contentDescription = "Next language" })
-                    }
-                }
-            }
-
-            // Voice Selector with safe cycling
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                val voiceLabel = currentVoice?.let {
-                    "${it.name} (${if (viewModel.isOnline(it)) "Online" else "Offline"})"
-                } ?: "No voices available"
-                
-                Text(
-                    text = "Voice: $voiceLabel",
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-                Row {
-                    Button(
-                        onClick = {
-                            if (voices.isNotEmpty()) {
-                                val nextIndex = (safeVoiceIndex - 1 + voices.size) % voices.size
-                                viewModel.updateVoice(voices[nextIndex].name)
-                            }
-                        },
-                        enabled = voices.isNotEmpty()
-                    ) {
-                        Text("◀", modifier = Modifier.semantics { contentDescription = "Previous voice" })
-                    }
-                    Button(
-                        onClick = {
-                            if (voices.isNotEmpty()) {
-                                val nextIndex = (safeVoiceIndex + 1) % voices.size
-                                viewModel.updateVoice(voices[nextIndex].name)
-                            }
-                        },
-                        enabled = voices.isNotEmpty()
-                    ) {
-                        Text("▶", modifier = Modifier.semantics { contentDescription = "Next voice" })
-                    }
-                }
-            }
-
-            // Speech Rate Slider
+            // 3. SPEECH RATE
             Column(modifier = Modifier.fillMaxWidth()) {
                 Text(
                     text = "Speech Rate: ${String.format("%.1f", settings?.speechRate ?: 1.0f)}",
@@ -211,13 +178,11 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                     onValueChange = { viewModel.updateSpeechRate(it) },
                     valueRange = 0.5f..2.0f,
                     steps = 15,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 8.dp)
+                    modifier = Modifier.fillMaxWidth().semantics { contentDescription = "Adjust speech rate" }
                 )
             }
 
-            // Pitch Slider
+            // 4. PITCH
             Column(modifier = Modifier.fillMaxWidth()) {
                 Text(
                     text = "Pitch: ${String.format("%.1f", settings?.pitch ?: 1.0f)}",
@@ -229,13 +194,11 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                     onValueChange = { viewModel.updatePitch(it) },
                     valueRange = 0.5f..2.0f,
                     steps = 15,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 8.dp)
+                    modifier = Modifier.fillMaxWidth().semantics { contentDescription = "Adjust pitch" }
                 )
             }
 
-            // Read Exact Selection Switch
+            // 5. READ EXACT SELECTION
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -248,11 +211,12 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                 )
                 Switch(
                     checked = settings?.readExactSelection ?: true,
-                    onCheckedChange = { viewModel.updateReadExactSelection(it) }
+                    onCheckedChange = { viewModel.updateReadExactSelection(it) },
+                    modifier = Modifier.semantics { contentDescription = "Toggle read exact selection" }
                 )
             }
 
-            // OCR Mode Switch
+            // 6. OCR MODE
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -265,7 +229,8 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                 )
                 Switch(
                     checked = settings?.ocrEnabled ?: false,
-                    onCheckedChange = { viewModel.updateOcrEnabled(it) }
+                    onCheckedChange = { viewModel.updateOcrEnabled(it) },
+                    modifier = Modifier.semantics { contentDescription = "Toggle OCR mode" }
                 )
             }
         }
