@@ -34,7 +34,13 @@ class SettingsViewModel @Inject constructor(
     val ttsLocales: StateFlow<List<Locale>> = speechManager.localesState
     val ttsEngines: StateFlow<List<TextToSpeech.EngineInfo>> = speechManager.enginesState
 
-    init { loadSettings() }
+    init {
+        // ✅ CRITICAL FIX: Initialize TTS so engines/locales populate even when
+        // the Accessibility Service is disabled. Without this, the lists stay empty
+        // and the Engine/Language/Voice selectors never appear.
+        speechManager.initialize()
+        loadSettings()
+    }
 
     private fun loadSettings() {
         viewModelScope.launch {
