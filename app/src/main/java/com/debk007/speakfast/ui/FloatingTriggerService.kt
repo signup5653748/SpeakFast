@@ -120,11 +120,13 @@ class FloatingTriggerService : Service() {
         isPausedByUser = false
         bubble.visibility = View.GONE
 
-        // FIX: Remove FLAG_NOT_FOCUSABLE so SelectionView receives touch events
+        // FIX (BUG 1): SelectionView must NOT steal accessibility focus.
+        // FLAG_NOT_FOCUSABLE prevents it from becoming the "active window"
+        // so rootInActiveWindow returns the underlying app instead of this overlay.
         val overlayParams = WindowManager.LayoutParams(
             WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT,
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
-            WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
+            WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
             PixelFormat.TRANSLUCENT
         )
 

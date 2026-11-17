@@ -36,7 +36,7 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
     val settings = uiState.settings
 
     // FIX (language fallback edge case): if the saved languageCode is not in the
-    // TTS locale list, indexOf returns -1. coalesceAt(0) maps -1 -> 0 so the
+    // TTS locale list, indexOf returns -1. coerceAtLeast(0) maps -1 -> 0 so the
     // ◀/▶ buttons always wrap around the available locales and never index
     // negatively or jump to arbitrary locales.
     val currentLocale = locales.firstOrNull { it.toLanguageTag() == (settings?.languageCode ?: "") }
@@ -51,7 +51,7 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
             .fillMaxSize()
             .padding(16.dp)
             .clearAndSetSemantics { },
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Text("Settings", style = MaterialTheme.typography.headlineLarge)
 
@@ -84,38 +84,62 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
         if (locales.isEmpty()) {
             Text("Loading TTS languages...", style = MaterialTheme.typography.bodyLarge)
         } else {
+            // LANGUAGE SETTING
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text("Language: ${currentLocale.displayLanguage}", style = MaterialTheme.typography.bodyLarge)
-                Row {
-                    Button(onClick = {
-                        val idx = (currentLocaleIndex - 1 + locales.size) % locales.size
-                        viewModel.updateLanguage(locales[idx].toLanguageTag())
-                    }) {
-                        Text("◀", modifier = Modifier.semantics { contentDescription = "Previous language" })
+                Text(
+                    text = "Language: ${currentLocale.displayLanguage}",
+                    style = MaterialTheme.typography.bodyLarge
+                )
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Button(
+                        onClick = {
+                            val idx = (currentLocaleIndex - 1 + locales.size) % locales.size
+                            viewModel.updateLanguage(locales[idx].toLanguageTag())
+                        }
+                    ) {
+                        Text(
+                            "◀",
+                            modifier = Modifier.semantics { contentDescription = "Previous language" }
+                        )
                     }
-                    Button(onClick = {
-                        val idx = (currentLocaleIndex + 1) % locales.size
-                        viewModel.updateLanguage(locales[idx].toLanguageTag())
-                    }) {
-                        Text("▶", modifier = Modifier.semantics { contentDescription = "Next language" })
+                    Button(
+                        onClick = {
+                            val idx = (currentLocaleIndex + 1) % locales.size
+                            viewModel.updateLanguage(locales[idx].toLanguageTag())
+                        }
+                    ) {
+                        Text(
+                            "▶",
+                            modifier = Modifier.semantics { contentDescription = "Next language" }
+                        )
                     }
                 }
             }
 
+            // VOICE VARIANT SETTING
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                val label = currentVoice?.let {
+                val voiceLabel = currentVoice?.let {
                     "${it.name} [${if (viewModel.isOnline(it)) "online" else "offline"}]"
-                } ?: "No voices"
-                Text("Voice: $label", style = MaterialTheme.typography.bodySmall)
-                Row {
+                } ?: "No voices available"
+                Text(
+                    text = "Voice Variant: $voiceLabel",
+                    style = MaterialTheme.typography.bodyLarge
+                )
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     Button(
                         onClick = {
                             if (voices.isNotEmpty()) {
@@ -125,7 +149,10 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                         },
                         enabled = voices.isNotEmpty()
                     ) {
-                        Text("◀", modifier = Modifier.semantics { contentDescription = "Previous voice" })
+                        Text(
+                            "◀",
+                            modifier = Modifier.semantics { contentDescription = "Previous voice" }
+                        )
                     }
                     Button(
                         onClick = {
@@ -136,41 +163,23 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                         },
                         enabled = voices.isNotEmpty()
                     ) {
-                        Text("▶", modifier = Modifier.semantics { contentDescription = "Next voice" })
+                        Text(
+                            "▶",
+                            modifier = Modifier.semantics { contentDescription = "Next voice" }
+                        )
                     }
                 }
             }
         }
 
+        // SPEECH RATE SETTING
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text("Read exact selection", style = MaterialTheme.typography.bodyLarge)
-            Switch(
-                checked = settings?.readExactSelection ?: true,
-                onCheckedChange = { viewModel.updateReadExactSelection(it) }
-            )
-        }
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text("OCR Mode (read images)", style = MaterialTheme.typography.bodyLarge)
-            Switch(
-                checked = settings?.ocrEnabled ?: false,
-                onCheckedChange = { viewModel.updateOcrEnabled(it) }
-            )
-        }
-
-        // FIX (speech rate control): was display-only Text, now a 0.5f–2.0f
-        // slider with 15 steps (0.1 increments) wired to the ViewModel.
-        Column {
             Text(
-                "Speech Rate: ${String.format("%.1f", settings?.speechRate ?: 1.0f)}",
+                text = "Speech Rate: ${String.format("%.1f", settings?.speechRate ?: 1.0f)}",
                 style = MaterialTheme.typography.bodyLarge
             )
             Slider(
@@ -178,14 +187,21 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                 onValueChange = { viewModel.updateSpeechRate(it) },
                 valueRange = 0.5f..2.0f,
                 steps = 15,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .width(200.dp)
+                    .semantics { contentDescription = "Adjust speech rate" }
             )
         }
 
-        // FIX (pitch control): same treatment as speech rate.
-        Column {
+        // PITCH SETTING
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Text(
-                "Pitch: ${String.format("%.1f", settings?.pitch ?: 1.0f)}",
+                text = "Pitch: ${String.format("%.1f", settings?.pitch ?: 1.0f)}",
                 style = MaterialTheme.typography.bodyLarge
             )
             Slider(
@@ -193,7 +209,44 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                 onValueChange = { viewModel.updatePitch(it) },
                 valueRange = 0.5f..2.0f,
                 steps = 15,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .width(200.dp)
+                    .semantics { contentDescription = "Adjust pitch" }
+            )
+        }
+
+        // READ EXACT SELECTION SETTING
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "Read Exact Selection",
+                style = MaterialTheme.typography.bodyLarge
+            )
+            Switch(
+                checked = settings?.readExactSelection ?: true,
+                onCheckedChange = { viewModel.updateReadExactSelection(it) },
+                modifier = Modifier.semantics { contentDescription = "Toggle read exact selection" }
+            )
+        }
+
+        // OCR MODE SETTING
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "OCR Mode (Read Images)",
+                style = MaterialTheme.typography.bodyLarge
+            )
+            Switch(
+                checked = settings?.ocrEnabled ?: false,
+                onCheckedChange = { viewModel.updateOcrEnabled(it) },
+                modifier = Modifier.semantics { contentDescription = "Toggle OCR mode" }
             )
         }
     }
