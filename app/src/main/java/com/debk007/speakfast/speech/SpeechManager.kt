@@ -75,8 +75,9 @@ class SpeechManager @Inject constructor(
                         notifySpeechFinished()
                     }
                 })
+                Log.d("SpeechManager", "TTS initialized successfully")
             } else {
-                Log.e("SpeakFast", "TTS init failed: $status")
+                Log.e("SpeechManager", "TTS init failed: $status")
             }
         }
     }
@@ -91,7 +92,11 @@ class SpeechManager @Inject constructor(
     }.getOrDefault(false)
 
     fun speakScreen(text: String) {
-        if (!isInitialized) { initialize(); return }
+        if (!isInitialized) { 
+            Log.w("SpeechManager", "TTS not initialized, initializing now")
+            initialize(); 
+            return 
+        }
         sentences.clear()
         sentences.addAll(text.split(Regex("(?<=[.!?\\n])")).map { it.trim() }.filter { it.isNotEmpty() })
         if (sentences.isEmpty()) sentences.add(text)
@@ -104,7 +109,9 @@ class SpeechManager @Inject constructor(
 
     private fun speakCurrent() {
         if (currentIndex !in sentences.indices) { isPlaying = false; return }
-        textToSpeech?.speak(sentences[currentIndex], TextToSpeech.QUEUE_FLUSH, null, "sf_$currentIndex")
+        val utterance = sentences[currentIndex]
+        Log.d("SpeechManager", "Speaking: $utterance")
+        textToSpeech?.speak(utterance, TextToSpeech.QUEUE_FLUSH, null, "sf_$currentIndex")
     }
 
     fun pause() {

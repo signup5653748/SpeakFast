@@ -138,8 +138,17 @@ class SpeakFastAccessibilityService : AccessibilityService() {
                 val t = PreciseTextExtractor.extract(node, rect, precise)
                 t.ifBlank { null }
             }
-            if (texts.isEmpty()) triggerOcrFallback(rect)
-            else speechManager.speakScreen(texts.joinToString(" "))
+            
+            // FIX (Select-to-Speak): Log extracted text and handle empty case
+            Log.d(TAG, "Found ${texts.size} text nodes in selection rect: $rect")
+            if (texts.isEmpty()) {
+                Log.w(TAG, "No text extracted from selection, triggering OCR fallback")
+                triggerOcrFallback(rect)
+            } else {
+                val extractedText = texts.joinToString(" ")
+                Log.d(TAG, "Extracted text: $extractedText")
+                speechManager.speakScreen(extractedText)
+            }
         } finally {
             nodes.forEach { it.recycle() }
             if (nodes.none { it === root }) root.recycle()
@@ -154,6 +163,7 @@ class SpeakFastAccessibilityService : AccessibilityService() {
     private fun triggerOcrFallback(rect: Rect) {
         if (!settingsManager.getSettings().ocrEnabled) {
             Log.w(TAG, "OCR mode is disabled by user, skipping OCR fallback")
+            speechManager.speakText("No text found at that location. Enable OCR mode to read images.")
             return
         }
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) return

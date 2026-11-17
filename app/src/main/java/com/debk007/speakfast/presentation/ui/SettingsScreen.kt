@@ -27,6 +27,7 @@ import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.debk007.speakfast.presentation.viewmodel.SettingsViewModel
 import java.util.Locale
 
@@ -51,31 +52,39 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
+            .background(MaterialTheme.colorScheme.background)
             .clearAndSetSemantics { },
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Text("Settings", style = MaterialTheme.typography.headlineLarge)
+        Text(
+            text = "Settings",
+            style = MaterialTheme.typography.headlineLarge,
+            color = MaterialTheme.colorScheme.onBackground
+        )
 
         // FIX (error messages): show the ViewModel's errorMessage as a dismissible
         // red banner at the top of the screen.
         val errorMessage = uiState.errorMessage
         if (errorMessage != null) {
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(12.dp)
+                    .background(MaterialTheme.colorScheme.errorContainer),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
                     text = errorMessage,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.error,
+                    color = MaterialTheme.colorScheme.onErrorContainer,
                     modifier = Modifier.weight(1f)
                 )
                 IconButton(onClick = { viewModel.clearError() }) {
                     Icon(
                         imageVector = Icons.Filled.Close,
                         contentDescription = "Dismiss error",
-                        tint = MaterialTheme.colorScheme.error,
+                        tint = MaterialTheme.colorScheme.onErrorContainer,
                         modifier = Modifier.size(20.dp)
                     )
                 }
@@ -83,7 +92,11 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
         }
 
         if (locales.isEmpty()) {
-            Text("Loading TTS languages...", style = MaterialTheme.typography.bodyLarge)
+            Text(
+                text = "Loading TTS languages...",
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onBackground
+            )
         } else {
             // LANGUAGE SETTING
             Row(
@@ -93,7 +106,8 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
             ) {
                 Text(
                     text = "Language: ${currentLocale.displayLanguage}",
-                    style = MaterialTheme.typography.bodyLarge
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onBackground
                 )
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -135,7 +149,8 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                 } ?: "No voices available"
                 Text(
                     text = "Voice Variant: $voiceLabel",
-                    style = MaterialTheme.typography.bodyLarge
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onBackground
                 )
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -181,7 +196,8 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
         ) {
             Text(
                 text = "Speech Rate: ${String.format("%.1f", settings?.speechRate ?: 1.0f)}",
-                style = MaterialTheme.typography.bodyLarge
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onBackground
             )
             Slider(
                 value = settings?.speechRate ?: 1.0f,
@@ -203,7 +219,8 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
         ) {
             Text(
                 text = "Pitch: ${String.format("%.1f", settings?.pitch ?: 1.0f)}",
-                style = MaterialTheme.typography.bodyLarge
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onBackground
             )
             Slider(
                 value = settings?.pitch ?: 1.0f,
@@ -225,7 +242,8 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
         ) {
             Text(
                 text = "Read Exact Selection",
-                style = MaterialTheme.typography.bodyLarge
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onBackground
             )
             Switch(
                 checked = settings?.readExactSelection ?: true,
@@ -242,7 +260,8 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
         ) {
             Text(
                 text = "OCR Mode (Read Images)",
-                style = MaterialTheme.typography.bodyLarge
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onBackground
             )
             Switch(
                 checked = settings?.ocrEnabled ?: false,
