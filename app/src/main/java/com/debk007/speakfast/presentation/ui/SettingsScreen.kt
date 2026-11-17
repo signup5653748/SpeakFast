@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
@@ -34,7 +33,7 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
     val engines by viewModel.ttsEngines.collectAsState()
     val settings = uiState.settings
 
-    // ✅ SAFE: Wrap everything in a Surface with 'surface' color
+    // ✅ 1. ROOT SURFACE WRAPPER (Fixes theming & background issues)
     Surface(
         modifier = Modifier
             .fillMaxSize()
@@ -53,7 +52,7 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                 color = MaterialTheme.colorScheme.onSurface
             )
 
-            // 1. TTS ENGINE SELECTOR
+            // ✅ 2. TTS ENGINE SELECTOR (The missing piece!)
             if (engines.isNotEmpty()) {
                 val currentEngineName = settings?.ttsEngine ?: ""
                 val currentEngine = engines.firstOrNull { it.name == currentEngineName } ?: engines.firstOrNull()
@@ -88,7 +87,7 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                 }
             }
 
-            // 2. LANGUAGE & VOICE SELECTORS
+            // ✅ 3. LANGUAGE & VOICE SELECTORS (Crash-safe indexing)
             if (locales.isEmpty()) {
                 Text(
                     text = "Loading TTS languages...",
@@ -166,7 +165,7 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                 }
             }
 
-            // 3. SPEECH RATE
+            // ✅ 4. SPEECH RATE SLIDER
             Column(modifier = Modifier.fillMaxWidth()) {
                 Text(
                     text = "Speech Rate: ${String.format("%.1f", settings?.speechRate ?: 1.0f)}",
@@ -182,7 +181,7 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                 )
             }
 
-            // 4. PITCH
+            // ✅ 5. PITCH SLIDER
             Column(modifier = Modifier.fillMaxWidth()) {
                 Text(
                     text = "Pitch: ${String.format("%.1f", settings?.pitch ?: 1.0f)}",
@@ -198,7 +197,7 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                 )
             }
 
-            // 5. READ EXACT SELECTION
+            // ✅ 6. READ EXACT SELECTION SWITCH
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -216,7 +215,7 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                 )
             }
 
-            // 6. OCR MODE
+            // ✅ 7. OCR MODE SWITCH
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
