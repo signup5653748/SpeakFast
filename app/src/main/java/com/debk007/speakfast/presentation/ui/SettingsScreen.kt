@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -38,26 +37,24 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
     val locales by viewModel.ttsLocales.collectAsState()
     val settings = uiState.settings
 
-    // FIX (language fallback edge case): if the saved languageCode is not in the
-    // TTS locale list, indexOf returns -1. coerceAtLeast(0) maps -1 -> 0 so the
-    // ◀/▶ buttons always wrap around the available locales and never index
-    // negatively or jump to arbitrary locales.
     val currentLocale = locales.firstOrNull { it.toLanguageTag() == (settings?.languageCode ?: "") }
         ?: Locale.forLanguageTag(settings?.languageCode ?: "en-US")
     val voices: List<Voice> = viewModel.voicesFor(currentLocale)
     val currentVoice = voices.firstOrNull { it.name == (settings?.voice ?: "") } ?: voices.firstOrNull()
+
     val currentLocaleIndex = locales.indexOf(currentLocale).coerceAtLeast(0)
     val currentVoiceIndex = voices.indexOf(currentVoice).coerceAtLeast(0)
 
     Surface(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .clearAndSetSemantics { },
         color = MaterialTheme.colorScheme.surface
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp)
-                .clearAndSetSemantics { },
+                .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Text(
@@ -66,138 +63,93 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                 color = MaterialTheme.colorScheme.onSurface
             )
 
-            // FIX (error messages): show the ViewModel's errorMessage as a dismissible
-            // red banner at the top of the screen.
-            val errorMessage = uiState.errorMessage
-            if (errorMessage != null) {
+            val errorMsg = uiState.errorMessage
+            if (!errorMsg.isNullOrBlank()) {
                 Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(12.dp)
-                        .background(MaterialTheme.colorScheme.errorContainer),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = errorMessage,
+                        text = errorMsg,
+                        color = MaterialTheme.colorScheme.error,
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onErrorContainer,
                         modifier = Modifier.weight(1f)
                     )
-                    IconButton(onClick = { viewModel.clearError() }) {
-                        Icon(
-                            imageVector = Icons.Filled.Close,
-                            contentDescription = "Dismiss error",
-                            tint = MaterialTheme.colorScheme.onErrorContainer,
-                            modifier = Modifier.size(20.dp)
-                        )
+                    Button(onClick = { viewModel.clearError() }) {
+                        Text("Dismiss")
                     }
                 }
             }
 
-            if (locales.isEmpty()) {
-                Text(
-                    text = "Loading TTS languages...",
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-            } else {
-                // LANGUAGE SETTING
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = "Language: ${currentLocale.displayLanguage}",
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Button(
-                            onClick = {
-                                val idx = (currentLocaleIndex - 1 + locales.size) % locales.size
-                                viewModel.updateLanguage(locales[idx].toLanguageTag())
-                            }
-                        ) {
-                            Text(
-                                "◀",
-                                modifier = Modifier.semantics { contentDescription = "Previous language" }
-                            )
-                        }
-                        Button(
-                            onClick = {
-                                val idx = (currentLocaleIndex + 1) % locales.size
-                                viewModel.updateLanguage(locales[idx].toLanguageTag())
-                            }
-                        ) {
-                            Text(
-                                "▶",
-                                modifier = Modifier.semantics { contentDescription = "Next language" }
-                            )
-                        }
-                    }
-                }
-
-                // VOICE VARIANT SETTING
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    val voiceLabel = currentVoice?.let {
-                        "${it.name} [${if (viewModel.isOnline(it)) "online" else "offline"}]"
-                    } ?: "No voices available"
-                    Text(
-                        text = "Voice Variant: $voiceLabel",
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Button(
-                            onClick = {
-                                if (voices.isNotEmpty()) {
-                                    val idx = (currentVoiceIndex - 1 + voices.size) % voices.size
-                                    viewModel.updateVoice(voices[idx].name)
-                                }
-                            },
-                            enabled = voices.isNotEmpty()
-                        ) {
-                            Text(
-                                "◀",
-                                modifier = Modifier.semantics { contentDescription = "Previous voice" }
-                            )
-                        }
-                        Button(
-                            onClick = {
-                                if (voices.isNotEmpty()) {
-                                    val idx = (currentVoiceIndex + 1) % voices.size
-                                    viewModel.updateVoice(voices[idx].name)
-                                }
-                            },
-                            enabled = voices.isNotEmpty()
-                        ) {
-                            Text(
-                                "▶",
-                                modifier = Modifier.semantics { contentDescription = "Next voice" }
-                            )
-                        }
-                    }
-                }
-            }
-
-            // SPEECH RATE SETTING
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                Text(
+                    text = "Language: ${currentLocale.displayLanguage}",
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                Row {
+                    Button(
+                        onClick = {
+                            val nextIndex = (currentLocaleIndex - 1 + locales.size) % locales.size
+                            viewModel.updateLanguage(locales[nextIndex].toLanguageTag())
+                        }
+                    ) {
+                        Text("◀", modifier = Modifier.semantics { contentDescription = "Previous language" })
+                    }
+                    Button(
+                        onClick = {
+                            val nextIndex = (currentLocaleIndex + 1) % locales.size
+                            viewModel.updateLanguage(locales[nextIndex].toLanguageTag())
+                        }
+                    ) {
+                        Text("▶", modifier = Modifier.semantics { contentDescription = "Next language" })
+                    }
+                }
+            }
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                val label = currentVoice?.let { "${it.name} [${if (viewModel.isOnline(it)) "online" else "offline"}]" } ?: "No voices"
+                Text(
+                    text = "Voice: $label",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                Row {
+                    Button(
+                        onClick = {
+                            if (voices.isNotEmpty()) {
+                                val nextIndex = (currentVoiceIndex - 1 + voices.size) % voices.size
+                                viewModel.updateVoice(voices[nextIndex].name)
+                            }
+                        },
+                        enabled = voices.isNotEmpty()
+                    ) {
+                        Text("◀", modifier = Modifier.semantics { contentDescription = "Previous voice" })
+                    }
+                    Button(
+                        onClick = {
+                            if (voices.isNotEmpty()) {
+                                val nextIndex = (currentVoiceIndex + 1) % voices.size
+                                viewModel.updateVoice(voices[nextIndex].name)
+                            }
+                        },
+                        enabled = voices.isNotEmpty()
+                    ) {
+                        Text("▶", modifier = Modifier.semantics { contentDescription = "Next voice" })
+                    }
+                }
+            }
+
+            Column(modifier = Modifier.fillMaxWidth()) {
                 Text(
                     text = "Speech Rate: ${String.format("%.1f", settings?.speechRate ?: 1.0f)}",
                     style = MaterialTheme.typography.bodyLarge,
@@ -210,17 +162,11 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                     steps = 15,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .width(200.dp)
-                        .semantics { contentDescription = "Adjust speech rate" }
+                        .padding(top = 8.dp)
                 )
             }
 
-            // PITCH SETTING
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
+            Column(modifier = Modifier.fillMaxWidth()) {
                 Text(
                     text = "Pitch: ${String.format("%.1f", settings?.pitch ?: 1.0f)}",
                     style = MaterialTheme.typography.bodyLarge,
@@ -233,12 +179,10 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                     steps = 15,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .width(200.dp)
-                        .semantics { contentDescription = "Adjust pitch" }
+                        .padding(top = 8.dp)
                 )
             }
 
-            // READ EXACT SELECTION SETTING
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -251,12 +195,10 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                 )
                 Switch(
                     checked = settings?.readExactSelection ?: true,
-                    onCheckedChange = { viewModel.updateReadExactSelection(it) },
-                    modifier = Modifier.semantics { contentDescription = "Toggle read exact selection" }
+                    onCheckedChange = { viewModel.updateReadExactSelection(it) }
                 )
             }
 
-            // OCR MODE SETTING
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -269,8 +211,7 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                 )
                 Switch(
                     checked = settings?.ocrEnabled ?: false,
-                    onCheckedChange = { viewModel.updateOcrEnabled(it) },
-                    modifier = Modifier.semantics { contentDescription = "Toggle OCR mode" }
+                    onCheckedChange = { viewModel.updateOcrEnabled(it) }
                 )
             }
         }
