@@ -70,6 +70,7 @@ class SpeechManager @Inject constructor(
         if (status == TextToSpeech.SUCCESS) {
             isInitialized = true
             updateLocales()
+            loadEngines() // ✅ ADDED: Re-read engines once TTS is truly ready to prevent empty list race condition
             updateSpeechSettings()
             textToSpeech?.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
                 override fun onStart(utteranceId: String?) {}
