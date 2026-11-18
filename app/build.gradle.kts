@@ -1,3 +1,5 @@
+[Earlier content for app/build.gradle.kts (3824 chars, already written to disk). The module surface below may not show every signature you need — re-read with read_file before editing this file again, OR before importing/calling anything from it in another file. Do not recreate it from scratch and do not guess a function's parameters from memory.
+Module surface:
 import java.util.Properties
 
 plugins {
@@ -24,8 +26,8 @@ android {
         applicationId = "com.debk007.speakfast"
         minSdk = 26
         targetSdk = 36
-        versionCode = 16
-        versionName = "1.15"
+        versionCode = 6
+        versionName = "1.5"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
