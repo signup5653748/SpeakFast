@@ -1,5 +1,7 @@
 package com.debk007.speakfast.presentation.viewmodel
 
+import android.content.Context
+import android.content.Intent
 import android.speech.tts.TextToSpeech
 import android.speech.tts.Voice
 import androidx.lifecycle.ViewModel
@@ -8,6 +10,7 @@ import com.debk007.speakfast.data.SettingsManager
 import com.debk007.speakfast.model.Settings
 import com.debk007.speakfast.model.TriggerMethod
 import com.debk007.speakfast.speech.SpeechManager
+import com.debk007.speakfast.ui.FloatingTriggerService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -34,7 +37,8 @@ sealed class OcrModelState {
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     private val settingsManager: SettingsManager,
-    private val speechManager: SpeechManager
+    private val speechManager: SpeechManager,
+    @dagger.hilt.android.qualifiers.ApplicationContext private val context: Context
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SettingsUiState())
@@ -95,6 +99,21 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
+    fun updateFloatingButtonSize(size: Float) {
+        viewModelScope.launch {
+            settingsManager.updateFloatingButtonSize(size)
+            broadcastSizeChange(size)
+        }
+    }
+
+    private fun broadcastSizeChange(size: Float) {
+        val intent = Intent(FloatingTriggerService.ACTION_UPDATE_BUBBLE_SIZE).apply {
+            setPackage(context.packageName)
+            putExtra("size", size)
+        }
+        context.sendBroadcast(intent)
+    }
+
     fun updateOcrEnabled(enabled: Boolean) {
         viewModelScope.launch {
             settingsManager.updateOcrEnabled(enabled)
@@ -120,18 +139,6 @@ class SettingsViewModel @Inject constructor(
         viewModelScope.launch {
             settingsManager.updateTtsEngine(engineName)
             speechManager.reinitializeWithEngine(engineName)
-        }
-    }
-
-    fun updateFloatingButtonSize(size: Float) {
-        viewModelScope.launch { 
-            settingsManager.updateFloatingButtonSize(size) 
-        }
-    }
-
-    fun updateFontSize(size: Float) {
-        viewModelScope.launch { 
-            settingsManager.updateFontSize(size) 
         }
     }
 
