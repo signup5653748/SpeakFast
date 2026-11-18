@@ -8,12 +8,11 @@ data class Settings(
     val voice: String = "",
     val speechRate: Float = 1.0f,
     val pitch: Float = 1.0f,
+    val floatingButtonSize: Float = 1.0f,
     val ocrEnabled: Boolean = false,
     val readExactSelection: Boolean = true,
     val triggerMethod: TriggerMethod = TriggerMethod.QUICK_SETTINGS_TILE,
-    val ttsEngine: String = "",
-    val floatingButtonSize: Float = 1.0f,
-    val fontSize: Float = 16.0f
+    val ttsEngine: String = ""
 )
 
 @Serializable
