@@ -10,7 +10,6 @@ import com.debk007.speakfast.data.SettingsManager
 import com.debk007.speakfast.model.Settings
 import com.debk007.speakfast.model.TriggerMethod
 import com.debk007.speakfast.speech.SpeechManager
-import com.debk007.speakfast.ui.FloatingTriggerService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -40,6 +39,10 @@ class SettingsViewModel @Inject constructor(
     private val speechManager: SpeechManager,
     @dagger.hilt.android.qualifiers.ApplicationContext private val context: Context
 ) : ViewModel() {
+
+    companion object {
+        const val ACTION_UPDATE_BUBBLE_SIZE = "com.debk007.speakfast.ACTION_UPDATE_BUBBLE_SIZE"
+    }
 
     private val _uiState = MutableStateFlow(SettingsUiState())
     val uiState: StateFlow<SettingsUiState> = _uiState.asStateFlow()
@@ -101,10 +104,9 @@ class SettingsViewModel @Inject constructor(
     fun updateFloatingButtonSize(size: Float) {
         viewModelScope.launch {
             settingsManager.updateFloatingButtonSize(size)
-            val intent = Intent(FloatingTriggerService.ACTION_UPDATE_BUBBLE_SIZE).apply {
-                setPackage(context.packageName)
-                putExtra("size", size)
-            }
+            val intent = Intent(ACTION_UPDATE_BUBBLE_SIZE)
+            intent.setPackage(context.packageName)
+            intent.putExtra("size", size)
             context.sendBroadcast(intent)
         }
     }
