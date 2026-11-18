@@ -2,7 +2,6 @@ package com.debk007.speakfast
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.widget.Toast
@@ -29,7 +28,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import com.debk007.speakfast.presentation.App
@@ -68,7 +66,6 @@ class MainActivity : ComponentActivity() {
         }
 
         val accessibilityEnabled = remember(refreshTrigger) { isAccessibilityServiceEnabled(context) }
-        val overlayGranted = remember(refreshTrigger) { Settings.canDrawOverlays(context) }
 
         Column(
             modifier = Modifier
@@ -93,22 +90,6 @@ class MainActivity : ComponentActivity() {
                     color = if (accessibilityEnabled) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
                 )
             }
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "Overlay Permission:",
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-                Text(
-                    text = if (overlayGranted) "Granted" else "Not Granted",
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = if (overlayGranted) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
-                )
-            }
             if (!accessibilityEnabled) {
                 Button(
                     onClick = { context.startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)) },
@@ -119,15 +100,16 @@ class MainActivity : ComponentActivity() {
             }
             Button(
                 onClick = {
-                    if (Settings.canDrawOverlays(context)) {
+                    if (accessibilityEnabled) {
                         context.startService(Intent(context, FloatingTriggerService::class.java))
-                        Toast.makeText(context, "Trigger Started", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Floating button activated", Toast.LENGTH_SHORT).show()
                     } else {
-                        context.startActivity(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:${context.packageName}")))
+                        Toast.makeText(context, "Enable Accessibility Service first", Toast.LENGTH_SHORT).show()
+                        context.startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
                     }
                 },
                 modifier = Modifier.fillMaxWidth()
-            ) { Text("Start Floating Trigger") }
+            ) { Text("Start Floating Button") }
             App()
         }
     }
