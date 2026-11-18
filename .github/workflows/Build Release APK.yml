@@ -1,40 +1,36 @@
 name: Build & Release Signed APK
 
 on:
-  workflow_dispatch:
+  workflow_dispatch: # ✅ STRICTLY MANUAL ONLY. No 'push' triggers.
 
 jobs:
   build-and-release:
     name: Build Signed Release APK
     runs-on: ubuntu-latest
     permissions:
-      contents: write # Required to commit the version bump and create releases
+      contents: write
 
     steps:
     - name: Checkout Code
       uses: actions/checkout@v4
       with:
-        fetch-depth: 0 # Required to push commits back to the repo
+        fetch-depth: 0
         token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Auto-Increment Version
       id: bump_version
       run: |
-        # 1. Extract current versionCode and increment it
         CURRENT_VC=$(grep 'versionCode =' app/build.gradle.kts | grep -o '[0-9]\+' | head -1)
         NEW_VC=$((CURRENT_VC + 1))
         sed -i "s/versionCode = $CURRENT_VC/versionCode = $NEW_VC/" app/build.gradle.kts
 
-        # 2. Extract current versionName and increment the last number (e.g., 1.0 -> 1.1)
         CURRENT_VN=$(grep 'versionName =' app/build.gradle.kts | grep -o '"[^"]*"' | tr -d '"')
         NEW_VN=$(echo "$CURRENT_VN" | awk -F. -v OFS=. '{$NF = $NF + 1;} 1')
         sed -i "s/versionName = \".*\"/versionName = \"$NEW_VN\"/" app/build.gradle.kts
 
-        # 3. Export for later steps
         echo "NEW_VERSION_CODE=$NEW_VC" >> $GITHUB_ENV
         echo "NEW_VERSION_NAME=$NEW_VN" >> $GITHUB_ENV
         echo "NEW_TAG=v$NEW_VN" >> $GITHUB_ENV
-
         echo "✅ Bumped version to $NEW_VN (Code: $NEW_VC)"
 
     - name: Commit Version Bump
@@ -102,6 +98,7 @@ jobs:
         echo "date=$COMMIT_DATE" >> $GITHUB_OUTPUT
 
     - name: Create GitHub Release
+      if: success() # Only create release if build succeeded
       uses: softprops/action-gh-release@v2
       with:
         tag_name: ${{ env.NEW_TAG }}
@@ -113,9 +110,6 @@ jobs:
           📝 **Commit Message:** ${{ steps.commit_info.outputs.message }}
           🔗 **Commit Hash:** `${{ steps.commit_info.outputs.hash }}`
           📅 **Build Date:** ${{ steps.commit_info.outputs.date }}
-          🌿 **Branch:** `${{ github.ref_name }}`
-          
-          **Download the `.apk` file below and install it on your Android device.**
         files: ${{ steps.find_apk.outputs.apk_path }}
         make_latest: true
       env:
