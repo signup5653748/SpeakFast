@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -40,13 +42,17 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
     val locales by viewModel.ttsLocales.collectAsState()
     val engines by viewModel.ttsEngines.collectAsState()
     val settings = uiState.settings
+    val scrollState = rememberScrollState()
 
     Surface(
         modifier = Modifier.fillMaxSize().clearAndSetSemantics { },
         color = MaterialTheme.colorScheme.surface
     ) {
         Column(
-            modifier = Modifier.fillMaxSize().padding(16.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(scrollState)
+                .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Text("Settings", style = MaterialTheme.typography.headlineLarge, color = MaterialTheme.colorScheme.onSurface)
@@ -59,7 +65,6 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                 }
             }
 
-            // 1. TTS ENGINE DROPDOWN
             val engineItems = if (engines.isEmpty()) listOf(TextToSpeech.EngineInfo().apply { name = ""; label = "System Default" }) else engines
             val currentEngine = engineItems.firstOrNull { it.name == (settings?.ttsEngine ?: "") } ?: engineItems.first()
             SimpleDropdown(
@@ -73,7 +78,6 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
             if (locales.isEmpty()) {
                 Text("Loading TTS languages...", color = MaterialTheme.colorScheme.onSurface)
             } else {
-                // 2. LANGUAGE DROPDOWN (WITH SEARCH)
                 val safeLocaleIndex = locales.indexOfFirst { it.toLanguageTag() == (settings?.languageCode ?: "") }.coerceAtLeast(0)
                 val currentLocale = locales.getOrElse(safeLocaleIndex) { Locale.getDefault() }
                 
@@ -86,7 +90,6 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                     onSelected = { viewModel.updateLanguage(it.toLanguageTag()) }
                 )
 
-                // 3. VOICE DROPDOWN
                 val voices = viewModel.voicesFor(currentLocale)
                 val safeVoiceIndex = voices.indexOfFirst { it.name == (settings?.voice ?: "") }.coerceAtLeast(0)
                 val currentVoice = voices.getOrElse(safeVoiceIndex) { null }
@@ -99,7 +102,6 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                 )
             }
 
-            // 4. SPEECH RATE + RESET
             Column(modifier = Modifier.fillMaxWidth()) {
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
                     Text("Speech Rate: ${String.format("%.1f", settings?.speechRate ?: 1.0f)}", color = MaterialTheme.colorScheme.onSurface)
@@ -108,7 +110,6 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                 Slider(value = settings?.speechRate ?: 1.0f, onValueChange = { viewModel.updateSpeechRate(it) }, valueRange = 0.5f..2.0f, steps = 15, modifier = Modifier.fillMaxWidth().semantics { contentDescription = "Adjust speech rate" })
             }
 
-            // 5. PITCH + RESET
             Column(modifier = Modifier.fillMaxWidth()) {
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
                     Text("Pitch: ${String.format("%.1f", settings?.pitch ?: 1.0f)}", color = MaterialTheme.colorScheme.onSurface)
@@ -117,13 +118,11 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                 Slider(value = settings?.pitch ?: 1.0f, onValueChange = { viewModel.updatePitch(it) }, valueRange = 0.5f..2.0f, steps = 15, modifier = Modifier.fillMaxWidth().semantics { contentDescription = "Adjust pitch" })
             }
 
-            // 6. READ EXACT SELECTION
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
                 Text("Read Exact Selection", color = MaterialTheme.colorScheme.onSurface)
                 Switch(checked = settings?.readExactSelection ?: true, onCheckedChange = { viewModel.updateReadExactSelection(it) })
             }
 
-            // 7. OCR MODE
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
                 Text("OCR Mode (Read Images)", color = MaterialTheme.colorScheme.onSurface)
                 Switch(checked = settings?.ocrEnabled ?: false, onCheckedChange = { viewModel.updateOcrEnabled(it) })
@@ -165,7 +164,7 @@ private fun <T> SearchableDropdown(
 
     ExposedDropdownMenuBox(expanded = expanded, onExpandedChange = { 
         expanded = it
-        if (!it) searchQuery = "" // Clear search when closed
+        if (!it) searchQuery = ""
     }) {
         OutlinedTextField(
             value = selected?.let { itemText(it) } ?: "None",
