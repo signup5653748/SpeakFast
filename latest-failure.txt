@@ -1,155 +1,79 @@
-=== FAILURE LOG FOR RUN: 44244235665 ===
+=== FAILURE LOG FOR RUN: 44262527031 ===
 === FAILED JOB: Build Signed Release APK ===
-=== DATE: Wed Nov 18 05:27:22 UTC 2026 ===
+=== DATE: Wed Nov 18 07:55:11 UTC 2026 ===
 === UNIVERSAL ERROR BLOCK (Kotlin, AAPT, XML, Gradle) ===
 
-2026-11-18T05:26:31.4038484Z   echo "::error::KEYSTORE_BASE64 secret is not set."
-2026-11-18T05:26:57.2247020Z e: The daemon has terminated unexpectedly on startup attempt #1 with error code: 0. The daemon process output:
-2026-11-18T05:27:01.6242859Z e: [ksp] InjectProcessingStep was unable to process 'speechManager' because 'error.NonExistentClass' could not be resolved.
-2026-11-18T05:27:01.6372028Z > Task :app:kspReleaseKotlin FAILED
-2026-11-18T05:27:01.6403553Z     => element (FIELD): speechManager
-2026-11-18T05:27:01.6404308Z     => type (ERROR field type): error.NonExistentClass
-2026-11-18T05:27:01.6405059Z 
-2026-11-18T05:27:01.6424438Z If type 'error.NonExistentClass' is a generated type, check above for compilation errors that may have prevented the type from being generated. Otherwise, ensure that type 'error.NonExistentClass' is on your classpath.
-2026-11-18T05:27:01.6426183Z e: [ksp] InjectProcessingStep was unable to process 'settingsManager' because 'error.NonExistentClass' could not be resolved.
-2026-11-18T05:27:01.6426883Z 
-2026-11-18T05:27:01.6427113Z Dependency trace:
-2026-11-18T05:27:01.6427907Z     => element (CLASS): com.debk007.speakfast.accessibility.SpeakFastAccessibilityService
-2026-11-18T05:27:01.6428632Z     => element (FIELD): speechManager
-2026-11-18T05:27:01.6430934Z     => type (ERROR field type): error.NonExistentClass
-2026-11-18T05:27:01.6431572Z 
-2026-11-18T05:27:01.6432797Z If type 'error.NonExistentClass' is a generated type, check above for compilation errors that may have prevented the type from being generated. Otherwise, ensure that type 'error.NonExistentClass' is on your classpath.
-2026-11-18T05:27:01.6434560Z e: [ksp] InjectProcessingStep was unable to process 'SettingsViewModel(com.debk007.speakfast.data.SettingsManager,error.NonExistentClass)' because 'error.NonExistentClass' could not be resolved.
-2026-11-18T05:27:01.6444310Z 
-2026-11-18T05:27:01.6463569Z Dependency trace:
-2026-11-18T05:27:01.6513533Z     => element (CLASS): com.debk007.speakfast.presentation.viewmodel.SettingsViewModel
-2026-11-18T05:27:01.6514897Z     => element (CONSTRUCTOR): SettingsViewModel(com.debk007.speakfast.data.SettingsManager,error.NonExistentClass)
-2026-11-18T05:27:01.6516157Z     => type (EXECUTABLE constructor): (com.debk007.speakfast.data.SettingsManager,error.NonExistentClass)void
-2026-11-18T05:27:01.6517134Z     => type (ERROR parameter type): error.NonExistentClass
-2026-11-18T05:27:01.6517621Z 
-2026-11-18T05:27:01.6518616Z If type 'error.NonExistentClass' is a generated type, check above for compilation errors that may have prevented the type from being generated. Otherwise, ensure that type 'error.NonExistentClass' is on your classpath.
-2026-11-18T05:27:01.6519903Z e: Error occurred in KSP, check log for detail
-2026-11-18T05:27:01.6520960Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:1 Expecting a top level declaration
-2026-11-18T05:27:01.6522592Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:2 Expecting a top level declaration
-2026-11-18T05:27:01.6524072Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:10 Expecting a top level declaration
-2026-11-18T05:27:01.6525821Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:18 Expecting a top level declaration
-2026-11-18T05:27:01.6527260Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:22 Expecting a top level declaration
-2026-11-18T05:27:01.6528680Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:25 Expecting a top level declaration
-2026-11-18T05:27:01.6530160Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:26 Expecting a top level declaration
-2026-11-18T05:27:01.6531609Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:29 Expecting a top level declaration
-2026-11-18T05:27:01.6533340Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:30 Expecting a top level declaration
-2026-11-18T05:27:01.6543644Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:34 Expecting a top level declaration
-2026-11-18T05:27:01.6545441Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:35 Expecting a top level declaration
-2026-11-18T05:27:01.6546617Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:39 Expecting a top level declaration
-2026-11-18T05:27:01.6547832Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:40 Expecting a top level declaration
-2026-11-18T05:27:01.6548989Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:43 Expecting a top level declaration
-2026-11-18T05:27:01.6550223Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:44 Expecting a top level declaration
-2026-11-18T05:27:01.6551878Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:51 Expecting a top level declaration
-2026-11-18T05:27:01.6553413Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:52 Expecting a top level declaration
-2026-11-18T05:27:01.6554671Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:61 Expecting a top level declaration
-2026-11-18T05:27:01.6555832Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:62 Expecting a top level declaration
-2026-11-18T05:27:01.6557093Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:68 Expecting a top level declaration
-2026-11-18T05:27:01.6558286Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:69 Expecting a top level declaration
-2026-11-18T05:27:01.6559569Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:82 Expecting a top level declaration
-2026-11-18T05:27:01.6560790Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:83 Expecting a top level declaration
-2026-11-18T05:27:01.6562146Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:86 Expecting a top level declaration
-2026-11-18T05:27:01.6563701Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:87 Expecting a top level declaration
-2026-11-18T05:27:01.6564943Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:92 Expecting a top level declaration
-2026-11-18T05:27:01.6566564Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:97 Expecting a top level declaration
-2026-11-18T05:27:01.6567725Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:99 Expecting a top level declaration
-2026-11-18T05:27:01.6568923Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:107 Expecting a top level declaration
-2026-11-18T05:27:01.6570223Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:115 Expecting a top level declaration
-2026-11-18T05:27:01.6571553Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:118 Expecting a top level declaration
-2026-11-18T05:27:01.6576293Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:122 Expecting a top level declaration
-2026-11-18T05:27:01.6578163Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:123 Expecting a top level declaration
-2026-11-18T05:27:01.6579549Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:125 Expecting a top level declaration
-2026-11-18T05:27:01.6580980Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:129 Expecting a top level declaration
-2026-11-18T05:27:01.6582537Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:136 Expecting a top level declaration
-2026-11-18T05:27:01.6583774Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:144 Expecting a top level declaration
-2026-11-18T05:27:01.6584987Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:150 Expecting a top level declaration
-2026-11-18T05:27:01.6586177Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:154 Expecting a top level declaration
-2026-11-18T05:27:01.6587463Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:158 Expecting a top level declaration
-2026-11-18T05:27:01.6588753Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:163 Expecting a top level declaration
-2026-11-18T05:27:01.6589997Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:169 Expecting a top level declaration
-2026-11-18T05:27:01.6591244Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:179 Expecting a top level declaration
-2026-11-18T05:27:01.6592721Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:183 Expecting a top level declaration
-2026-11-18T05:27:01.6594177Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:188 Expecting a top level declaration
-2026-11-18T05:27:01.6595586Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:190 Expecting a top level declaration
-2026-11-18T05:27:01.6596904Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:192 Expecting a top level declaration
-2026-11-18T05:27:01.6598251Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:193 Expecting a top level declaration
-2026-11-18T05:27:01.6599790Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:198 Expecting a top level declaration
-2026-11-18T05:27:01.6601059Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:203 Expecting a top level declaration
-2026-11-18T05:27:01.6602579Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:213 Expecting a top level declaration
-2026-11-18T05:27:01.6603747Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:220 Expecting a top level declaration
-2026-11-18T05:27:01.6604940Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:228 Expecting a top level declaration
-2026-11-18T05:27:01.6606222Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:233 Expecting a top level declaration
-2026-11-18T05:27:01.6607924Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:238 Expecting a top level declaration
-2026-11-18T05:27:01.6609061Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:243 Expecting a top level declaration
-2026-11-18T05:27:01.6610398Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:245 Expecting a top level declaration
-2026-11-18T05:27:01.6612146Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:248 Expecting a top level declaration
-2026-11-18T05:27:01.6613861Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:255 Expecting a top level declaration
-2026-11-18T05:27:01.6615166Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:264 Expecting a top level declaration
-2026-11-18T05:27:01.6616489Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:265 Expecting a top level declaration
-2026-11-18T05:27:01.6617907Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:273 Expecting a top level declaration
-2026-11-18T05:27:01.6619274Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:282 Expecting a top level declaration
-2026-11-18T05:27:01.6620642Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:287 Expecting a top level declaration
-2026-11-18T05:27:01.6621949Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:293 Expecting a top level declaration
-2026-11-18T05:27:01.6623481Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:301 Expecting a top level declaration
-2026-11-18T05:27:01.6624538Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:305 Expecting a top level declaration
-2026-11-18T05:27:01.6625711Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:307 Expecting a top level declaration
-2026-11-18T05:27:01.6626907Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:310 Expecting a top level declaration
-2026-11-18T05:27:01.6628022Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:314 Expecting a top level declaration
-2026-11-18T05:27:01.6629279Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:323 Expecting a top level declaration
-2026-11-18T05:27:01.6630780Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:326 Expecting a top level declaration
-2026-11-18T05:27:01.6632441Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:331 Expecting a top level declaration
-2026-11-18T05:27:01.6633772Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:339 Expecting a top level declaration
-2026-11-18T05:27:01.6635076Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:343 Expecting a top level declaration
-2026-11-18T05:27:01.6636383Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:346 Expecting a top level declaration
-2026-11-18T05:27:01.6637698Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:350 Expecting a top level declaration
-2026-11-18T05:27:01.6639489Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:356 Expecting a top level declaration
-2026-11-18T05:27:01.6640884Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:358 Expecting a top level declaration
-2026-11-18T05:27:01.6642097Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:1:366 Expecting a top level declaration
-2026-11-18T05:27:01.6643633Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:2:1 Expecting a top level declaration
-2026-11-18T05:27:01.6645128Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:2:8 Expecting a top level declaration
-2026-11-18T05:27:01.6646492Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:2:15 Expecting a top level declaration
-2026-11-18T05:27:01.6647921Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:2:16 imports are only allowed in the beginning of file
-2026-11-18T05:27:01.7237144Z gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_4-1794979596371.json
-2026-11-18T05:27:01.7237919Z 
-2026-11-18T05:27:01.7238129Z 
-2026-11-18T05:27:01.7238797Z [Incubating] Problems report is available at: file:///home/runner/work/SpeakFast/SpeakFast/build/reports/problems/problems-report.html
-2026-11-18T05:27:01.7239647Z 
-2026-11-18T05:27:01.7240086Z Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
-2026-11-18T05:27:01.7240686Z 
-2026-11-18T05:27:01.7241289Z You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
-2026-11-18T05:27:01.7242053Z 
-2026-11-18T05:27:01.7242977Z For more on this, please refer to https://docs.gradle.org/9.9.0/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
-2026-11-18T05:27:01.7247079Z FAILURE: Build failed with an exception.
-2026-11-18T05:27:01.7247537Z 
-2026-11-18T05:27:01.7247887Z * What went wrong:
-2026-11-18T05:27:01.7248680Z Execution failed for task ':app:kspReleaseKotlin' (registered by plugin 'org.jetbrains.kotlin.android').
-2026-11-18T05:27:01.7249942Z > A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
-2026-11-18T05:27:01.7250988Z    > Compilation error. See log for more details
-2026-11-18T05:27:01.7251404Z 
-2026-11-18T05:27:01.7251667Z * Try:
-2026-11-18T05:27:01.7252182Z > Run with --stacktrace option to get the stack trace.
-2026-11-18T05:27:01.7253233Z > Run with --info or --debug option to get more log output.
-2026-11-18T05:27:01.7254225Z > Run with --scan to get full insights from a Build Scan (powered by Develocity).
-2026-11-18T05:27:01.7254969Z > Get more help at https://help.gradle.org.
-2026-11-18T05:27:01.7255398Z 
-2026-11-18T05:27:01.7255648Z BUILD FAILED in 30s
-2026-11-18T05:27:01.8263807Z 37 actionable tasks: 26 executed, 11 from cache
-2026-11-18T05:27:01.8265035Z Configuration cache entry stored.
-2026-11-18T05:27:02.1944316Z ##[error]Process completed with exit code 1.
-2026-11-18T05:27:02.1977105Z ##[group]Run rm -f app/release.keystore
-2026-11-18T05:27:02.1977531Z rm -f app/release.keystore
-2026-11-18T05:27:02.2004703Z shell: /usr/bin/bash -e {0}
-2026-11-18T05:27:02.2005040Z env:
-2026-11-18T05:27:02.2005393Z   NEW_VERSION_CODE: 13
-2026-11-18T05:27:02.2005691Z   NEW_VERSION_NAME: 1.12
-2026-11-18T05:27:02.2005992Z   NEW_TAG: v1.12
-2026-11-18T05:27:02.2006417Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.21-9/x64
-2026-11-18T05:27:02.2006918Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.21-9/x64
-2026-11-18T05:27:02.2007377Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
-2026-11-18T05:27:02.2007754Z   GRADLE_USER_HOME: /home/runner/.gradle
-2026-11-18T05:27:02.2008113Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
-2026-11-18T05:27:02.2008453Z   GRADLE_BUILD_ACTION_CACHE_RESTORED: true
+2026-11-18T07:54:36.8121972Z   echo "::error::KEYSTORE_BASE64 secret is not set."
+2026-11-18T07:54:57.0392930Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:1:1: Array literals outside of annotations are unsupported.
+2026-11-18T07:54:57.0479491Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:1:1: The feature "collection literals" is experimental and should be enabled explicitly. This can be done by supplying the compiler argument '-Xcollection-literals', but note that no stability guarantees are provided.
+2026-11-18T07:54:57.0522870Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:1:2: Unresolved reference 'Earlier'.
+2026-11-18T07:54:57.0537697Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:1:18: Only expressions are allowed here.
+2026-11-18T07:54:57.0542385Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:1:18: Method 'iterator()' is ambiguous for this expression. Applicable candidates:
+2026-11-18T07:54:57.0549291Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:1:21: Syntax error: Expecting '(' to open a loop range.
+2026-11-18T07:54:57.0550795Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:1:54: Syntax error: Expecting an element.
+2026-11-18T07:54:57.0552562Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:1:79: Syntax error: Expecting an element.
+2026-11-18T07:54:57.0553984Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:1:144: Syntax error: Expecting ']'.
+2026-11-18T07:54:57.0555826Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:1:145: Syntax error: Expecting an element.
+2026-11-18T07:54:57.0557272Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:1:147: Unresolved reference 're'.
+2026-11-18T07:54:57.0558637Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:1:150: Unresolved reference 'read'.
+2026-11-18T07:54:57.0560023Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:1:155: Unresolved reference 'with'.
+2026-11-18T07:54:57.0561702Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:1:160: Unresolved reference 'read_file'.
+2026-11-18T07:54:57.0563155Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:1:177: Unresolved reference 'editing'.
+2026-11-18T07:54:57.0564722Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:1:190: 'infix' modifier is required on 'fun file(path: Any): File'.
+2026-11-18T07:54:57.0566293Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:1:195: Unresolved reference 'again'.
+2026-11-18T07:54:57.0567716Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:1:200: Syntax error: Expecting an element.
+2026-11-18T07:54:57.0569147Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:1:202: Unresolved reference 'OR'.
+2026-11-18T07:54:57.0570537Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:1:212: Unresolved reference 'importing'.
+2026-11-18T07:54:57.0582784Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:1:222: Unresolved reference 'calling'.
+2026-11-18T07:54:57.0584509Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:1:239: Function invocation 'from(...)' expected.
+2026-11-18T07:54:57.0585935Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:1:239: None of the following candidates is applicable:
+2026-11-18T07:54:57.0593677Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:1:247: Syntax error: Expecting an element.
+2026-11-18T07:54:57.0594991Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:1:258: Function invocation 'file(...)' expected.
+2026-11-18T07:54:57.0596371Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:1:258: None of the following candidates is applicable:
+2026-11-18T07:54:57.0601719Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:1:258: No value passed for parameter 'path'.
+2026-11-18T07:54:57.0602983Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:1:264: Unresolved reference 'Do'.
+2026-11-18T07:54:57.0604203Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:1:271: Unresolved reference 'recreate'.
+2026-11-18T07:54:57.0605511Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:1:283: Function invocation 'from(...)' expected.
+2026-11-18T07:54:57.0607150Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:1:283: None of the following candidates is applicable:
+2026-11-18T07:54:57.0614715Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:1:296: Unresolved reference 'and'.
+2026-11-18T07:54:57.0615942Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:1:303: Unresolved reference 'not'.
+2026-11-18T07:54:57.0617138Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:1:313: Unresolved reference 'a'.
+2026-11-18T07:54:57.0618407Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:1:315: Literals must be surrounded by whitespace.
+2026-11-18T07:54:57.0619709Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:1:323: Incorrect character literal.
+2026-11-18T07:54:57.0621263Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:1:349: Syntax error: Expecting 'while' followed by a post-condition.
+2026-11-18T07:54:57.0622663Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:2:8: Unresolved reference 'surface'.
+2026-11-18T07:54:57.0623924Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:2:15: Syntax error: Expecting an element.
+2026-11-18T07:54:57.0625185Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:3:1: Unresolved reference 'import'.
+2026-11-18T07:54:57.0626447Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:3:12: Syntax error: Expecting an element.
+2026-11-18T07:54:57.0627850Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:3:13: Unresolved reference 'util' on receiver of type 'Unit'.
+2026-11-18T07:54:57.0629238Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts:3:17: Syntax error: Expecting an element.
+2026-11-18T07:54:57.1449171Z FAILURE: Build failed with an exception.
+2026-11-18T07:54:57.1504239Z 
+2026-11-18T07:54:57.1631677Z * Where:
+2026-11-18T07:54:57.1685916Z Build file '/home/runner/work/SpeakFast/SpeakFast/app/build.gradle.kts' line: 1
+2026-11-18T07:54:57.1711365Z 
+2026-11-18T07:54:57.1751656Z * What went wrong:
+2026-11-18T07:54:57.1782160Z Script compilation errors:
+2026-11-18T07:54:57.1782793Z 
+2026-11-18T07:54:57.1785850Z   Line 1: [Earlier content for app/build.gradle.kts (3824 chars, already written to disk). The module surface below may not show every signature you need — re-read with read_file before editing this file again, OR before importing/calling anything from it in another file. Do not recreate it from scratch and do not guess a function's parameters from memory.
+2026-11-18T07:54:57.1788760Z           ^ Array literals outside of annotations are unsupported.
+2026-11-18T07:54:57.1789520Z 
+2026-11-18T07:54:57.1792869Z   Line 1: [Earlier content for app/build.gradle.kts (3824 chars, already written to disk). The module surface below may not show every signature you need — re-read with read_file before editing this file again, OR before importing/calling anything from it in another file. Do not recreate it from scratch and do not guess a function's parameters from memory.
+2026-11-18T07:54:57.1796795Z           ^ The feature "collection literals" is experimental and should be enabled explicitly. This can be done by supplying the compiler argument '-Xcollection-literals', but note that no stability guarantees are provided.
+2026-11-18T07:54:57.1798284Z 
+2026-11-18T07:54:57.1801089Z   Line 1: [Earlier content for app/build.gradle.kts (3824 chars, already written to disk). The module surface below may not show every signature you need — re-read with read_file before editing this file again, OR before importing/calling anything from it in another file. Do not recreate it from scratch and do not guess a function's parameters from memory.
+2026-11-18T07:54:57.1803568Z            ^ Unresolved reference 'Earlier'.
+2026-11-18T07:54:57.1803964Z 
+2026-11-18T07:54:57.1806469Z   Line 1: [Earlier content for app/build.gradle.kts (3824 chars, already written to disk). The module surface below may not show every signature you need — re-read with read_file before editing this file again, OR before importing/calling anything from it in another file. Do not recreate it from scratch and do not guess a function's parameters from memory.
+2026-11-18T07:54:57.1808947Z                            ^ Only expressions are allowed here.
+2026-11-18T07:54:57.1809405Z 
+2026-11-18T07:54:57.1812084Z   Line 1: [Earlier content for app/build.gradle.kts (3824 chars, already written to disk). The module surface below may not show every signature you need — re-read with read_file before editing this file again, OR before importing/calling anything from it in another file. Do not recreate it from scratch and do not guess a function's parameters from memory.
+2026-11-18T07:54:57.1814850Z                            ^ Method 'iterator()' is ambiguous for this expression. Applicable candidates:
+2026-11-18T07:54:57.1815808Z                                fun <T> Enumeration<T>.iterator(): Iterator<T>
+2026-11-18T07:54:57.1816608Z                                fun <T> Iterator<T>.iterator(): Iterator<T>
+2026-11-18T07:54:57.1817440Z                                fun <K, V> Map<out K, V>.iterator(): Iterator<Map.Entry<K, V>>
+2026-11-18T07:54:57.1818526Z                                fun <K, V> MutableMap<K, V>.iterator(): MutableIterator<MutableMap.MutableEntry<K, V>>
+2026-11-18T07:54:57.1819535Z                                fun CharSequence.iterator(): CharIterator
+2026-11-18T07:54:57.1820343Z                                fun BufferedInputStream.iterator(): ByteIterator
+2026-11-18T07:54:57.1821099Z 
+2026-11-18T07:54:57.1823639Z   Line 1: [Earlier content for app/build.gradle.kts (3824 chars, already written to disk). The module surface below may not show every signature you need — re-read with read_file before editing this file again, OR before importing/calling anything from it in another file. Do not recreate it from scratch and do not guess a function's parameters from memory.
