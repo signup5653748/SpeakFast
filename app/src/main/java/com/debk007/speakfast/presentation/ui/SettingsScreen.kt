@@ -2,10 +2,7 @@ package com.debk007.speakfast.presentation.ui
 
 import android.speech.tts.Voice
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.gestures.pointerInput
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.rememberInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -43,10 +40,6 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
     val locales by viewModel.ttsLocales.collectAsState()
     val settings = uiState.settings
 
-    // FIX (language fallback edge case): if the saved languageCode is not in the
-    // TTS locale list, indexOf returns -1. coerceAtLeast(0) maps -1 -> 0 so the
-    // ◀/▶ buttons always wrap around the available locales and never index
-    // negatively or jump to arbitrary locales.
     val currentLocale = locales.firstOrNull { it.toLanguageTag() == (settings?.languageCode ?: "") }
         ?: Locale.forLanguageTag(settings?.languageCode ?: "en-US")
     val voices: List<Voice> = viewModel.voicesFor(currentLocale)
@@ -54,7 +47,6 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
     val currentLocaleIndex = locales.indexOf(currentLocale).coerceAtLeast(0)
     val currentVoiceIndex = voices.indexOf(currentVoice).coerceAtLeast(0)
 
-    // Interaction sources for ripple effects on icon buttons
     val prevLocaleInteractionSource = remember { MutableInteractionSource() }
     val nextLocaleInteractionSource = remember { MutableInteractionSource() }
     val prevVoiceInteractionSource = remember { MutableInteractionSource() }
@@ -69,8 +61,6 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
     ) {
         Text("Settings", style = MaterialTheme.typography.headlineLarge)
 
-        // FIX (error messages): show the ViewModel's errorMessage as a dismissible
-        // red banner at the top of the screen.
         val errorMessage = uiState.errorMessage
         if (errorMessage != null) {
             Row(
@@ -110,7 +100,6 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
         if (locales.isEmpty()) {
             Text("Loading TTS languages...", style = MaterialTheme.typography.bodyLarge)
         } else {
-            // LANGUAGE SETTING
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -134,11 +123,7 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                             .size(48.dp)
                             .semantics { contentDescription = "Previous language" }
                     ) {
-                        Text(
-                            "◀",
-                            fontSize = 20.sp,
-                            modifier = Modifier.semantics { contentDescription = "Previous language" }
-                        )
+                        Text("◀", fontSize = 20.sp, modifier = Modifier.semantics { contentDescription = "Previous language" })
                     }
                     Button(
                         onClick = {
@@ -150,16 +135,11 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                             .size(48.dp)
                             .semantics { contentDescription = "Next language" }
                     ) {
-                        Text(
-                            "▶",
-                            fontSize = 20.sp,
-                            modifier = Modifier.semantics { contentDescription = "Next language" }
-                        )
+                        Text("▶", fontSize = 20.sp, modifier = Modifier.semantics { contentDescription = "Next language" })
                     }
                 }
             }
 
-            // VOICE VARIANT SETTING
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -189,11 +169,7 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                             .size(48.dp)
                             .semantics { contentDescription = "Previous voice variant" }
                     ) {
-                        Text(
-                            "◀",
-                            fontSize = 20.sp,
-                            modifier = Modifier.semantics { contentDescription = "Previous voice variant" }
-                        )
+                        Text("◀", fontSize = 20.sp, modifier = Modifier.semantics { contentDescription = "Previous voice variant" })
                     }
                     Button(
                         onClick = {
@@ -208,17 +184,13 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                             .size(48.dp)
                             .semantics { contentDescription = "Next voice variant" }
                     ) {
-                        Text(
-                            "▶",
-                            fontSize = 20.sp,
-                            modifier = Modifier.semantics { contentDescription = "Next voice variant" }
-                        )
+                        Text("▶", fontSize = 20.sp, modifier = Modifier.semantics { contentDescription = "Next voice variant" })
                     }
                 }
             }
         }
 
-        // SPEECH RATE SETTING
+        // SPEECH RATE
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -228,28 +200,23 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                 text = "Speech Rate: ${String.format("%.1f", settings?.speechRate ?: 1.0f)}",
                 style = MaterialTheme.typography.bodyLarge
             )
-            Slider(
-                value = settings?.speechRate ?: 1.0f,
-                onValueChange = { viewModel.updateSpeechRate(it) },
-                valueRange = 0.5f..2.0f,
-                steps = 15,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .width(200.dp)
-                    // Prevent scroll container from stealing touch events from slider
-                    .pointerInput(Unit) {
-                        detectTapGestures(
-                            onTap = { /* Consume tap to prevent scroll interference */ },
-                            onDoubleTap = { /* Consume double tap */ },
-                            onLongPress = { /* Consume long press */ },
-                            onPress = { /* Consume press */ }
-                        )
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Slider(
+                    value = settings?.speechRate ?: 1.0f,
+                    onValueChange = { viewModel.updateSpeechRate(it) },
+                    valueRange = 0.5f..2.0f,
+                    steps = 15,
+                    modifier = Modifier.width(180.dp).semantics { contentDescription = "Adjust speech rate" }
+                )
+                if ((settings?.speechRate ?: 1.0f) != 1.0f) {
+                    IconButton(onClick = { viewModel.updateSpeechRate(1.0f) }) {
+                        Text("↺", fontSize = 20.sp, color = MaterialTheme.colorScheme.primary)
                     }
-                    .semantics { contentDescription = "Adjust speech rate" }
-            )
+                }
+            }
         }
 
-        // PITCH SETTING
+        // PITCH
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -259,140 +226,47 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                 text = "Pitch: ${String.format("%.1f", settings?.pitch ?: 1.0f)}",
                 style = MaterialTheme.typography.bodyLarge
             )
-            Slider(
-                value = settings?.pitch ?: 1.0f,
-                onValueChange = { viewModel.updatePitch(it) },
-                valueRange = 0.5f..2.0f,
-                steps = 15,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .width(200.dp)
-                    // Prevent scroll container from stealing touch events from slider
-                    .pointerInput(Unit) {
-                        detectTapGestures(
-                            onTap = { /* Consume tap to prevent scroll interference */ },
-                            onDoubleTap = { /* Consume double tap */ },
-                            onLongPress = { /* Consume long press */ },
-                            onPress = { /* Consume press */ }
-                        )
-                    }
-                    .semantics { contentDescription = "Adjust pitch" }
-            )
-        }
-
-        // FONT SIZE SETTING (replaces pinch zoom - static slider with 10 steps)
-        val fontSizeInteractionSource = remember { MutableInteractionSource() }
-        val fontSizeDecreaseInteractionSource = remember { MutableInteractionSource() }
-        val fontSizeIncreaseInteractionSource = remember { MutableInteractionSource() }
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = "Font Size: ${String.format("%.0f", settings?.fontSize ?: 16.0f)}sp",
-                style = MaterialTheme.typography.bodyLarge
-            )
-            Row(
-                modifier = Modifier.fillMaxWidth().width(200.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                IconButton(
-                    onClick = {
-                        val currentSize = settings?.fontSize ?: 16.0f
-                        val newSize = (currentSize - 2f).coerceIn(12f, 30f)
-                        viewModel.updateFontSize(newSize)
-                    },
-                    interactionSource = fontSizeDecreaseInteractionSource,
-                    modifier = Modifier
-                        .size(48.dp)
-                        .semantics { contentDescription = "Decrease font size" }
-                ) {
-                    Icon(
-                        imageVector = Icons.Filled.Remove,
-                        contentDescription = "Decrease font size",
-                        tint = MaterialTheme.colorScheme.onSurface,
-                        modifier = Modifier.size(24.dp)
-                    )
-                }
+            Row(verticalAlignment = Alignment.CenterVertically) {
                 Slider(
-                    value = settings?.fontSize ?: 16.0f,
-                    onValueChange = { viewModel.updateFontSize(it) },
-                    valueRange = 12f..30f,
-                    steps = 10,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        // Prevent scroll container from stealing touch events from slider
-                        .pointerInput(Unit) {
-                            detectTapGestures(
-                                onTap = { /* Consume tap to prevent scroll interference */ },
-                                onDoubleTap = { /* Consume double tap */ },
-                                onLongPress = { /* Consume long press */ },
-                                onPress = { /* Consume press */ }
-                            )
-                        }
-                        .semantics { contentDescription = "Adjust font size" }
+                    value = settings?.pitch ?: 1.0f,
+                    onValueChange = { viewModel.updatePitch(it) },
+                    valueRange = 0.5f..2.0f,
+                    steps = 15,
+                    modifier = Modifier.width(180.dp).semantics { contentDescription = "Adjust pitch" }
                 )
-                IconButton(
-                    onClick = {
-                        val currentSize = settings?.fontSize ?: 16.0f
-                        val newSize = (currentSize + 2f).coerceIn(12f, 30f)
-                        viewModel.updateFontSize(newSize)
-                    },
-                    interactionSource = fontSizeIncreaseInteractionSource,
-                    modifier = Modifier
-                        .size(48.dp)
-                        .semantics { contentDescription = "Increase font size" }
-                ) {
-                    Icon(
-                        imageVector = Icons.Filled.Add,
-                        contentDescription = "Increase font size",
-                        tint = MaterialTheme.colorScheme.onSurface,
-                        modifier = Modifier.size(24.dp)
-                    )
+                if ((settings?.pitch ?: 1.0f) != 1.0f) {
+                    IconButton(onClick = { viewModel.updatePitch(1.0f) }) {
+                        Text("↺", fontSize = 20.sp, color = MaterialTheme.colorScheme.primary)
+                    }
                 }
             }
         }
 
-        // READ EXACT SELECTION SETTING
+        // READ EXACT SELECTION
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = "Read Exact Selection",
-                style = MaterialTheme.typography.bodyLarge
-            )
+            Text(text = "Read Exact Selection", style = MaterialTheme.typography.bodyLarge)
             Switch(
                 checked = settings?.readExactSelection ?: true,
                 onCheckedChange = { viewModel.updateReadExactSelection(it) },
-                modifier = Modifier
-                    .semantics { contentDescription = "Toggle read exact selection" }
-                    // Ensure minimum 48dp touch target
-                    .padding(16.dp)
+                modifier = Modifier.semantics { contentDescription = "Toggle read exact selection" }.padding(16.dp)
             )
         }
 
-        // OCR MODE SETTING
+        // OCR MODE
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = "OCR Mode (Read Images)",
-                style = MaterialTheme.typography.bodyLarge
-            )
+            Text(text = "OCR Mode (Read Images)", style = MaterialTheme.typography.bodyLarge)
             Switch(
                 checked = settings?.ocrEnabled ?: false,
                 onCheckedChange = { viewModel.updateOcrEnabled(it) },
-                modifier = Modifier
-                    .semantics { contentDescription = "Toggle OCR mode" }
-                    // Ensure minimum 48dp touch target
-                    .padding(16.dp)
+                modifier = Modifier.semantics { contentDescription = "Toggle OCR mode" }.padding(16.dp)
             )
         }
     }
