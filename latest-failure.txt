@@ -1,59 +1,53 @@
-=== FAILURE LOG FOR RUN: 44349813982 ===
+=== FAILURE LOG FOR RUN: 44351134887 ===
 === FAILED JOB: Build Signed Release APK ===
-=== DATE: Wed Nov 18 16:40:52 UTC 2026 ===
+=== DATE: Wed Nov 18 16:47:49 UTC 2026 ===
 === UNIVERSAL ERROR BLOCK (Kotlin, AAPT, XML, Gradle) ===
 
-2026-11-18T16:40:04.6710004Z   echo "::error::KEYSTORE_BASE64 secret is not set."
-2026-11-18T16:40:34.4912912Z > Task :app:compileReleaseKotlin FAILED
-2026-11-18T16:40:34.4921873Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/ui/SettingsScreen.kt:17:47 Unresolved reference 'Remove'.
-2026-11-18T16:40:34.4941961Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/ui/SettingsScreen.kt:222:56 Unresolved reference 'Remove'.
-2026-11-18T16:40:34.4943616Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:110:52 Unresolved reference 'ACTION_UPDATE_BUBBLE_SIZE'.
-2026-11-18T16:40:34.4944956Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:110:79 Cannot infer type for this parameter. Please specify it explicitly.
-2026-11-18T16:40:34.4946316Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:110:79 Unresolved reference. None of the following candidates is applicable because of a receiver type mismatch:
-2026-11-18T16:40:34.4947303Z fun <T> T.apply(block: T.() -> Unit): T
-2026-11-18T16:40:34.4947642Z     [R|Contract description]
-2026-11-18T16:40:34.4947929Z      <
-2026-11-18T16:40:34.4948193Z         CallsInPlace(block, EXACTLY_ONCE)
-2026-11-18T16:40:34.4948513Z     >
-2026-11-18T16:40:34.4949232Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:110:85 Cannot infer type for this parameter. Please specify it explicitly.
-2026-11-18T16:40:34.4950413Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:111:13 Unresolved reference 'setPackage'.
-2026-11-18T16:40:34.4951672Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:112:13 Unresolved reference 'putExtra'.
-2026-11-18T16:40:34.5881379Z gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_4-1795020009384.json
-2026-11-18T16:40:34.5882265Z 
-2026-11-18T16:40:34.5883103Z [Incubating] Problems report is available at: file:///home/runner/work/SpeakFast/SpeakFast/build/reports/problems/problems-report.html
-2026-11-18T16:40:34.5908126Z 
-2026-11-18T16:40:34.5909681Z Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
-2026-11-18T16:40:34.5910335Z 
-2026-11-18T16:40:34.5910884Z 
-2026-11-18T16:40:34.5912450Z You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
-2026-11-18T16:40:34.5918921Z 
-2026-11-18T16:40:34.5927992Z FAILURE: Build failed with an exception.
-2026-11-18T16:40:34.5941029Z 
-2026-11-18T16:40:34.5941655Z For more on this, please refer to https://docs.gradle.org/9.9.0/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
-2026-11-18T16:40:34.5964343Z 38 actionable tasks: 27 executed, 11 from cache
-2026-11-18T16:40:34.5971338Z * What went wrong:
-2026-11-18T16:40:34.5988939Z Configuration cache entry stored.
-2026-11-18T16:40:34.6021643Z Execution failed for task ':app:compileReleaseKotlin' (registered by plugin 'org.jetbrains.kotlin.android').
-2026-11-18T16:40:34.6102862Z > A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
-2026-11-18T16:40:34.6131291Z    > Compilation error. See log for more details
-2026-11-18T16:40:34.6163437Z 
-2026-11-18T16:40:34.6183136Z * Try:
-2026-11-18T16:40:34.6211248Z > Run with --stacktrace option to get the stack trace.
-2026-11-18T16:40:34.6231538Z > Run with --info or --debug option to get more log output.
-2026-11-18T16:40:34.6246312Z > Run with --scan to get full insights from a Build Scan (powered by Develocity).
-2026-11-18T16:40:34.6251061Z > Get more help at https://help.gradle.org.
-2026-11-18T16:40:34.6251578Z 
-2026-11-18T16:40:34.6251893Z BUILD FAILED in 29s
-2026-11-18T16:40:34.9810343Z ##[error]Process completed with exit code 1.
-2026-11-18T16:40:35.0557371Z ##[group]Run rm -f app/release.keystore
-2026-11-18T16:40:35.0557767Z rm -f app/release.keystore
-2026-11-18T16:40:35.0612954Z shell: /usr/bin/bash -e {0}
-2026-11-18T16:40:35.0613271Z env:
-2026-11-18T16:40:35.0613506Z   NEW_VERSION_CODE: 22
-2026-11-18T16:40:35.0613774Z   NEW_VERSION_NAME: 1.21
-2026-11-18T16:40:35.0614036Z   NEW_TAG: v1.21
-2026-11-18T16:40:35.0614449Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.21-9/x64
-2026-11-18T16:40:35.0615005Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.21-9/x64
-2026-11-18T16:40:35.0615462Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
-2026-11-18T16:40:35.0615807Z   GRADLE_USER_HOME: /home/runner/.gradle
-2026-11-18T16:40:35.0616143Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+2026-11-18T16:46:53.5366961Z   echo "::error::KEYSTORE_BASE64 secret is not set."
+2026-11-18T16:47:30.9985702Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/ui/SettingsScreen.kt:17:47 Unresolved reference 'Remove'.
+2026-11-18T16:47:30.9986786Z > Task :app:compileReleaseKotlin FAILED
+2026-11-18T16:47:30.9988434Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/ui/SettingsScreen.kt:222:56 Unresolved reference 'Remove'.
+2026-11-18T16:47:30.9990518Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:104:56 Unresolved reference 'ACTION_UPDATE_BUBBLE_SIZE'.
+2026-11-18T16:47:30.9992417Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:104:83 Cannot infer type for this parameter. Please specify it explicitly.
+2026-11-18T16:47:30.9994675Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:104:83 Unresolved reference. None of the following candidates is applicable because of a receiver type mismatch:
+2026-11-18T16:47:30.9996133Z fun <T> T.apply(block: T.() -> Unit): T
+2026-11-18T16:47:30.9996893Z     [R|Contract description]
+2026-11-18T16:47:31.0003688Z      <
+2026-11-18T16:47:31.0004182Z         CallsInPlace(block, EXACTLY_ONCE)
+2026-11-18T16:47:31.0004808Z     >
+2026-11-18T16:47:31.0006089Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:104:89 Cannot infer type for this parameter. Please specify it explicitly.
+2026-11-18T16:47:31.0008119Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:105:17 Unresolved reference 'setPackage'.
+2026-11-18T16:47:31.0010022Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:106:17 Unresolved reference 'putExtra'.
+2026-11-18T16:47:31.0967009Z gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_4-1795020420028.json
+2026-11-18T16:47:31.0967760Z 
+2026-11-18T16:47:31.0967986Z 
+2026-11-18T16:47:31.0975752Z FAILURE: Build failed with an exception.
+2026-11-18T16:47:31.0976829Z [Incubating] Problems report is available at: file:///home/runner/work/SpeakFast/SpeakFast/build/reports/problems/problems-report.html
+2026-11-18T16:47:31.0977521Z 
+2026-11-18T16:47:31.0977658Z * What went wrong:
+2026-11-18T16:47:31.0978326Z Execution failed for task ':app:compileReleaseKotlin' (registered by plugin 'org.jetbrains.kotlin.android').
+2026-11-18T16:47:31.0979482Z > A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
+2026-11-18T16:47:31.0980385Z    > Compilation error. See log for more details
+2026-11-18T16:47:31.0980696Z 
+2026-11-18T16:47:31.0980821Z * Try:
+2026-11-18T16:47:31.0981170Z > Run with --stacktrace option to get the stack trace.
+2026-11-18T16:47:31.0981684Z > Run with --info or --debug option to get more log output.
+2026-11-18T16:47:31.0982283Z > Run with --scan to get full insights from a Build Scan (powered by Develocity).
+2026-11-18T16:47:31.0982991Z > Get more help at https://help.gradle.org.
+2026-11-18T16:47:31.0983275Z 
+2026-11-18T16:47:31.0983466Z BUILD FAILED in 37s
+2026-11-18T16:47:31.0983659Z 
+2026-11-18T16:47:31.0984015Z Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+2026-11-18T16:47:31.0984468Z 
+2026-11-18T16:47:31.0984997Z You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+2026-11-18T16:47:31.0985718Z 
+2026-11-18T16:47:31.0986200Z For more on this, please refer to https://docs.gradle.org/9.9.0/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+2026-11-18T16:47:31.0987100Z 38 actionable tasks: 27 executed, 11 from cache
+2026-11-18T16:47:31.1980750Z Configuration cache entry stored.
+2026-11-18T16:47:31.5210344Z ##[error]Process completed with exit code 1.
+2026-11-18T16:47:31.5244375Z ##[group]Run rm -f app/release.keystore
+2026-11-18T16:47:31.5244709Z rm -f app/release.keystore
+2026-11-18T16:47:31.5289702Z shell: /usr/bin/bash -e {0}
+2026-11-18T16:47:31.5289963Z env:
+2026-11-18T16:47:31.5290163Z   NEW_VERSION_CODE: 23
+2026-11-18T16:47:31.5290392Z   NEW_VERSION_NAME: 1.22
