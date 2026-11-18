@@ -1,126 +1,55 @@
-=== FAILURE LOG FOR RUN: 44311965062 ===
+=== FAILURE LOG FOR RUN: 44333435049 ===
 === FAILED JOB: Build Signed Release APK ===
-=== DATE: Wed Nov 18 13:17:24 UTC 2026 ===
+=== DATE: Wed Nov 18 15:16:20 UTC 2026 ===
 === UNIVERSAL ERROR BLOCK (Kotlin, AAPT, XML, Gradle) ===
 
-2026-11-18T13:16:33.6289858Z   echo "::error::KEYSTORE_BASE64 secret is not set."
-2026-11-18T13:17:05.7065269Z > Task :app:kspReleaseKotlin FAILED
-2026-11-18T13:17:05.7066472Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:1 Expecting a top level declaration
-2026-11-18T13:17:05.7068548Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:2 Expecting a top level declaration
-2026-11-18T13:17:05.7070066Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:10 Expecting a top level declaration
-2026-11-18T13:17:05.7071953Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:18 Expecting a top level declaration
-2026-11-18T13:17:05.7073851Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:22 Expecting a top level declaration
-2026-11-18T13:17:05.7075511Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:25 Expecting a top level declaration
-2026-11-18T13:17:05.7077218Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:26 Expecting a top level declaration
-2026-11-18T13:17:05.7078943Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:29 Expecting a top level declaration
-2026-11-18T13:17:05.7080592Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:30 Expecting a top level declaration
-2026-11-18T13:17:05.7082109Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:34 Expecting a top level declaration
-2026-11-18T13:17:05.7084193Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:35 Expecting a top level declaration
-2026-11-18T13:17:05.7101034Z gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_4-1795007800415.json
-2026-11-18T13:17:05.7139543Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:39 Expecting a top level declaration
-2026-11-18T13:17:05.7140630Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:40 Expecting a top level declaration
-2026-11-18T13:17:05.7141630Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:43 Expecting a top level declaration
-2026-11-18T13:17:05.7142589Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:44 Expecting a top level declaration
-2026-11-18T13:17:05.7143520Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:51 Expecting a top level declaration
-2026-11-18T13:17:05.7144634Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:52 Expecting a top level declaration
-2026-11-18T13:17:05.7145619Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:61 Expecting a top level declaration
-2026-11-18T13:17:05.7146630Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:62 Expecting a top level declaration
-2026-11-18T13:17:05.7147560Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:74 Expecting a top level declaration
-2026-11-18T13:17:05.7148677Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:75 Expecting a top level declaration
-2026-11-18T13:17:05.7149621Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:84 Expecting a top level declaration
-2026-11-18T13:17:05.7150779Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:85 Expecting a top level declaration
-2026-11-18T13:17:05.7151747Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:102 Expecting a top level declaration
-2026-11-18T13:17:05.7152893Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:103 Expecting a top level declaration
-2026-11-18T13:17:05.7154267Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:106 Expecting a top level declaration
-2026-11-18T13:17:05.7155604Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:107 Expecting a top level declaration
-2026-11-18T13:17:05.7157094Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:112 Expecting a top level declaration
-2026-11-18T13:17:05.7158638Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:117 Expecting a top level declaration
-2026-11-18T13:17:05.7159616Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:119 Expecting a top level declaration
-2026-11-18T13:17:05.7160601Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:127 Expecting a top level declaration
-2026-11-18T13:17:05.7161680Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:135 Expecting a top level declaration
-2026-11-18T13:17:05.7162676Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:138 Expecting a top level declaration
-2026-11-18T13:17:05.7163641Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:142 Expecting a top level declaration
-2026-11-18T13:17:05.7164574Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:143 Expecting a top level declaration
-2026-11-18T13:17:05.7165552Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:145 Expecting a top level declaration
-2026-11-18T13:17:05.7166867Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:149 Expecting a top level declaration
-2026-11-18T13:17:05.7167859Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:156 Expecting a top level declaration
-2026-11-18T13:17:05.7169027Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:164 Expecting a top level declaration
-2026-11-18T13:17:05.7170004Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:170 Expecting a top level declaration
-2026-11-18T13:17:05.7170983Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:174 Expecting a top level declaration
-2026-11-18T13:17:05.7171935Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:178 Expecting a top level declaration
-2026-11-18T13:17:05.7172900Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:183 Expecting a top level declaration
-2026-11-18T13:17:05.7173902Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:189 Expecting a top level declaration
-2026-11-18T13:17:05.7174871Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:199 Expecting a top level declaration
-2026-11-18T13:17:05.7175794Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:203 Expecting a top level declaration
-2026-11-18T13:17:05.7176738Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:208 Expecting a top level declaration
-2026-11-18T13:17:05.7177766Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:210 Expecting a top level declaration
-2026-11-18T13:17:05.7178844Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:212 Expecting a top level declaration
-2026-11-18T13:17:05.7179859Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:213 Expecting a top level declaration
-2026-11-18T13:17:05.7181287Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:218 Expecting a top level declaration
-2026-11-18T13:17:05.7182547Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:223 Expecting a top level declaration
-2026-11-18T13:17:05.7183991Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:233 Expecting a top level declaration
-2026-11-18T13:17:05.7185455Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:240 Expecting a top level declaration
-2026-11-18T13:17:05.7186975Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:248 Expecting a top level declaration
-2026-11-18T13:17:05.7188674Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:253 Expecting a top level declaration
-2026-11-18T13:17:05.7190412Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:258 Expecting a top level declaration
-2026-11-18T13:17:05.7191871Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:263 Expecting a top level declaration
-2026-11-18T13:17:05.7193357Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:265 Expecting a top level declaration
-2026-11-18T13:17:05.7194867Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:268 Expecting a top level declaration
-2026-11-18T13:17:05.7196347Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:275 Expecting a top level declaration
-2026-11-18T13:17:05.7197883Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:284 Expecting a top level declaration
-2026-11-18T13:17:05.7199583Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:285 Expecting a top level declaration
-2026-11-18T13:17:05.7201475Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:293 Expecting a top level declaration
-2026-11-18T13:17:05.7203076Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:302 Expecting a top level declaration
-2026-11-18T13:17:05.7204658Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:307 Expecting a top level declaration
-2026-11-18T13:17:05.7206182Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:313 Expecting a top level declaration
-2026-11-18T13:17:05.7207696Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:321 Expecting a top level declaration
-2026-11-18T13:17:05.7209408Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:325 Expecting a top level declaration
-2026-11-18T13:17:05.7210998Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:327 Expecting a top level declaration
-2026-11-18T13:17:05.7212491Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:330 Expecting a top level declaration
-2026-11-18T13:17:05.7213971Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:334 Expecting a top level declaration
-2026-11-18T13:17:05.7215428Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:343 Expecting a top level declaration
-2026-11-18T13:17:05.7217118Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:346 Expecting a top level declaration
-2026-11-18T13:17:05.7218226Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:351 Expecting a top level declaration
-2026-11-18T13:17:05.7219261Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:359 Expecting a top level declaration
-2026-11-18T13:17:05.7220207Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:363 Expecting a top level declaration
-2026-11-18T13:17:05.7221312Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:366 Expecting a top level declaration
-2026-11-18T13:17:05.7222261Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:370 Expecting a top level declaration
-2026-11-18T13:17:05.7223183Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:376 Expecting a top level declaration
-2026-11-18T13:17:05.7224157Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:378 Expecting a top level declaration
-2026-11-18T13:17:05.7225096Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:1:386 Expecting a top level declaration
-2026-11-18T13:17:05.7226065Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:2:1 Expecting a top level declaration
-2026-11-18T13:17:05.7227040Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:2:8 Expecting a top level declaration
-2026-11-18T13:17:05.7228145Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:2:15 Expecting a top level declaration
-2026-11-18T13:17:05.7229148Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:2:16 imports are only allowed in the beginning of file
-2026-11-18T13:17:05.8098659Z 
-2026-11-18T13:17:05.8128760Z 
-2026-11-18T13:17:05.8159387Z FAILURE: Build failed with an exception.
-2026-11-18T13:17:05.8160625Z [Incubating] Problems report is available at: file:///home/runner/work/SpeakFast/SpeakFast/build/reports/problems/problems-report.html
-2026-11-18T13:17:05.8188490Z 
-2026-11-18T13:17:05.8188513Z 
-2026-11-18T13:17:05.8249249Z * What went wrong:
-2026-11-18T13:17:05.8250134Z Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
-2026-11-18T13:17:05.8279578Z Execution failed for task ':app:kspReleaseKotlin' (registered by plugin 'org.jetbrains.kotlin.android').
-2026-11-18T13:17:05.8280117Z 
-2026-11-18T13:17:05.8280794Z > A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
-2026-11-18T13:17:05.8281785Z You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
-2026-11-18T13:17:05.8282261Z 
-2026-11-18T13:17:05.8282697Z For more on this, please refer to https://docs.gradle.org/9.9.0/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
-2026-11-18T13:17:05.8283357Z 37 actionable tasks: 26 executed, 11 from cache
-2026-11-18T13:17:05.8283799Z Configuration cache entry stored.
-2026-11-18T13:17:05.8309167Z    > Compilation error. See log for more details
-2026-11-18T13:17:05.8338417Z 
-2026-11-18T13:17:05.8339069Z * Try:
-2026-11-18T13:17:05.8339785Z > Run with --stacktrace option to get the stack trace.
-2026-11-18T13:17:05.8340444Z > Run with --info or --debug option to get more log output.
-2026-11-18T13:17:05.8341149Z > Run with --scan to get full insights from a Build Scan (powered by Develocity).
-2026-11-18T13:17:05.8341848Z > Get more help at https://help.gradle.org.
-2026-11-18T13:17:05.8342199Z 
-2026-11-18T13:17:05.8342383Z BUILD FAILED in 32s
-2026-11-18T13:17:06.1870801Z ##[error]Process completed with exit code 1.
-2026-11-18T13:17:06.1903489Z ##[group]Run rm -f app/release.keystore
-2026-11-18T13:17:06.1903912Z rm -f app/release.keystore
-2026-11-18T13:17:06.1923559Z shell: /usr/bin/bash -e {0}
-2026-11-18T13:17:06.1923948Z env:
-2026-11-18T13:17:06.1924267Z   NEW_VERSION_CODE: 17
-2026-11-18T13:17:06.1924566Z   NEW_VERSION_NAME: 1.16
+2026-11-18T15:15:19.6219009Z   echo "::error::KEYSTORE_BASE64 secret is not set."
+2026-11-18T15:16:02.1980394Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/ui/SettingsScreen.kt:6:45 Unresolved reference 'pointerInput'.
+2026-11-18T15:16:02.1982722Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/ui/SettingsScreen.kt:8:48 Unresolved reference 'rememberInteractionSource'.
+2026-11-18T15:16:02.1993512Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/ui/SettingsScreen.kt:240:22 Unresolved reference 'pointerInput'.
+2026-11-18T15:16:02.2021925Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/ui/SettingsScreen.kt:241:25 Suspend function 'suspend fun PointerInputScope.detectTapGestures(onDoubleTap: ((Offset) -> Unit)? = ..., onLongPress: ((Offset) -> Unit)? = ..., onPress: suspend PressGestureScope.(Offset) -> Unit = ..., onTap: ((Offset) -> Unit)? = ...): Unit' should be called only from a coroutine or another suspend function.
+2026-11-18T15:16:02.2024989Z > Task :app:compileReleaseKotlin FAILED
+2026-11-18T15:16:02.2050066Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/ui/SettingsScreen.kt:241:25 Unresolved reference. None of the following candidates is applicable because of a receiver type mismatch:
+2026-11-18T15:16:02.2080065Z suspend fun PointerInputScope.detectTapGestures(onDoubleTap: ((Offset) -> Unit)? = ..., onLongPress: ((Offset) -> Unit)? = ..., onPress: suspend PressGestureScope.(Offset) -> Unit = ..., onTap: ((Offset) -> Unit)? = ...): Unit
+2026-11-18T15:16:02.2109819Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/ui/SettingsScreen.kt:271:22 Unresolved reference 'pointerInput'.
+2026-11-18T15:16:02.2143595Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/ui/SettingsScreen.kt:272:25 Suspend function 'suspend fun PointerInputScope.detectTapGestures(onDoubleTap: ((Offset) -> Unit)? = ..., onLongPress: ((Offset) -> Unit)? = ..., onPress: suspend PressGestureScope.(Offset) -> Unit = ..., onTap: ((Offset) -> Unit)? = ...): Unit' should be called only from a coroutine or another suspend function.
+2026-11-18T15:16:02.2146220Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/ui/SettingsScreen.kt:272:25 Unresolved reference. None of the following candidates is applicable because of a receiver type mismatch:
+2026-11-18T15:16:02.2148057Z suspend fun PointerInputScope.detectTapGestures(onDoubleTap: ((Offset) -> Unit)? = ..., onLongPress: ((Offset) -> Unit)? = ..., onPress: suspend PressGestureScope.(Offset) -> Unit = ..., onTap: ((Offset) -> Unit)? = ...): Unit
+2026-11-18T15:16:02.2150167Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/ui/SettingsScreen.kt:314:52 Unresolved reference 'Remove'.
+2026-11-18T15:16:02.2160015Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/ui/SettingsScreen.kt:328:26 Unresolved reference 'pointerInput'.
+2026-11-18T15:16:02.2170118Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/ui/SettingsScreen.kt:329:29 Suspend function 'suspend fun PointerInputScope.detectTapGestures(onDoubleTap: ((Offset) -> Unit)? = ..., onLongPress: ((Offset) -> Unit)? = ..., onPress: suspend PressGestureScope.(Offset) -> Unit = ..., onTap: ((Offset) -> Unit)? = ...): Unit' should be called only from a coroutine or another suspend function.
+2026-11-18T15:16:02.2175400Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/ui/SettingsScreen.kt:329:29 Unresolved reference. None of the following candidates is applicable because of a receiver type mismatch:
+2026-11-18T15:16:02.2178906Z suspend fun PointerInputScope.detectTapGestures(onDoubleTap: ((Offset) -> Unit)? = ..., onLongPress: ((Offset) -> Unit)? = ..., onPress: suspend PressGestureScope.(Offset) -> Unit = ..., onTap: ((Offset) -> Unit)? = ...): Unit
+2026-11-18T15:16:02.2181335Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/ui/SettingsScreen.kt:350:52 Unresolved reference 'Add'.
+2026-11-18T15:16:02.2183532Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:13:38 Unresolved reference 'ModelDownloader'.
+2026-11-18T15:16:02.3968872Z 
+2026-11-18T15:16:02.3969971Z FAILURE: Build failed with an exception.
+2026-11-18T15:16:02.3970445Z 
+2026-11-18T15:16:02.3970627Z * What went wrong:
+2026-11-18T15:16:02.3971517Z Execution failed for task ':app:compileReleaseKotlin' (registered by plugin 'org.jetbrains.kotlin.android').
+2026-11-18T15:16:02.3973147Z > A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
+2026-11-18T15:16:02.3974385Z    > Compilation error. See log for more details
+2026-11-18T15:16:02.3974776Z 
+2026-11-18T15:16:02.3974936Z * Try:
+2026-11-18T15:16:02.3975428Z > Run with --stacktrace option to get the stack trace.
+2026-11-18T15:16:02.3976131Z > Run with --info or --debug option to get more log output.
+2026-11-18T15:16:02.3977810Z > Run with --scan to get full insights from a Build Scan (powered by Develocity).
+2026-11-18T15:16:02.3978740Z > Get more help at https://help.gradle.org.
+2026-11-18T15:16:02.3979102Z 
+2026-11-18T15:16:02.3979274Z BUILD FAILED in 42s
+2026-11-18T15:16:02.3980162Z gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_4-1795014927268.json
+2026-11-18T15:16:02.3981434Z 
+2026-11-18T15:16:02.3989763Z [Incubating] Problems report is available at: file:///home/runner/work/SpeakFast/SpeakFast/build/reports/problems/problems-report.html
+2026-11-18T15:16:02.3990889Z 
+2026-11-18T15:16:02.3991561Z Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+2026-11-18T15:16:02.3992363Z 
+2026-11-18T15:16:02.3993245Z You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+2026-11-18T15:16:02.3994284Z 
+2026-11-18T15:16:02.3995241Z For more on this, please refer to https://docs.gradle.org/9.9.0/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+2026-11-18T15:16:02.3996611Z 38 actionable tasks: 27 executed, 11 from cache
+2026-11-18T15:16:02.4969744Z Configuration cache entry stored.
+2026-11-18T15:16:02.9950550Z ##[error]Process completed with exit code 1.
+2026-11-18T15:16:02.9991429Z ##[group]Run rm -f app/release.keystore
+2026-11-18T15:16:02.9991875Z rm -f app/release.keystore
+2026-11-18T15:16:03.0045449Z shell: /usr/bin/bash -e {0}
+2026-11-18T15:16:03.0045765Z env:
