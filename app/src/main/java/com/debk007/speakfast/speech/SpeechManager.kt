@@ -104,20 +104,15 @@ class SpeechManager @Inject constructor(
                     isPlaying = false
                     notifySpeechFinished()
                 }
-                // API 23+: word/sentence boundary callbacks for highlighting
+                // API 26+: word/sentence boundary callbacks for highlighting
                 override fun onRangeStart(utteranceId: String?, start: Int, end: Int, frame: Int) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         _speechProgress.value = SpeechProgress(
                             sentenceIndex = currentIndex,
                             totalSentences = sentences.size,
                             charStart = start,
                             charEnd = end
                         )
-                    }
-                }
-                override fun onRangeEnd(utteranceId: String?, start: Int, end: Int, frame: Int) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        // Clear progress when range ends; next onRangeStart will update
                     }
                 }
             })

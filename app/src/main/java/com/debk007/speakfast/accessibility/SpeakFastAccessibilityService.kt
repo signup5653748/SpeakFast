@@ -36,7 +36,7 @@ class SpeakFastAccessibilityService : AccessibilityService() {
     private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
 
     // Stores the screen Rect for each sentence being spoken (parallel to SpeechManager.sentences)
-    private var sentenceRects = mutableListOf<Rect>()
+    private var sentenceRects: List<Rect> = emptyList()
 
     private val commandReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -74,28 +74,6 @@ class SpeakFastAccessibilityService : AccessibilityService() {
         )
     }
 
-    /**
-     * Broadcasts the current sentence's screen Rect for highlighting overlay.
-     * Called when SpeechManager reports a new utterance range start.
-     */
-    private fun sendHighlight(rect: Rect) {
-        sendBroadcast(
-            Intent(FloatingTriggerService.ACTION_HIGHLIGHT)
-                .setPackage(packageName)
-                .putExtra("left", rect.left)
-                .putExtra("top", rect.top)
-                .putExtra("right", rect.right)
-                .putExtra("bottom", rect.bottom)
-        )
-    }
-
-    private fun clearHighlight() {
-        sendBroadcast(
-            Intent(FloatingTriggerService.ACTION_HIGHLIGHT_CLEAR)
-                .setPackage(packageName)
-        )
-    }
-
     override fun onServiceConnected() {
         super.onServiceConnected()
         val info = AccessibilityServiceInfo().apply {
@@ -111,20 +89,7 @@ class SpeakFastAccessibilityService : AccessibilityService() {
         // button resets to "▶" instead of staying stale.
         serviceScope.launch {
             speechManager.speechFinished.collect { finished ->
-                if (finished) {
-                    sendTtsFinished()
-                    clearHighlight()
-                }
-            }
-        }
-        // Subscribe to speech progress for highlighting
-        serviceScope.launch {
-            speechManager.speechProgress.collect { progress ->
-                progress?.let { p ->
-                    if (p.sentenceIndex in sentenceRects.indices) {
-                        sendHighlight(sentenceRects[p.sentenceIndex])
-                    }
-                }
+                if (finished) sendTtsFinished()
             }
         }
         val filter = IntentFilter().apply {
