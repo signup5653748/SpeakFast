@@ -12,7 +12,8 @@ data class Settings(
     val readExactSelection: Boolean = true,
     val triggerMethod: TriggerMethod = TriggerMethod.QUICK_SETTINGS_TILE,
     val ttsEngine: String = "",
-    val floatingButtonSize: Float = 1.0f
+    val floatingButtonSize: Float = 1.0f,
+    val fontSize: Float = 16.0f
 )
 
 @Serializable

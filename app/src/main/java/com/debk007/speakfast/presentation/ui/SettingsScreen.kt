@@ -280,6 +280,82 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
             )
         }
 
+        // FONT SIZE SETTING (replaces pinch zoom - static slider with 10 steps)
+        val fontSizeInteractionSource = remember { MutableInteractionSource() }
+        val fontSizeDecreaseInteractionSource = remember { MutableInteractionSource() }
+        val fontSizeIncreaseInteractionSource = remember { MutableInteractionSource() }
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "Font Size: ${String.format("%.0f", settings?.fontSize ?: 16.0f)}sp",
+                style = MaterialTheme.typography.bodyLarge
+            )
+            Row(
+                modifier = Modifier.fillMaxWidth().width(200.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                IconButton(
+                    onClick = {
+                        val currentSize = settings?.fontSize ?: 16.0f
+                        val newSize = (currentSize - 2f).coerceIn(12f, 30f)
+                        viewModel.updateFontSize(newSize)
+                    },
+                    interactionSource = fontSizeDecreaseInteractionSource,
+                    modifier = Modifier
+                        .size(48.dp)
+                        .semantics { contentDescription = "Decrease font size" }
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Remove,
+                        contentDescription = "Decrease font size",
+                        tint = MaterialTheme.colorScheme.onSurface,
+                        modifier = Modifier.size(24.dp)
+                    )
+                }
+                Slider(
+                    value = settings?.fontSize ?: 16.0f,
+                    onValueChange = { viewModel.updateFontSize(it) },
+                    valueRange = 12f..30f,
+                    steps = 10,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        // Prevent scroll container from stealing touch events from slider
+                        .pointerInput(Unit) {
+                            detectTapGestures(
+                                onTap = { /* Consume tap to prevent scroll interference */ },
+                                onDoubleTap = { /* Consume double tap */ },
+                                onLongPress = { /* Consume long press */ },
+                                onPress = { /* Consume press */ }
+                            )
+                        }
+                        .semantics { contentDescription = "Adjust font size" }
+                )
+                IconButton(
+                    onClick = {
+                        val currentSize = settings?.fontSize ?: 16.0f
+                        val newSize = (currentSize + 2f).coerceIn(12f, 30f)
+                        viewModel.updateFontSize(newSize)
+                    },
+                    interactionSource = fontSizeIncreaseInteractionSource,
+                    modifier = Modifier
+                        .size(48.dp)
+                        .semantics { contentDescription = "Increase font size" }
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Add,
+                        contentDescription = "Increase font size",
+                        tint = MaterialTheme.colorScheme.onSurface,
+                        modifier = Modifier.size(24.dp)
+                    )
+                }
+            }
+        }
+
         // READ EXACT SELECTION SETTING
         Row(
             modifier = Modifier.fillMaxWidth(),

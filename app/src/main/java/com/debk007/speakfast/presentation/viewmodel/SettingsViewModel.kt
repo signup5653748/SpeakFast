@@ -125,6 +125,10 @@ class SettingsViewModel @Inject constructor(
         viewModelScope.launch { settingsManager.updateFloatingButtonSize(size) }
     }
 
+    fun updateFontSize(size: Float) {
+        viewModelScope.launch { settingsManager.updateFontSize(size) }
+    }
+
     fun clearError() { _uiState.value = _uiState.value.copy(errorMessage = null) }
 
     // ✅ OCR Model Download Logic
