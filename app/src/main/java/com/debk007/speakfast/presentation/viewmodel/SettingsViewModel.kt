@@ -64,7 +64,6 @@ class SettingsViewModel @Inject constructor(
     }
 
     fun voicesFor(locale: Locale): List<Voice> = speechManager.voicesFor(locale)
-
     fun isOnline(voice: Voice): Boolean = speechManager.isOnline(voice)
 
     fun updateLanguage(tag: String) {
@@ -86,52 +85,45 @@ class SettingsViewModel @Inject constructor(
     }
 
     fun updateSpeechRate(rate: Float) {
-        viewModelScope.launch { 
+        viewModelScope.launch {
             settingsManager.updateSpeechRate(rate)
-            speechManager.refreshSettings() 
+            speechManager.refreshSettings()
         }
     }
 
     fun updatePitch(pitch: Float) {
-        viewModelScope.launch { 
+        viewModelScope.launch {
             settingsManager.updatePitch(pitch)
-            speechManager.refreshSettings() 
+            speechManager.refreshSettings()
         }
     }
 
     fun updateFloatingButtonSize(size: Float) {
         viewModelScope.launch {
             settingsManager.updateFloatingButtonSize(size)
-            broadcastSizeChange(size)
+            val intent = Intent(FloatingTriggerService.ACTION_UPDATE_BUBBLE_SIZE).apply {
+                setPackage(context.packageName)
+                putExtra("size", size)
+            }
+            context.sendBroadcast(intent)
         }
-    }
-
-    private fun broadcastSizeChange(size: Float) {
-        val intent = Intent(FloatingTriggerService.ACTION_UPDATE_BUBBLE_SIZE).apply {
-            setPackage(context.packageName)
-            putExtra("size", size)
-        }
-        context.sendBroadcast(intent)
     }
 
     fun updateOcrEnabled(enabled: Boolean) {
         viewModelScope.launch {
             settingsManager.updateOcrEnabled(enabled)
-            if (enabled) {
-                checkAndDownloadOcrModel()
-            }
         }
     }
 
     fun updateReadExactSelection(enabled: Boolean) {
-        viewModelScope.launch { 
-            settingsManager.updateReadExactSelection(enabled) 
+        viewModelScope.launch {
+            settingsManager.updateReadExactSelection(enabled)
         }
     }
 
     fun updateTriggerMethod(triggerMethod: TriggerMethod) {
-        viewModelScope.launch { 
-            settingsManager.updateTriggerMethod(triggerMethod) 
+        viewModelScope.launch {
+            settingsManager.updateTriggerMethod(triggerMethod)
         }
     }
 
@@ -142,11 +134,11 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    fun clearError() { 
-        _uiState.value = _uiState.value.copy(errorMessage = null) 
+    fun clearError() {
+        _uiState.value = _uiState.value.copy(errorMessage = null)
     }
 
-    private fun checkAndDownloadOcrModel() {
+    fun retryOcrModelDownload() {
         _ocrModelState.value = OcrModelState.Downloading(0)
         viewModelScope.launch(Dispatchers.IO) {
             try {
@@ -156,9 +148,5 @@ class SettingsViewModel @Inject constructor(
                 _ocrModelState.value = OcrModelState.Failed(e.message ?: "Unexpected error")
             }
         }
-    }
-
-    fun retryOcrModelDownload() {
-        checkAndDownloadOcrModel()
     }
 }
