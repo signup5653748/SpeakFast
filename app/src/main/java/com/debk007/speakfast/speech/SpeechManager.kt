@@ -1,56 +1,47 @@
-[Earlier content for app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt (9391 chars, already written to disk). The module surface below may not show every signature you need — re-read with read_file before editing this file again, OR before importing/calling anything from it in another file. Do not recreate it from scratch and do not guess a function's parameters from memory.
-Module surface:
+package com.debk007.speakfast.speech
+
 import android.content.Context
-import android.os.Build
 import android.speech.tts.TextToSpeech
 import android.speech.tts.UtteranceProgressListener
 import android.speech.tts.Voice
 import android.util.Log
 import com.debk007.speakfast.data.SettingsManager
-import com.debk007.speakfast.model.Settings
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.Locale
 import javax.inject.Inject
+
 class SpeechManager @Inject constructor(
     @ApplicationContext private val context: Context,
     private val settingsManager: SettingsManager
 ) {
     private var textToSpeech: TextToSpeech? = null
     private var isInitialized = false
+    private var currentEngineName: String = ""
+    
     private val sentences = mutableListOf<String>()
     private var currentIndex = 0
     private var isPlaying = false
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
-    // --- State exposed to UI ---
+    private var pendingText: String? = null
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
+
     private val _localesState = MutableStateFlow<List<Locale>>(emptyList())
     val localesState: StateFlow<List<Locale>> = _localesState.asStateFlow()
 
     private val _enginesState = MutableStateFlow<List<TextToSpeech.EngineInfo>>(emptyList())
     val enginesState: StateFlow<List<TextToSpeech.EngineInfo>> = _enginesState.asStateFlow()
 
-    // Engine switching state
-    private val _engineSwitching = MutableStateFlow(false)
-    val engineSwitching: StateFlow<Boolean> = _engineSwitching.asStateFlow()
-
-    // Speech progress for highlighting (sentence index, total, char range in utterance)
-    data class SpeechProgress(
-        val sentenceIndex: Int,
-        val totalSentences: Int,
-        val charStart: Int,
-        val charEnd: Int
-    )
-    private val _speechProgress = MutableStateFlow<SpeechProgress?>(null)
-    val speechProgress: StateFlow<SpeechProgress?> = _speechProgress.asStateFlow()
-
-    // FIX (stale play/pause state): emits true whenever speech stops
     private val _speechFinished = MutableStateFlow(false)
     val speechFinished: StateFlow<Boolean> = _speechFinished.asStateFlow()
 
@@ -63,7 +54,7 @@ class SpeechManager @Inject constructor(
     private fun notifySpeechFinished() {
         _speechFinished.value = true
         scope.launch {
-            kotlinx.coroutines.delay(150)
+            delay(150)
             _speechFinished.value = false
         }
     }
@@ -71,7 +62,8 @@ class SpeechManager @Inject constructor(
     fun initialize() {
         if (isInitialized) return
         val settings = settingsManager.getSettings()
-        val engine = if (settings.ttsEngine.isNotEmpty()) settings.ttsEngine else ""
+        val engine = settings.ttsEngine
+        currentEngineName = engine
         textToSpeech = if (engine.isNotEmpty()) {
             TextToSpeech(context, { status -> onInit(status) }, engine)
         } else {
@@ -84,13 +76,9 @@ class SpeechManager @Inject constructor(
         if (status == TextToSpeech.SUCCESS) {
             isInitialized = true
             updateLocales()
-            loadEngines() // Re-read engines once TTS is truly ready to prevent empty list race condition
             updateSpeechSettings()
             textToSpeech?.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
-                override fun onStart(utteranceId: String?) {
-                    // Reset progress at start of new utterance
-                    _speechProgress.value = null
-                }
+                override fun onStart(utteranceId: String?) {}
                 override fun onDone(utteranceId: String?) {
                     if (isPlaying) {
                         currentIndex++
@@ -103,19 +91,13 @@ class SpeechManager @Inject constructor(
                     isPlaying = false
                     notifySpeechFinished()
                 }
-                // API 26+: word/sentence boundary callbacks for highlighting
-                override fun onRangeStart(utteranceId: String?, start: Int, end: Int, frame: Int) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        _speechProgress.value = SpeechProgress(
-                            sentenceIndex = currentIndex,
-                            totalSentences = sentences.size,
-                            charStart = start,
-                            charEnd = end
-                        )
-                    }
-                }
             })
-            Log.d("SpeechManager", "TTS initialized successfully")
+            Log.d("SpeechManager", "TTS initialized with engine: $currentEngineName")
+            
+            pendingText?.let { text ->
+                pendingText = null
+                speakScreen(text)
+            }
         } else {
             Log.e("SpeechManager", "TTS init failed: $status")
         }
@@ -131,16 +113,24 @@ class SpeechManager @Inject constructor(
     fun getEngines(): List<TextToSpeech.EngineInfo> = _enginesState.value
 
     fun reinitializeWithEngine(engineName: String) {
-        val currentEngine = textToSpeech?.engineName
-        if (currentEngine == engineName) {
-            Log.d("SpeechManager", "Engine $engineName already active, skipping reinit")
-            return
-        }
+        if (engineName == currentEngineName) return
         scope.launch {
-            _engineSwitching.value = true
-            shutdown()
-            textToSpeech = TextToSpeech(context, { status -> onInit(status) }, engineName)
-            _engineSwitching.value = false
+            _isLoading.value = true
+            withContext(Dispatchers.IO) {
+                shutdown()
+                delay(100)
+                currentEngineName = engineName
+                textToSpeech = if (engineName.isNotEmpty()) {
+                    TextToSpeech(context, { status -> onInit(status) }, engineName)
+                } else {
+                    TextToSpeech(context, { status -> onInit(status) })
+                }
+                repeat(30) {
+                    if (isInitialized) return@withContext
+                    delay(100)
+                }
+            }
+            _isLoading.value = false
         }
     }
 
@@ -160,18 +150,17 @@ class SpeechManager @Inject constructor(
     }.getOrDefault(false)
 
     fun speakScreen(text: String) {
+        if (text.isBlank()) return
+        
         if (!isInitialized) {
-            Log.w("SpeechManager", "TTS not initialized, initializing now")
+            Log.w("SpeechManager", "TTS not ready, queuing text for later")
+            pendingText = text
             initialize()
-            // Wait for initialization then speak
-            scope.launch {
-                kotlinx.coroutines.delay(500)
-                if (isInitialized) speakScreen(text)
-            }
             return
         }
+        
         sentences.clear()
-        sentences.addAll(text.split(Regex("(?<=[.!?\\n])")).map { it.trim() }.filter { it.isNotEmpty() })
+        sentences.addAll(text.split(Regex("(?<=[.!?\\n])\\s*")).map { it.trim() }.filter { it.isNotEmpty() })
         if (sentences.isEmpty()) sentences.add(text)
         currentIndex = 0
         isPlaying = true
@@ -196,7 +185,6 @@ class SpeechManager @Inject constructor(
     fun stop() {
         if (isPlaying || sentences.isNotEmpty()) notifySpeechFinished()
         isPlaying = false; sentences.clear(); currentIndex = 0; textToSpeech?.stop()
-        _speechProgress.value = null
     }
     fun refreshSettings() { if (isInitialized) updateSpeechSettings() }
 
@@ -216,5 +204,10 @@ class SpeechManager @Inject constructor(
         tts.setPitch(settings.pitch)
     }
 
-    fun shutdown() { stop(); textToSpeech?.shutdown(); textToSpeech = null; isInitialized = false }
+    fun shutdown() { 
+        stop()
+        textToSpeech?.shutdown()
+        textToSpeech = null
+        isInitialized = false 
+    }
 }
