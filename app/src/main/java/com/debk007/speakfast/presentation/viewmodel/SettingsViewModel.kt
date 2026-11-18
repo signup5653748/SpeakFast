@@ -1,6 +1,5 @@
 package com.debk007.speakfast.presentation.viewmodel
 
-import android.content.Context
 import android.speech.tts.TextToSpeech
 import android.speech.tts.Voice
 import androidx.lifecycle.ViewModel
@@ -9,10 +8,6 @@ import com.debk007.speakfast.data.SettingsManager
 import com.debk007.speakfast.model.Settings
 import com.debk007.speakfast.model.TriggerMethod
 import com.debk007.speakfast.speech.SpeechManager
-import com.google.mlkit.common.model.DownloadConditions
-import com.google.mlkit.common.model.ModelDownloader
-import com.google.mlkit.vision.text.TextRecognition
-import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -39,8 +34,7 @@ sealed class OcrModelState {
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     private val settingsManager: SettingsManager,
-    private val speechManager: SpeechManager,
-    @dagger.hilt.android.qualifiers.ApplicationContext private val context: Context
+    private val speechManager: SpeechManager
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SettingsUiState())
