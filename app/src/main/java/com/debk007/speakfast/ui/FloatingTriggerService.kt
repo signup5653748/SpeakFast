@@ -13,8 +13,10 @@ import android.graphics.Rect
 import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import android.os.IBinder
+import android.util.Log
 import android.view.Gravity
 import android.view.MotionEvent
+import android.view.ScaleGestureDetector
 import android.view.View
 import android.view.WindowManager
 import android.widget.ImageView
@@ -48,19 +50,16 @@ class FloatingTriggerService : Service() {
     private var started = false
     private var isPausedByUser = false
     private var playPauseButton: TextView? = null
+    
+    private var bubbleSize = 56
+    private lateinit var scaleDetector: ScaleGestureDetector
 
-    /**
-     * FIX (stale play/pause state): receives ACTION_TTS_FINISHED from
-     * SpeakFastAccessibilityService so the play/pause button resets to "▶"
-     * when speech ends on its own (natural end of the last sentence, OCR
-     * result finishing, or an explicit stop).
-     */
     private val ttsFinishedReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            if (intent.action != ACTION_TTS_FINISHED || !playerVisible) return
+            if (intent.action != ACTION_TTS_FINISHED) return
+            Log.d("FloatingTrigger", "TTS finished, hiding player")
             started = false
             isPausedByUser = false
-            playPauseButton?.text = "▶"
             hidePlayerAndShowBubble()
         }
     }
@@ -83,7 +82,7 @@ class FloatingTriggerService : Service() {
 
     private fun createBubble() {
         bubbleParams = WindowManager.LayoutParams(
-            dp(56), dp(56),
+            dp(bubbleSize), dp(bubbleSize),
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
             PixelFormat.TRANSLUCENT
@@ -95,20 +94,35 @@ class FloatingTriggerService : Service() {
             background = GradientDrawable().apply { shape = GradientDrawable.OVAL; setColor(Color.parseColor("#4A6FE3")) }
         }
 
+        scaleDetector = ScaleGestureDetector(this, object : ScaleGestureDetector.SimpleOnScaleGestureListener() {
+            override fun onScale(detector: ScaleGestureDetector): Boolean {
+                val scaleFactor = detector.scaleFactor
+                bubbleSize = (bubbleSize * scaleFactor).toInt().coerceIn(32, 120)
+                bubbleParams.width = dp(bubbleSize)
+                bubbleParams.height = dp(bubbleSize)
+                wm.updateViewLayout(bubble, bubbleParams)
+                return true
+            }
+        })
+
         var sx = 0; var sy = 0; var tx = 0f; var ty = 0f; var dragged = false
         bubble.setOnTouchListener { _, e ->
+            scaleDetector.onTouchEvent(e)
             when (e.action) {
                 MotionEvent.ACTION_DOWN -> { sx = bubbleParams.x; sy = bubbleParams.y; tx = e.rawX; ty = e.rawY; dragged = false; true }
                 MotionEvent.ACTION_MOVE -> {
                     val dx = e.rawX - tx; val dy = e.rawY - ty
                     if (abs(dx) > 8 || abs(dy) > 8) dragged = true
-                    if (dragged) {
+                    if (dragged && !scaleDetector.isInProgress) {
                         bubbleParams.x = sx + dx.toInt(); bubbleParams.y = sy + dy.toInt()
                         wm.updateViewLayout(bubble, bubbleParams)
                     }
                     true
                 }
-                MotionEvent.ACTION_UP -> { if (!dragged && !playerVisible) showPlayer(); true }
+                MotionEvent.ACTION_UP -> { 
+                    if (!dragged && !playerVisible) showPlayer()
+                    true 
+                }
                 else -> false
             }
         }
@@ -121,9 +135,6 @@ class FloatingTriggerService : Service() {
         isPausedByUser = false
         bubble.visibility = View.GONE
 
-        // FIX (BUG 1): SelectionView must NOT steal accessibility focus.
-        // FLAG_NOT_FOCUSABLE prevents it from becoming the "active window"
-        // so rootInActiveWindow returns the underlying app instead of this overlay.
         val overlayParams = WindowManager.LayoutParams(
             WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT,
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
@@ -146,7 +157,6 @@ class FloatingTriggerService : Service() {
             orientation = LinearLayout.HORIZONTAL
             visibility = View.GONE
         }
-        // FIX (accessibility): icon-only buttons now carry contentDescription
         extraGroup.addView(barButton("⚙", "Settings") {
             startActivity(Intent(this@FloatingTriggerService, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
         })
@@ -212,7 +222,7 @@ class FloatingTriggerService : Service() {
                 send(ACTION_STOP)
                 started = false
                 isPausedByUser = false
-                hidePlayer()
+                hidePlayerAndShowBubble()
             }
         }
 
@@ -230,21 +240,11 @@ class FloatingTriggerService : Service() {
         wm.addView(bar, barParams)
     }
 
-    private fun hidePlayer() {
-        playerVisible = false
-        selectionView?.let { wm.removeView(it) }
-        playerBar?.let { wm.removeView(it) }
-        selectionView = null
-        playerBar = null
-        playPauseButton = null
-        bubble.visibility = View.VISIBLE
-    }
-
     private fun hidePlayerAndShowBubble() {
         playerVisible = false
         selectionView?.let { wm.removeView(it) }
-        selectionView = null
         playerBar?.let { wm.removeView(it) }
+        selectionView = null
         playerBar = null
         playPauseButton = null
         bubble.visibility = View.VISIBLE
@@ -261,9 +261,13 @@ class FloatingTriggerService : Service() {
         setOnClickListener { onClick() }
     }
 
-    private fun send(action: String) = sendBroadcast(Intent(action).setPackage(packageName))
+    private fun send(action: String) {
+        Log.d("FloatingTrigger", "Sending broadcast: $action")
+        sendBroadcast(Intent(action).setPackage(packageName))
+    }
 
     private fun sendRect(r: Rect) {
+        Log.d("FloatingTrigger", "Sending rect: $r")
         sendBroadcast(Intent(ACTION_READ_RECT).setPackage(packageName)
             .putExtra("left", r.left).putExtra("top", r.top)
             .putExtra("right", r.right).putExtra("bottom", r.bottom))
@@ -274,7 +278,6 @@ class FloatingTriggerService : Service() {
         private val stroke = Paint().apply { color = Color.parseColor("#34A853"); style = Paint.Style.STROKE; strokeWidth = 6f }
         private var rect: Rect? = null
         private var startX = 0f; private var startY = 0f
-        private val screenOffset = IntArray(2)
 
         constructor(c: Context) : super(c)
 
@@ -301,7 +304,6 @@ class FloatingTriggerService : Service() {
                     rect = null
                     invalidate()
                     if (r != null && r.width() > 40 && r.height() > 40) {
-                        // Convert to screen coordinates (SelectionView is full-screen, so rawX/rawY are already screen coords)
                         sendRect(r)
                     }
                     true
@@ -317,7 +319,7 @@ class FloatingTriggerService : Service() {
 
     override fun onDestroy() {
         try { unregisterReceiver(ttsFinishedReceiver) } catch (e: Exception) {}
-        if (playerVisible) hidePlayer()
+        if (playerVisible) hidePlayerAndShowBubble()
         if (::bubble.isInitialized) wm.removeView(bubble)
         super.onDestroy()
     }
