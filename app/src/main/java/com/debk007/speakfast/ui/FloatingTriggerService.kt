@@ -61,6 +61,7 @@ class FloatingTriggerService : Service() {
             started = false
             isPausedByUser = false
             playPauseButton?.text = "▶"
+            hidePlayerAndShowBubble()
         }
     }
 
@@ -234,6 +235,16 @@ class FloatingTriggerService : Service() {
         selectionView?.let { wm.removeView(it) }
         playerBar?.let { wm.removeView(it) }
         selectionView = null
+        playerBar = null
+        playPauseButton = null
+        bubble.visibility = View.VISIBLE
+    }
+
+    private fun hidePlayerAndShowBubble() {
+        playerVisible = false
+        selectionView?.let { wm.removeView(it) }
+        selectionView = null
+        playerBar?.let { wm.removeView(it) }
         playerBar = null
         playPauseButton = null
         bubble.visibility = View.VISIBLE
