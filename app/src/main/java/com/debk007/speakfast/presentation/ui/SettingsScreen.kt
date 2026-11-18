@@ -10,10 +10,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -190,6 +191,67 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
             }
         }
 
+        // FLOATING BUTTON SIZE
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Floating Button Size: ${String.format("%.2f", settings?.floatingButtonSize ?: 1.0f)}x",
+                    style = MaterialTheme.typography.bodyLarge
+                )
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    IconButton(
+                        onClick = {
+                            val current = settings?.floatingButtonSize ?: 1.0f
+                            viewModel.updateFloatingButtonSize((current - 0.1f).coerceAtLeast(0.5f))
+                        },
+                        modifier = Modifier
+                            .size(40.dp)
+                            .semantics { contentDescription = "Decrease floating button size" }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.Remove,
+                            contentDescription = "Decrease",
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                    IconButton(
+                        onClick = {
+                            val current = settings?.floatingButtonSize ?: 1.0f
+                            viewModel.updateFloatingButtonSize((current + 0.1f).coerceAtMost(2.0f))
+                        },
+                        modifier = Modifier
+                            .size(40.dp)
+                            .semantics { contentDescription = "Increase floating button size" }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.Add,
+                            contentDescription = "Increase",
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                }
+            }
+            Slider(
+                value = settings?.floatingButtonSize ?: 1.0f,
+                onValueChange = { viewModel.updateFloatingButtonSize(it) },
+                valueRange = 0.5f..2.0f,
+                steps = 14,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .semantics { contentDescription = "Adjust floating button size" }
+            )
+        }
+
         // SPEECH RATE
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -200,20 +262,16 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                 text = "Speech Rate: ${String.format("%.1f", settings?.speechRate ?: 1.0f)}",
                 style = MaterialTheme.typography.bodyLarge
             )
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Slider(
-                    value = settings?.speechRate ?: 1.0f,
-                    onValueChange = { viewModel.updateSpeechRate(it) },
-                    valueRange = 0.5f..2.0f,
-                    steps = 15,
-                    modifier = Modifier.width(180.dp).semantics { contentDescription = "Adjust speech rate" }
-                )
-                if ((settings?.speechRate ?: 1.0f) != 1.0f) {
-                    IconButton(onClick = { viewModel.updateSpeechRate(1.0f) }) {
-                        Text("↺", fontSize = 20.sp, color = MaterialTheme.colorScheme.primary)
-                    }
-                }
-            }
+            Slider(
+                value = settings?.speechRate ?: 1.0f,
+                onValueChange = { viewModel.updateSpeechRate(it) },
+                valueRange = 0.5f..2.0f,
+                steps = 15,
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(start = 16.dp)
+                    .semantics { contentDescription = "Adjust speech rate" }
+            )
         }
 
         // PITCH
@@ -226,20 +284,16 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                 text = "Pitch: ${String.format("%.1f", settings?.pitch ?: 1.0f)}",
                 style = MaterialTheme.typography.bodyLarge
             )
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Slider(
-                    value = settings?.pitch ?: 1.0f,
-                    onValueChange = { viewModel.updatePitch(it) },
-                    valueRange = 0.5f..2.0f,
-                    steps = 15,
-                    modifier = Modifier.width(180.dp).semantics { contentDescription = "Adjust pitch" }
-                )
-                if ((settings?.pitch ?: 1.0f) != 1.0f) {
-                    IconButton(onClick = { viewModel.updatePitch(1.0f) }) {
-                        Text("↺", fontSize = 20.sp, color = MaterialTheme.colorScheme.primary)
-                    }
-                }
-            }
+            Slider(
+                value = settings?.pitch ?: 1.0f,
+                onValueChange = { viewModel.updatePitch(it) },
+                valueRange = 0.5f..2.0f,
+                steps = 15,
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(start = 16.dp)
+                    .semantics { contentDescription = "Adjust pitch" }
+            )
         }
 
         // READ EXACT SELECTION
@@ -248,11 +302,16 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = "Read Exact Selection", style = MaterialTheme.typography.bodyLarge)
+            Text(
+                text = "Read Exact Selection",
+                style = MaterialTheme.typography.bodyLarge
+            )
             Switch(
                 checked = settings?.readExactSelection ?: true,
                 onCheckedChange = { viewModel.updateReadExactSelection(it) },
-                modifier = Modifier.semantics { contentDescription = "Toggle read exact selection" }.padding(16.dp)
+                modifier = Modifier
+                    .semantics { contentDescription = "Toggle read exact selection" }
+                    .padding(16.dp)
             )
         }
 
@@ -262,11 +321,16 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = "OCR Mode (Read Images)", style = MaterialTheme.typography.bodyLarge)
+            Text(
+                text = "OCR Mode (Read Images)",
+                style = MaterialTheme.typography.bodyLarge
+            )
             Switch(
                 checked = settings?.ocrEnabled ?: false,
                 onCheckedChange = { viewModel.updateOcrEnabled(it) },
-                modifier = Modifier.semantics { contentDescription = "Toggle OCR mode" }.padding(16.dp)
+                modifier = Modifier
+                    .semantics { contentDescription = "Toggle OCR mode" }
+                    .padding(16.dp)
             )
         }
     }
