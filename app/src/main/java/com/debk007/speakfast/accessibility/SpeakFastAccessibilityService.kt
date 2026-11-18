@@ -35,6 +35,9 @@ class SpeakFastAccessibilityService : AccessibilityService() {
     private val mainHandler = Handler(Looper.getMainLooper())
     private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
 
+    // Stores the screen Rect for each sentence being spoken (parallel to SpeechManager.sentences)
+    private var sentenceRects = mutableListOf<Rect>()
+
     private val commandReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             when (intent.action) {
@@ -71,6 +74,28 @@ class SpeakFastAccessibilityService : AccessibilityService() {
         )
     }
 
+    /**
+     * Broadcasts the current sentence's screen Rect for highlighting overlay.
+     * Called when SpeechManager reports a new utterance range start.
+     */
+    private fun sendHighlight(rect: Rect) {
+        sendBroadcast(
+            Intent(FloatingTriggerService.ACTION_HIGHLIGHT)
+                .setPackage(packageName)
+                .putExtra("left", rect.left)
+                .putExtra("top", rect.top)
+                .putExtra("right", rect.right)
+                .putExtra("bottom", rect.bottom)
+        )
+    }
+
+    private fun clearHighlight() {
+        sendBroadcast(
+            Intent(FloatingTriggerService.ACTION_HIGHLIGHT_CLEAR)
+                .setPackage(packageName)
+        )
+    }
+
     override fun onServiceConnected() {
         super.onServiceConnected()
         val info = AccessibilityServiceInfo().apply {
@@ -86,7 +111,20 @@ class SpeakFastAccessibilityService : AccessibilityService() {
         // button resets to "▶" instead of staying stale.
         serviceScope.launch {
             speechManager.speechFinished.collect { finished ->
-                if (finished) sendTtsFinished()
+                if (finished) {
+                    sendTtsFinished()
+                    clearHighlight()
+                }
+            }
+        }
+        // Subscribe to speech progress for highlighting
+        serviceScope.launch {
+            speechManager.speechProgress.collect { progress ->
+                progress?.let { p ->
+                    if (p.sentenceIndex in sentenceRects.indices) {
+                        sendHighlight(sentenceRects[p.sentenceIndex])
+                    }
+                }
             }
         }
         val filter = IntentFilter().apply {
@@ -120,7 +158,14 @@ class SpeakFastAccessibilityService : AccessibilityService() {
             val sorted = BoundsSorter.sortNodesForReading(nodes)
             val texts = sorted.mapNotNull { it.text?.toString() ?: it.contentDescription?.toString() }.filter { it.isNotBlank() }
             if (texts.isEmpty()) triggerOcrFallback(screenRect())
-            else speechManager.speakScreen(texts.joinToString(" "))
+            else {
+                sentenceRects = sorted.map { node ->
+                    val r = Rect()
+                    node.getBoundsInScreen(r)
+                    r
+                }
+                speechManager.speakScreen(texts.joinToString(" "))
+            }
         } finally {
             nodes.forEach { it.recycle() }
             if (nodes.none { it === root }) root.recycle()
@@ -147,6 +192,12 @@ class SpeakFastAccessibilityService : AccessibilityService() {
             } else {
                 val extractedText = texts.joinToString(" ")
                 Log.d(TAG, "Extracted text: $extractedText")
+                // Store rects for each sentence (one rect per node, since we speak joined text)
+                sentenceRects = sorted.map { node ->
+                    val r = Rect()
+                    node.getBoundsInScreen(r)
+                    r
+                }
                 speechManager.speakScreen(extractedText)
             }
         } finally {

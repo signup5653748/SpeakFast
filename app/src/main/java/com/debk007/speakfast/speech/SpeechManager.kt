@@ -1,6 +1,7 @@
 package com.debk007.speakfast.speech
 
 import android.content.Context
+import android.os.Build
 import android.speech.tts.TextToSpeech
 import android.speech.tts.UtteranceProgressListener
 import android.speech.tts.Voice
@@ -18,6 +19,10 @@ import kotlinx.coroutines.launch
 import java.util.Locale
 import javax.inject.Inject
 
+/**
+ * SpeechManager handles all TTS operations including engine management,
+ * speech progress tracking, and utterance-level highlighting support.
+ */
 class SpeechManager @Inject constructor(
     @ApplicationContext private val context: Context,
     private val settingsManager: SettingsManager
@@ -29,14 +34,24 @@ class SpeechManager @Inject constructor(
     private var isPlaying = false
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
+    // --- State exposed to UI ---
     private val _localesState = MutableStateFlow<List<Locale>>(emptyList())
     val localesState: StateFlow<List<Locale>> = _localesState.asStateFlow()
 
     private val _enginesState = MutableStateFlow<List<TextToSpeech.EngineInfo>>(emptyList())
     val enginesState: StateFlow<List<TextToSpeech.EngineInfo>> = _enginesState.asStateFlow()
 
+    // Speech progress for highlighting (sentence index, total, char range in utterance)
+    data class SpeechProgress(
+        val sentenceIndex: Int,
+        val totalSentences: Int,
+        val charStart: Int,
+        val charEnd: Int
+    )
+    private val _speechProgress = MutableStateFlow<SpeechProgress?>(null)
+    val speechProgress: StateFlow<SpeechProgress?> = _speechProgress.asStateFlow()
+
     // FIX (stale play/pause state): emits true whenever speech stops
-    // (natural end, pause, stop, or TTS error) so UIs can reset their state.
     private val _speechFinished = MutableStateFlow(false)
     val speechFinished: StateFlow<Boolean> = _speechFinished.asStateFlow()
 
@@ -70,10 +85,13 @@ class SpeechManager @Inject constructor(
         if (status == TextToSpeech.SUCCESS) {
             isInitialized = true
             updateLocales()
-            loadEngines() // ✅ ADDED: Re-read engines once TTS is truly ready to prevent empty list race condition
+            loadEngines() // Re-read engines once TTS is truly ready to prevent empty list race condition
             updateSpeechSettings()
             textToSpeech?.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
-                override fun onStart(utteranceId: String?) {}
+                override fun onStart(utteranceId: String?) {
+                    // Reset progress at start of new utterance
+                    _speechProgress.value = null
+                }
                 override fun onDone(utteranceId: String?) {
                     if (isPlaying) {
                         currentIndex++
@@ -85,6 +103,22 @@ class SpeechManager @Inject constructor(
                 override fun onError(utteranceId: String?) {
                     isPlaying = false
                     notifySpeechFinished()
+                }
+                // API 23+: word/sentence boundary callbacks for highlighting
+                override fun onRangeStart(utteranceId: String?, start: Int, end: Int, frame: Int) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        _speechProgress.value = SpeechProgress(
+                            sentenceIndex = currentIndex,
+                            totalSentences = sentences.size,
+                            charStart = start,
+                            charEnd = end
+                        )
+                    }
+                }
+                override fun onRangeEnd(utteranceId: String?, start: Int, end: Int, frame: Int) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        // Clear progress when range ends; next onRangeStart will update
+                    }
                 }
             })
             Log.d("SpeechManager", "TTS initialized successfully")
@@ -154,6 +188,7 @@ class SpeechManager @Inject constructor(
     fun stop() {
         if (isPlaying || sentences.isNotEmpty()) notifySpeechFinished()
         isPlaying = false; sentences.clear(); currentIndex = 0; textToSpeech?.stop()
+        _speechProgress.value = null
     }
     fun refreshSettings() { if (isInitialized) updateSpeechSettings() }
 
