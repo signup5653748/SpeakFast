@@ -149,9 +149,6 @@ class SettingsViewModel @Inject constructor(
         _ocrModelState.value = OcrModelState.Downloading(0)
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                // NOTE: ML Kit Latin Text Recognition is automatically managed (bundled or auto-downloaded via Google Play Services).
-                // No manual download via ModelDownloader is required for DEFAULT_OPTIONS. 
-                // The previous invalid API call (getModelForInference) was removed to prevent the next build failure.
                 delay(500)
                 _ocrModelState.value = OcrModelState.Downloaded
             } catch (e: Exception) {
