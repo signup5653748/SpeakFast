@@ -168,18 +168,20 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
 
             // ✅ 4. SPEECH RATE SLIDER with Reset Button
             Column(modifier = Modifier.fillMaxWidth()) {
+                val currentSpeechRate = settings?.speechRate ?: 1.0f
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "Speech Rate: ${String.format("%.1f", settings?.speechRate ?: 1.0f)}",
+                        text = "Speech Rate: ${String.format("%.1f", currentSpeechRate)}",
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurface
                     )
                     TextButton(
                         onClick = { viewModel.updateSpeechRate(1.0f) },
+                        enabled = currentSpeechRate != 1.0f,
                         modifier = Modifier.semantics { contentDescription = "Reset speech rate to default" }
                     ) {
                         Text("Reset", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.primary)
@@ -196,18 +198,20 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
 
             // ✅ 5. PITCH SLIDER with Reset Button
             Column(modifier = Modifier.fillMaxWidth()) {
+                val currentPitch = settings?.pitch ?: 1.0f
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "Pitch: ${String.format("%.1f", settings?.pitch ?: 1.0f)}",
+                        text = "Pitch: ${String.format("%.1f", currentPitch)}",
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurface
                     )
                     TextButton(
                         onClick = { viewModel.updatePitch(1.0f) },
+                        enabled = currentPitch != 1.0f,
                         modifier = Modifier.semantics { contentDescription = "Reset pitch to default" }
                     ) {
                         Text("Reset", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.primary)
