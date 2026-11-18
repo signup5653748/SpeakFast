@@ -12,9 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -209,7 +207,7 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                     horizontalArrangement = Arrangement.spacedBy(4.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    IconButton(
+                    Button(
                         onClick = {
                             val current = settings?.floatingButtonSize ?: 1.0f
                             viewModel.updateFloatingButtonSize((current - 0.1f).coerceAtLeast(0.5f))
@@ -218,13 +216,9 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                             .size(40.dp)
                             .semantics { contentDescription = "Decrease floating button size" }
                     ) {
-                        Icon(
-                            imageVector = Icons.Filled.Remove,
-                            contentDescription = "Decrease",
-                            tint = MaterialTheme.colorScheme.primary
-                        )
+                        Text("−", fontSize = 24.sp, color = MaterialTheme.colorScheme.primary)
                     }
-                    IconButton(
+                    Button(
                         onClick = {
                             val current = settings?.floatingButtonSize ?: 1.0f
                             viewModel.updateFloatingButtonSize((current + 0.1f).coerceAtMost(2.0f))
@@ -233,11 +227,7 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                             .size(40.dp)
                             .semantics { contentDescription = "Increase floating button size" }
                     ) {
-                        Icon(
-                            imageVector = Icons.Filled.Add,
-                            contentDescription = "Increase",
-                            tint = MaterialTheme.colorScheme.primary
-                        )
+                        Text("+", fontSize = 24.sp, color = MaterialTheme.colorScheme.primary)
                     }
                 }
             }
