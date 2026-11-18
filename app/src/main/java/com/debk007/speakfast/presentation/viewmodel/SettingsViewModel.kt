@@ -98,5 +98,9 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
+    fun updateFloatingButtonSize(size: Float) {
+        viewModelScope.launch { settingsManager.updateFloatingButtonSize(size) }
+    }
+
     fun clearError() { _uiState.value = _uiState.value.copy(errorMessage = null) }
 }

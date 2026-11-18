@@ -11,7 +11,8 @@ data class Settings(
     val ocrEnabled: Boolean = false,
     val readExactSelection: Boolean = true,
     val triggerMethod: TriggerMethod = TriggerMethod.QUICK_SETTINGS_TILE,
-    val ttsEngine: String = ""
+    val ttsEngine: String = "",
+    val floatingButtonSize: Float = 1.0f
 )
 
 @Serializable

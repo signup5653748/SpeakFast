@@ -29,6 +29,7 @@ class SettingsManager(private val context: Context) {
         val READ_EXACT_SELECTION_KEY = booleanPreferencesKey("read_exact_selection")
         val TRIGGER_METHOD_KEY = stringPreferencesKey("trigger_method")
         val TTS_ENGINE_KEY = stringPreferencesKey("tts_engine")
+        val FLOATING_BUTTON_SIZE_KEY = floatPreferencesKey("floating_button_size")
     }
 
     val settingsFlow: Flow<Settings> = context.dataStore.data.map { it.toSettings() }
@@ -44,7 +45,8 @@ class SettingsManager(private val context: Context) {
             ocrEnabled = this[OCR_ENABLED_KEY] ?: false,
             readExactSelection = this[READ_EXACT_SELECTION_KEY] ?: true,
             triggerMethod = TriggerMethod.fromString(this[TRIGGER_METHOD_KEY] ?: "quick_settings_tile"),
-            ttsEngine = this[TTS_ENGINE_KEY] ?: ""
+            ttsEngine = this[TTS_ENGINE_KEY] ?: "",
+            floatingButtonSize = this[FLOATING_BUTTON_SIZE_KEY] ?: 1.0f
         )
     }
 
@@ -85,6 +87,11 @@ class SettingsManager(private val context: Context) {
 
     suspend fun updateTtsEngine(engineName: String): Settings {
         context.dataStore.edit { it[TTS_ENGINE_KEY] = engineName }
+        return getSettings()
+    }
+
+    suspend fun updateFloatingButtonSize(size: Float): Settings {
+        context.dataStore.edit { it[FLOATING_BUTTON_SIZE_KEY] = size }
         return getSettings()
     }
 }
