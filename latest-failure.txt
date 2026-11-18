@@ -1,38 +1,53 @@
-=== FAILURE LOG FOR RUN: 44107187416 ===
+=== FAILURE LOG FOR RUN: 44240444755 ===
 === FAILED JOB: Build Signed Release APK ===
-=== DATE: Wed Nov 18 04:42:53 UTC 2026 ===
+=== DATE: Wed Nov 18 04:54:50 UTC 2026 ===
 === UNIVERSAL ERROR BLOCK (Kotlin, AAPT, XML, Gradle) ===
 
-2026-11-17T14:49:21.2635422Z   echo "::error::KEYSTORE_BASE64 secret is not set."
-2026-11-17T14:49:48.8842553Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/ui/SettingsScreen.kt:77:26 Unresolved reference 'background'.
-2026-11-17T14:49:48.9878918Z > Task :app:compileReleaseKotlin FAILED
-2026-11-17T14:49:48.9900938Z FAILURE: Build failed with an exception.
-2026-11-17T14:49:48.9901871Z gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_4-1794926964605.json
-2026-11-17T14:49:48.9902653Z 
-2026-11-17T14:49:48.9903458Z [Incubating] Problems report is available at: file:///home/runner/work/SpeakFast/SpeakFast/build/reports/problems/problems-report.html
-2026-11-17T14:49:48.9904283Z 
-2026-11-17T14:49:48.9904754Z Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
-2026-11-17T14:49:48.9905342Z 
-2026-11-17T14:49:48.9905980Z You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
-2026-11-17T14:49:48.9906705Z 
-2026-11-17T14:49:48.9907417Z For more on this, please refer to https://docs.gradle.org/9.9.0/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
-2026-11-17T14:49:48.9908508Z 38 actionable tasks: 38 executed
-2026-11-17T14:49:48.9913572Z 
-2026-11-17T14:49:48.9914148Z * What went wrong:
-2026-11-17T14:49:48.9914856Z Execution failed for task ':app:compileReleaseKotlin' (registered by plugin 'org.jetbrains.kotlin.android').
-2026-11-17T14:49:48.9916070Z > A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
-2026-11-17T14:49:48.9916812Z    > Compilation error. See log for more details
-2026-11-17T14:49:48.9917073Z 
-2026-11-17T14:49:48.9917200Z * Try:
-2026-11-17T14:49:48.9917545Z > Run with --info or --debug option to get more log output.
-2026-11-17T14:49:48.9918049Z > Run with --scan to get full insights from a Build Scan (powered by Develocity).
-2026-11-17T14:49:48.9918619Z > Get more help at https://help.gradle.org.
-2026-11-17T14:49:48.9919324Z 
-2026-11-17T14:49:48.9919459Z * Exception is:
-2026-11-17T14:49:48.9920294Z org.gradle.api.tasks.TaskExecutionException: Execution failed for task ':app:compileReleaseKotlin' (registered by plugin 'org.jetbrains.kotlin.android').
-2026-11-17T14:49:48.9921200Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.lambda$doExecute$1(DefaultTaskNodeExecutor.java:367)
-2026-11-17T14:49:48.9921852Z 	at org.gradle.internal.Try$Failure.ifSuccessfulOrElse(Try.java:288)
-2026-11-17T14:49:48.9922516Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.doExecute(DefaultTaskNodeExecutor.java:365)
-2026-11-17T14:49:48.9923427Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.executeTrackingTaskIdentity(DefaultTaskNodeExecutor.java:332)
-2026-11-17T14:49:48.9924302Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.executeFinalizingProperties(DefaultTaskNodeExecutor.java:318)
-2026-11-17T14:49:48.9925248Z 	at org.gradle.api.internal.tasks.execution.DefaultTaskNodeExecutor.executeSkippingWithNoActions(DefaultTaskNodeExecutor.java:289)
+2026-11-18T04:53:59.9721068Z   echo "::error::KEYSTORE_BASE64 secret is not set."
+2026-11-18T04:54:33.7712340Z > Task :app:compileReleaseKotlin FAILED
+2026-11-18T04:54:33.7717645Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/accessibility/SpeakFastAccessibilityService.kt:83:43 Unresolved reference 'ACTION_HIGHLIGHT'.
+2026-11-18T04:54:33.7778301Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/accessibility/SpeakFastAccessibilityService.kt:84:18 Unresolved reference 'setPackage'.
+2026-11-18T04:54:33.7809732Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/accessibility/SpeakFastAccessibilityService.kt:94:43 Unresolved reference 'ACTION_HIGHLIGHT_CLEAR'.
+2026-11-18T04:54:33.7818823Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/accessibility/SpeakFastAccessibilityService.kt:95:18 Unresolved reference 'setPackage'.
+2026-11-18T04:54:33.7821512Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/accessibility/SpeakFastAccessibilityService.kt:162:33 Assignment type mismatch: actual type is 'kotlin.collections.List<android.graphics.Rect>', but 'kotlin.collections.MutableList<android.graphics.Rect>' was expected.
+2026-11-18T04:54:33.7824679Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/accessibility/SpeakFastAccessibilityService.kt:196:33 Assignment type mismatch: actual type is 'kotlin.collections.List<android.graphics.Rect>', but 'kotlin.collections.MutableList<android.graphics.Rect>' was expected.
+2026-11-18T04:54:33.7827399Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/ui/SettingsScreen.kt:34:35 Unresolved reference 'menuAnchor'.
+2026-11-18T04:54:33.7829392Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/ui/SettingsScreen.kt:151:5 This material API is experimental and is likely to change or to be removed in the future.
+2026-11-18T04:54:33.7831599Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/ui/SettingsScreen.kt:157:30 This material API is experimental and is likely to change or to be removed in the future.
+2026-11-18T04:54:33.7833719Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/ui/SettingsScreen.kt:157:58 This material API is experimental and is likely to change or to be removed in the future.
+2026-11-18T04:54:33.7835790Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/ui/SettingsScreen.kt:158:33 This material API is experimental and is likely to change or to be removed in the future.
+2026-11-18T04:54:33.7837930Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/ui/SettingsScreen.kt:160:9 This material API is experimental and is likely to change or to be removed in the future.
+2026-11-18T04:54:33.7839834Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/speech/SpeechManager.kt:118:17 'onRangeEnd' overrides nothing.
+2026-11-18T04:54:33.8680462Z gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_4-1794977646074.json
+2026-11-18T04:54:33.8697342Z 
+2026-11-18T04:54:33.8697362Z 
+2026-11-18T04:54:33.8705858Z FAILURE: Build failed with an exception.
+2026-11-18T04:54:33.8711563Z 
+2026-11-18T04:54:33.8712254Z * What went wrong:
+2026-11-18T04:54:33.8718381Z [Incubating] Problems report is available at: file:///home/runner/work/SpeakFast/SpeakFast/build/reports/problems/problems-report.html
+2026-11-18T04:54:33.8720688Z 
+2026-11-18T04:54:33.8721276Z Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+2026-11-18T04:54:33.8721936Z 
+2026-11-18T04:54:33.8722638Z You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+2026-11-18T04:54:33.8723931Z 
+2026-11-18T04:54:33.8724731Z For more on this, please refer to https://docs.gradle.org/9.9.0/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+2026-11-18T04:54:33.8725831Z 38 actionable tasks: 27 executed, 11 from cache
+2026-11-18T04:54:33.8726445Z Configuration cache entry stored.
+2026-11-18T04:54:33.8737812Z Execution failed for task ':app:compileReleaseKotlin' (registered by plugin 'org.jetbrains.kotlin.android').
+2026-11-18T04:54:33.8739576Z > A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
+2026-11-18T04:54:33.8740777Z    > Compilation error. See log for more details
+2026-11-18T04:54:33.8741264Z 
+2026-11-18T04:54:33.8741508Z * Try:
+2026-11-18T04:54:33.8742011Z > Run with --stacktrace option to get the stack trace.
+2026-11-18T04:54:33.8742700Z > Run with --info or --debug option to get more log output.
+2026-11-18T04:54:33.8743459Z > Run with --scan to get full insights from a Build Scan (powered by Develocity).
+2026-11-18T04:54:33.8744157Z > Get more help at https://help.gradle.org.
+2026-11-18T04:54:33.8744464Z 
+2026-11-18T04:54:33.8744659Z BUILD FAILED in 33s
+2026-11-18T04:54:34.2637476Z ##[error]Process completed with exit code 1.
+2026-11-18T04:54:34.2675793Z ##[group]Run rm -f app/release.keystore
+2026-11-18T04:54:34.2676193Z rm -f app/release.keystore
+2026-11-18T04:54:34.2693894Z shell: /usr/bin/bash -e {0}
+2026-11-18T04:54:34.2694148Z env:
+2026-11-18T04:54:34.2694357Z   NEW_VERSION_CODE: 11
+2026-11-18T04:54:34.2694601Z   NEW_VERSION_NAME: 1.10
