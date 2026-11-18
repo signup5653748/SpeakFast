@@ -1,55 +1,66 @@
-=== FAILURE LOG FOR RUN: 44333435049 ===
+=== FAILURE LOG FOR RUN: 44334382348 ===
 === FAILED JOB: Build Signed Release APK ===
-=== DATE: Wed Nov 18 15:16:20 UTC 2026 ===
+=== DATE: Wed Nov 18 15:21:12 UTC 2026 ===
 === UNIVERSAL ERROR BLOCK (Kotlin, AAPT, XML, Gradle) ===
 
-2026-11-18T15:15:19.6219009Z   echo "::error::KEYSTORE_BASE64 secret is not set."
-2026-11-18T15:16:02.1980394Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/ui/SettingsScreen.kt:6:45 Unresolved reference 'pointerInput'.
-2026-11-18T15:16:02.1982722Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/ui/SettingsScreen.kt:8:48 Unresolved reference 'rememberInteractionSource'.
-2026-11-18T15:16:02.1993512Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/ui/SettingsScreen.kt:240:22 Unresolved reference 'pointerInput'.
-2026-11-18T15:16:02.2021925Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/ui/SettingsScreen.kt:241:25 Suspend function 'suspend fun PointerInputScope.detectTapGestures(onDoubleTap: ((Offset) -> Unit)? = ..., onLongPress: ((Offset) -> Unit)? = ..., onPress: suspend PressGestureScope.(Offset) -> Unit = ..., onTap: ((Offset) -> Unit)? = ...): Unit' should be called only from a coroutine or another suspend function.
-2026-11-18T15:16:02.2024989Z > Task :app:compileReleaseKotlin FAILED
-2026-11-18T15:16:02.2050066Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/ui/SettingsScreen.kt:241:25 Unresolved reference. None of the following candidates is applicable because of a receiver type mismatch:
-2026-11-18T15:16:02.2080065Z suspend fun PointerInputScope.detectTapGestures(onDoubleTap: ((Offset) -> Unit)? = ..., onLongPress: ((Offset) -> Unit)? = ..., onPress: suspend PressGestureScope.(Offset) -> Unit = ..., onTap: ((Offset) -> Unit)? = ...): Unit
-2026-11-18T15:16:02.2109819Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/ui/SettingsScreen.kt:271:22 Unresolved reference 'pointerInput'.
-2026-11-18T15:16:02.2143595Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/ui/SettingsScreen.kt:272:25 Suspend function 'suspend fun PointerInputScope.detectTapGestures(onDoubleTap: ((Offset) -> Unit)? = ..., onLongPress: ((Offset) -> Unit)? = ..., onPress: suspend PressGestureScope.(Offset) -> Unit = ..., onTap: ((Offset) -> Unit)? = ...): Unit' should be called only from a coroutine or another suspend function.
-2026-11-18T15:16:02.2146220Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/ui/SettingsScreen.kt:272:25 Unresolved reference. None of the following candidates is applicable because of a receiver type mismatch:
-2026-11-18T15:16:02.2148057Z suspend fun PointerInputScope.detectTapGestures(onDoubleTap: ((Offset) -> Unit)? = ..., onLongPress: ((Offset) -> Unit)? = ..., onPress: suspend PressGestureScope.(Offset) -> Unit = ..., onTap: ((Offset) -> Unit)? = ...): Unit
-2026-11-18T15:16:02.2150167Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/ui/SettingsScreen.kt:314:52 Unresolved reference 'Remove'.
-2026-11-18T15:16:02.2160015Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/ui/SettingsScreen.kt:328:26 Unresolved reference 'pointerInput'.
-2026-11-18T15:16:02.2170118Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/ui/SettingsScreen.kt:329:29 Suspend function 'suspend fun PointerInputScope.detectTapGestures(onDoubleTap: ((Offset) -> Unit)? = ..., onLongPress: ((Offset) -> Unit)? = ..., onPress: suspend PressGestureScope.(Offset) -> Unit = ..., onTap: ((Offset) -> Unit)? = ...): Unit' should be called only from a coroutine or another suspend function.
-2026-11-18T15:16:02.2175400Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/ui/SettingsScreen.kt:329:29 Unresolved reference. None of the following candidates is applicable because of a receiver type mismatch:
-2026-11-18T15:16:02.2178906Z suspend fun PointerInputScope.detectTapGestures(onDoubleTap: ((Offset) -> Unit)? = ..., onLongPress: ((Offset) -> Unit)? = ..., onPress: suspend PressGestureScope.(Offset) -> Unit = ..., onTap: ((Offset) -> Unit)? = ...): Unit
-2026-11-18T15:16:02.2181335Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/ui/SettingsScreen.kt:350:52 Unresolved reference 'Add'.
-2026-11-18T15:16:02.2183532Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:13:38 Unresolved reference 'ModelDownloader'.
-2026-11-18T15:16:02.3968872Z 
-2026-11-18T15:16:02.3969971Z FAILURE: Build failed with an exception.
-2026-11-18T15:16:02.3970445Z 
-2026-11-18T15:16:02.3970627Z * What went wrong:
-2026-11-18T15:16:02.3971517Z Execution failed for task ':app:compileReleaseKotlin' (registered by plugin 'org.jetbrains.kotlin.android').
-2026-11-18T15:16:02.3973147Z > A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
-2026-11-18T15:16:02.3974385Z    > Compilation error. See log for more details
-2026-11-18T15:16:02.3974776Z 
-2026-11-18T15:16:02.3974936Z * Try:
-2026-11-18T15:16:02.3975428Z > Run with --stacktrace option to get the stack trace.
-2026-11-18T15:16:02.3976131Z > Run with --info or --debug option to get more log output.
-2026-11-18T15:16:02.3977810Z > Run with --scan to get full insights from a Build Scan (powered by Develocity).
-2026-11-18T15:16:02.3978740Z > Get more help at https://help.gradle.org.
-2026-11-18T15:16:02.3979102Z 
-2026-11-18T15:16:02.3979274Z BUILD FAILED in 42s
-2026-11-18T15:16:02.3980162Z gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_4-1795014927268.json
-2026-11-18T15:16:02.3981434Z 
-2026-11-18T15:16:02.3989763Z [Incubating] Problems report is available at: file:///home/runner/work/SpeakFast/SpeakFast/build/reports/problems/problems-report.html
-2026-11-18T15:16:02.3990889Z 
-2026-11-18T15:16:02.3991561Z Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
-2026-11-18T15:16:02.3992363Z 
-2026-11-18T15:16:02.3993245Z You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
-2026-11-18T15:16:02.3994284Z 
-2026-11-18T15:16:02.3995241Z For more on this, please refer to https://docs.gradle.org/9.9.0/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
-2026-11-18T15:16:02.3996611Z 38 actionable tasks: 27 executed, 11 from cache
-2026-11-18T15:16:02.4969744Z Configuration cache entry stored.
-2026-11-18T15:16:02.9950550Z ##[error]Process completed with exit code 1.
-2026-11-18T15:16:02.9991429Z ##[group]Run rm -f app/release.keystore
-2026-11-18T15:16:02.9991875Z rm -f app/release.keystore
-2026-11-18T15:16:03.0045449Z shell: /usr/bin/bash -e {0}
-2026-11-18T15:16:03.0045765Z env:
+2026-11-18T15:20:13.5908021Z   echo "::error::KEYSTORE_BASE64 secret is not set."
+2026-11-18T15:20:54.8468924Z > Task :app:compileReleaseKotlin FAILED
+2026-11-18T15:20:54.8479026Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/ui/SettingsScreen.kt:6:45 Unresolved reference 'pointerInput'.
+2026-11-18T15:20:54.8480919Z gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_4-1795015220572.json
+2026-11-18T15:20:54.8483224Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/ui/SettingsScreen.kt:8:48 Unresolved reference 'rememberInteractionSource'.
+2026-11-18T15:20:54.8529169Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/ui/SettingsScreen.kt:240:22 Unresolved reference 'pointerInput'.
+2026-11-18T15:20:54.8532868Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/ui/SettingsScreen.kt:241:25 Suspend function 'suspend fun PointerInputScope.detectTapGestures(onDoubleTap: ((Offset) -> Unit)? = ..., onLongPress: ((Offset) -> Unit)? = ..., onPress: suspend PressGestureScope.(Offset) -> Unit = ..., onTap: ((Offset) -> Unit)? = ...): Unit' should be called only from a coroutine or another suspend function.
+2026-11-18T15:20:54.8569570Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/ui/SettingsScreen.kt:241:25 Unresolved reference. None of the following candidates is applicable because of a receiver type mismatch:
+2026-11-18T15:20:54.8572631Z suspend fun PointerInputScope.detectTapGestures(onDoubleTap: ((Offset) -> Unit)? = ..., onLongPress: ((Offset) -> Unit)? = ..., onPress: suspend PressGestureScope.(Offset) -> Unit = ..., onTap: ((Offset) -> Unit)? = ...): Unit
+2026-11-18T15:20:54.8609411Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/ui/SettingsScreen.kt:271:22 Unresolved reference 'pointerInput'.
+2026-11-18T15:20:54.8631151Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/ui/SettingsScreen.kt:272:25 Suspend function 'suspend fun PointerInputScope.detectTapGestures(onDoubleTap: ((Offset) -> Unit)? = ..., onLongPress: ((Offset) -> Unit)? = ..., onPress: suspend PressGestureScope.(Offset) -> Unit = ..., onTap: ((Offset) -> Unit)? = ...): Unit' should be called only from a coroutine or another suspend function.
+2026-11-18T15:20:54.8659467Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/ui/SettingsScreen.kt:272:25 Unresolved reference. None of the following candidates is applicable because of a receiver type mismatch:
+2026-11-18T15:20:54.8662401Z suspend fun PointerInputScope.detectTapGestures(onDoubleTap: ((Offset) -> Unit)? = ..., onLongPress: ((Offset) -> Unit)? = ..., onPress: suspend PressGestureScope.(Offset) -> Unit = ..., onTap: ((Offset) -> Unit)? = ...): Unit
+2026-11-18T15:20:54.8664901Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/ui/SettingsScreen.kt:314:52 Unresolved reference 'Remove'.
+2026-11-18T15:20:54.8667213Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/ui/SettingsScreen.kt:328:26 Unresolved reference 'pointerInput'.
+2026-11-18T15:20:54.8671052Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/ui/SettingsScreen.kt:329:29 Suspend function 'suspend fun PointerInputScope.detectTapGestures(onDoubleTap: ((Offset) -> Unit)? = ..., onLongPress: ((Offset) -> Unit)? = ..., onPress: suspend PressGestureScope.(Offset) -> Unit = ..., onTap: ((Offset) -> Unit)? = ...): Unit' should be called only from a coroutine or another suspend function.
+2026-11-18T15:20:54.8675757Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/ui/SettingsScreen.kt:329:29 Unresolved reference. None of the following candidates is applicable because of a receiver type mismatch:
+2026-11-18T15:20:54.8678813Z suspend fun PointerInputScope.detectTapGestures(onDoubleTap: ((Offset) -> Unit)? = ..., onLongPress: ((Offset) -> Unit)? = ..., onPress: suspend PressGestureScope.(Offset) -> Unit = ..., onTap: ((Offset) -> Unit)? = ...): Unit
+2026-11-18T15:20:54.8681178Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/ui/SettingsScreen.kt:350:52 Unresolved reference 'Add'.
+2026-11-18T15:20:54.8683628Z e: file:///home/runner/work/SpeakFast/SpeakFast/app/src/main/java/com/debk007/speakfast/presentation/viewmodel/SettingsViewModel.kt:13:38 Unresolved reference 'ModelDownloader'.
+2026-11-18T15:20:54.9458345Z 
+2026-11-18T15:20:54.9458371Z 
+2026-11-18T15:20:54.9459611Z [Incubating] Problems report is available at: file:///home/runner/work/SpeakFast/SpeakFast/build/reports/problems/problems-report.html
+2026-11-18T15:20:54.9460655Z 
+2026-11-18T15:20:54.9461197Z Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+2026-11-18T15:20:54.9461923Z 
+2026-11-18T15:20:54.9462697Z You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+2026-11-18T15:20:54.9463660Z 
+2026-11-18T15:20:54.9464594Z For more on this, please refer to https://docs.gradle.org/9.9.0/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+2026-11-18T15:20:54.9465866Z 38 actionable tasks: 27 executed, 11 from cache
+2026-11-18T15:20:54.9466442Z Configuration cache entry stored.
+2026-11-18T15:20:54.9469914Z FAILURE: Build failed with an exception.
+2026-11-18T15:20:54.9479754Z 
+2026-11-18T15:20:54.9499737Z * What went wrong:
+2026-11-18T15:20:54.9518857Z Execution failed for task ':app:compileReleaseKotlin' (registered by plugin 'org.jetbrains.kotlin.android').
+2026-11-18T15:20:54.9549475Z > A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
+2026-11-18T15:20:54.9573919Z    > Compilation error. See log for more details
+2026-11-18T15:20:54.9618048Z 
+2026-11-18T15:20:54.9618698Z * Try:
+2026-11-18T15:20:54.9626468Z > Run with --stacktrace option to get the stack trace.
+2026-11-18T15:20:54.9635539Z > Run with --info or --debug option to get more log output.
+2026-11-18T15:20:54.9636986Z > Run with --scan to get full insights from a Build Scan (powered by Develocity).
+2026-11-18T15:20:54.9638366Z > Get more help at https://help.gradle.org.
+2026-11-18T15:20:54.9639085Z 
+2026-11-18T15:20:54.9639475Z BUILD FAILED in 41s
+2026-11-18T15:20:55.4260414Z ##[error]Process completed with exit code 1.
+2026-11-18T15:20:55.4302193Z ##[group]Run rm -f app/release.keystore
+2026-11-18T15:20:55.4302660Z rm -f app/release.keystore
+2026-11-18T15:20:55.4338297Z shell: /usr/bin/bash -e {0}
+2026-11-18T15:20:55.4338677Z env:
+2026-11-18T15:20:55.4338983Z   NEW_VERSION_CODE: 19
+2026-11-18T15:20:55.4339313Z   NEW_VERSION_NAME: 1.18
+2026-11-18T15:20:55.4339640Z   NEW_TAG: v1.18
+2026-11-18T15:20:55.4340095Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.21-9/x64
+2026-11-18T15:20:55.4340750Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.21-9/x64
+2026-11-18T15:20:55.4341316Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
+2026-11-18T15:20:55.4341742Z   GRADLE_USER_HOME: /home/runner/.gradle
+2026-11-18T15:20:55.4342160Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+2026-11-18T15:20:55.4342578Z   GRADLE_BUILD_ACTION_CACHE_RESTORED: true
+2026-11-18T15:20:55.4343156Z   DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+2026-11-18T15:20:55.4344062Z   DEVELOCITY_INJECTION_CUSTOM_VALUE: gradle-actions
