@@ -1,6 +1,8 @@
 package com.debk007.speakfast.presentation.ui
 
 import android.speech.tts.Voice
+import androidx.compose.foundation.background
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -8,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Button
@@ -20,12 +24,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.debk007.speakfast.presentation.viewmodel.SettingsViewModel
 import java.util.Locale
 
@@ -35,10 +40,6 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
     val locales by viewModel.ttsLocales.collectAsState()
     val settings = uiState.settings
 
-    // FIX (language fallback edge case): if the saved languageCode is not in the
-    // TTS locale list, indexOf returns -1. coerceAtLeast(0) maps -1 -> 0 so the
-    // ◀/▶ buttons always wrap around the available locales and never index
-    // negatively or jump to arbitrary locales.
     val currentLocale = locales.firstOrNull { it.toLanguageTag() == (settings?.languageCode ?: "") }
         ?: Locale.forLanguageTag(settings?.languageCode ?: "en-US")
     val voices: List<Voice> = viewModel.voicesFor(currentLocale)
@@ -46,36 +47,51 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
     val currentLocaleIndex = locales.indexOf(currentLocale).coerceAtLeast(0)
     val currentVoiceIndex = voices.indexOf(currentVoice).coerceAtLeast(0)
 
+    val prevLocaleInteractionSource = remember { MutableInteractionSource() }
+    val nextLocaleInteractionSource = remember { MutableInteractionSource() }
+    val prevVoiceInteractionSource = remember { MutableInteractionSource() }
+    val nextVoiceInteractionSource = remember { MutableInteractionSource() }
+    val dismissErrorInteractionSource = remember { MutableInteractionSource() }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
-            .clearAndSetSemantics { },
+            .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Text("Settings", style = MaterialTheme.typography.headlineLarge)
 
-        // FIX (error messages): show the ViewModel's errorMessage as a dismissible
-        // red banner at the top of the screen.
         val errorMessage = uiState.errorMessage
         if (errorMessage != null) {
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(12.dp)
+                    .background(
+                        color = MaterialTheme.colorScheme.errorContainer,
+                        shape = RoundedCornerShape(8.dp)
+                    ),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
                     text = errorMessage,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.error,
-                    modifier = Modifier.weight(1f)
+                    color = MaterialTheme.colorScheme.onErrorContainer,
+                    modifier = Modifier.weight(1f).padding(end = 8.dp)
                 )
-                IconButton(onClick = { viewModel.clearError() }) {
+                IconButton(
+                    onClick = { viewModel.clearError() },
+                    interactionSource = dismissErrorInteractionSource,
+                    modifier = Modifier
+                        .size(48.dp)
+                        .semantics { contentDescription = "Dismiss error message" }
+                ) {
                     Icon(
                         imageVector = Icons.Filled.Close,
                         contentDescription = "Dismiss error",
-                        tint = MaterialTheme.colorScheme.error,
-                        modifier = Modifier.size(20.dp)
+                        tint = MaterialTheme.colorScheme.onErrorContainer,
+                        modifier = Modifier.size(24.dp)
                     )
                 }
             }
@@ -102,23 +118,25 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                         onClick = {
                             val idx = (currentLocaleIndex - 1 + locales.size) % locales.size
                             viewModel.updateLanguage(locales[idx].toLanguageTag())
-                        }
+                        },
+                        interactionSource = prevLocaleInteractionSource,
+                        modifier = Modifier
+                            .size(48.dp)
+                            .semantics { contentDescription = "Previous language" }
                     ) {
-                        Text(
-                            "◀",
-                            modifier = Modifier.semantics { contentDescription = "Previous language" }
-                        )
+                        Text("◀", fontSize = 20.sp, modifier = Modifier.semantics { contentDescription = "Previous language" })
                     }
                     Button(
                         onClick = {
                             val idx = (currentLocaleIndex + 1) % locales.size
                             viewModel.updateLanguage(locales[idx].toLanguageTag())
-                        }
+                        },
+                        interactionSource = nextLocaleInteractionSource,
+                        modifier = Modifier
+                            .size(48.dp)
+                            .semantics { contentDescription = "Next language" }
                     ) {
-                        Text(
-                            "▶",
-                            modifier = Modifier.semantics { contentDescription = "Next language" }
-                        )
+                        Text("▶", fontSize = 20.sp, modifier = Modifier.semantics { contentDescription = "Next language" })
                     }
                 }
             }
@@ -147,12 +165,13 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                                 viewModel.updateVoice(voices[idx].name)
                             }
                         },
-                        enabled = voices.isNotEmpty()
+                        enabled = voices.isNotEmpty(),
+                        interactionSource = prevVoiceInteractionSource,
+                        modifier = Modifier
+                            .size(48.dp)
+                            .semantics { contentDescription = "Previous voice variant" }
                     ) {
-                        Text(
-                            "◀",
-                            modifier = Modifier.semantics { contentDescription = "Previous voice" }
-                        )
+                        Text("◀", fontSize = 20.sp, modifier = Modifier.semantics { contentDescription = "Previous voice variant" })
                     }
                     Button(
                         onClick = {
@@ -161,15 +180,69 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                                 viewModel.updateVoice(voices[idx].name)
                             }
                         },
-                        enabled = voices.isNotEmpty()
+                        enabled = voices.isNotEmpty(),
+                        interactionSource = nextVoiceInteractionSource,
+                        modifier = Modifier
+                            .size(48.dp)
+                            .semantics { contentDescription = "Next voice variant" }
                     ) {
-                        Text(
-                            "▶",
-                            modifier = Modifier.semantics { contentDescription = "Next voice" }
-                        )
+                        Text("▶", fontSize = 20.sp, modifier = Modifier.semantics { contentDescription = "Next voice variant" })
                     }
                 }
             }
+        }
+
+        // FLOATING BUTTON SIZE (NEW - ADDED)
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Floating Button Size: ${String.format("%.2f", settings?.floatingButtonSize ?: 1.0f)}x",
+                    style = MaterialTheme.typography.bodyLarge
+                )
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Button(
+                        onClick = {
+                            val current = settings?.floatingButtonSize ?: 1.0f
+                            viewModel.updateFloatingButtonSize((current - 0.1f).coerceAtLeast(0.5f))
+                        },
+                        modifier = Modifier
+                            .size(40.dp)
+                            .semantics { contentDescription = "Decrease floating button size" }
+                    ) {
+                        Text("−", fontSize = 24.sp, color = MaterialTheme.colorScheme.primary)
+                    }
+                    Button(
+                        onClick = {
+                            val current = settings?.floatingButtonSize ?: 1.0f
+                            viewModel.updateFloatingButtonSize((current + 0.1f).coerceAtMost(2.0f))
+                        },
+                        modifier = Modifier
+                            .size(40.dp)
+                            .semantics { contentDescription = "Increase floating button size" }
+                    ) {
+                        Text("+", fontSize = 24.sp, color = MaterialTheme.colorScheme.primary)
+                    }
+                }
+            }
+            Slider(
+                value = settings?.floatingButtonSize ?: 1.0f,
+                onValueChange = { viewModel.updateFloatingButtonSize(it) },
+                valueRange = 0.5f..2.0f,
+                steps = 14,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .semantics { contentDescription = "Adjust floating button size" }
+            )
         }
 
         // SPEECH RATE SETTING
@@ -188,7 +261,6 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                 valueRange = 0.5f..2.0f,
                 steps = 15,
                 modifier = Modifier
-                    .fillMaxWidth()
                     .width(200.dp)
                     .semantics { contentDescription = "Adjust speech rate" }
             )
@@ -210,7 +282,6 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                 valueRange = 0.5f..2.0f,
                 steps = 15,
                 modifier = Modifier
-                    .fillMaxWidth()
                     .width(200.dp)
                     .semantics { contentDescription = "Adjust pitch" }
             )
@@ -229,7 +300,9 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
             Switch(
                 checked = settings?.readExactSelection ?: true,
                 onCheckedChange = { viewModel.updateReadExactSelection(it) },
-                modifier = Modifier.semantics { contentDescription = "Toggle read exact selection" }
+                modifier = Modifier
+                    .semantics { contentDescription = "Toggle read exact selection" }
+                    .padding(16.dp)
             )
         }
 
@@ -246,7 +319,9 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
             Switch(
                 checked = settings?.ocrEnabled ?: false,
                 onCheckedChange = { viewModel.updateOcrEnabled(it) },
-                modifier = Modifier.semantics { contentDescription = "Toggle OCR mode" }
+                modifier = Modifier
+                    .semantics { contentDescription = "Toggle OCR mode" }
+                    .padding(16.dp)
             )
         }
     }

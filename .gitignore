@@ -16,3 +16,9 @@ local.properties
 
 # Backup/template folder
 .base/
+
+# GitHub workflows & CI/CD - never commit
+.github/
+
+# IDE/agent backup history - never commit
+.polydev/
