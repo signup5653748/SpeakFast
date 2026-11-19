@@ -17,29 +17,80 @@ jobs:
         fetch-depth: 0
         token: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Auto-Increment Version
-      id: bump_version
+    - name: Get Latest Release Tag
+      id: get_latest_tag
       run: |
-        CURRENT_VC=$(grep 'versionCode =' app/build.gradle.kts | grep -o '[0-9]\+' | head -1)
-        NEW_VC=$((CURRENT_VC + 1))
-        sed -i "s/versionCode = $CURRENT_VC/versionCode = $NEW_VC/" app/build.gradle.kts
+        LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
+        echo "latest_tag=$LATEST_TAG" >> $GITHUB_OUTPUT
+        echo "📍 Latest release: $LATEST_TAG"
 
-        CURRENT_VN=$(grep 'versionName =' app/build.gradle.kts | grep -o '"[^"]*"' | tr -d '"')
-        NEW_VN=$(echo "$CURRENT_VN" | awk -F. -v OFS=. '{$NF = $NF + 1;} 1')
-        sed -i "s/versionName = \".*\"/versionName = \"$NEW_VN\"/" app/build.gradle.kts
-
-        echo "NEW_VERSION_CODE=$NEW_VC" >> $GITHUB_ENV
-        echo "NEW_VERSION_NAME=$NEW_VN" >> $GITHUB_ENV
-        echo "NEW_TAG=v$NEW_VN" >> $GITHUB_ENV
-        echo "✅ Bumped version to $NEW_VN (Code: $NEW_VC)"
-
-    - name: Commit Version Bump
+    - name: Generate Changelog
+      id: changelog
       run: |
-        git config --global user.name "github-actions[bot]"
-        git config --global user.email "github-actions[bot]@users.noreply.github.com"
-        git add app/build.gradle.kts
-        git commit -m "chore: bump version to ${{ env.NEW_VERSION_NAME }} (${{ env.NEW_VERSION_CODE }})"
-        git push origin main
+        LATEST_TAG="${{ steps.get_latest_tag.outputs.latest_tag }}"
+        
+        # Get all commits since last tag
+        if [ "$LATEST_TAG" = "v0.0.0" ]; then
+          COMMITS=$(git log --pretty=format:"%s|%h" --reverse)
+        else
+          COMMITS=$(git log ${LATEST_TAG}..HEAD --pretty=format:"%s|%h" --reverse)
+        fi
+        
+        # Categorize commits
+        FEATURES=""
+        BUGFIXES=""
+        UI_CHANGES=""
+        INTERNAL=""
+        
+        while IFS='|' read -r msg hash; do
+          if [[ -z "$msg" ]]; then continue; fi
+          
+          case "$msg" in
+            feat:*|Feat:*|feature:*|Feature:*)
+              FEATURES="${FEATURES}\n- ✨ ${msg#*:} [\`${hash}\`](https://github.com/${{ github.repository }}/commit/${hash})"
+              ;;
+            fix:*|Fix:*|bugfix:*|Bugfix:*)
+              BUGFIXES="${BUGFIXES}\n- 🐛 ${msg#*:} [\`${hash}\`](https://github.com/${{ github.repository }}/commit/${hash})"
+              ;;
+            ui:*|UI:*|style:*|Style:*|design:*|Design:*)
+              UI_CHANGES="${UI_CHANGES}\n- 🎨 ${msg#*:} [\`${hash}\`](https://github.com/${{ github.repository }}/commit/${hash})"
+              ;;
+            *)
+              INTERNAL="${INTERNAL}\n- ⚙️ ${msg} [\`${hash}\`](https://github.com/${{ github.repository }}/commit/${hash})"
+              ;;
+          esac
+        done <<< "$COMMITS"
+        
+        # Build changelog
+        CHANGELOG=""
+        
+        if [ -n "$FEATURES" ]; then
+          CHANGELOG="${CHANGELOG}## ✨ New Features${FEATURES}\n\n"
+        fi
+        
+        if [ -n "$BUGFIXES" ]; then
+          CHANGELOG="${CHANGELOG}## 🐛 Bug Fixes${BUGFIXES}\n\n"
+        fi
+        
+        if [ -n "$UI_CHANGES" ]; then
+          CHANGELOG="${CHANGELOG}## 🎨 UI Changes${UI_CHANGES}\n\n"
+        fi
+        
+        if [ -n "$INTERNAL" ]; then
+          CHANGELOG="${CHANGELOG}## ⚙️ Internal${INTERNAL}\n\n"
+        fi
+        
+        if [ -z "$CHANGELOG" ]; then
+          CHANGELOG="## 🎨 UI Changes\n- 🔄 General improvements and stability updates"
+        fi
+        
+        # Escape for GitHub Actions
+        CHANGELOG="${CHANGELOG//'%'/'%25'}"
+        CHANGELOG="${CHANGELOG//$'\n'/'%0A'}"
+        CHANGELOG="${CHANGELOG//$'\r'/'%0D'}"
+        
+        echo "changelog=$CHANGELOG" >> $GITHUB_OUTPUT
+        echo "✅ Generated changelog with $(echo -e "$FEATURES$BUGFIXES$UI_CHANGES$INTERNAL" | grep -c "^-") commits"
 
     - name: Set up JDK 17
       uses: actions/setup-java@v4
@@ -87,6 +138,30 @@ jobs:
         fi
         echo "apk_path=$FOUND" >> "$GITHUB_OUTPUT"
 
+    - name: Auto-Increment Version (Only on Success)
+      id: bump_version
+      run: |
+        CURRENT_VC=$(grep 'versionCode =' app/build.gradle.kts | grep -o '[0-9]\+' | head -1)
+        NEW_VC=$((CURRENT_VC + 1))
+        sed -i "s/versionCode = $CURRENT_VC/versionCode = $NEW_VC/" app/build.gradle.kts
+
+        CURRENT_VN=$(grep 'versionName =' app/build.gradle.kts | grep -o '"[^"]*"' | tr -d '"')
+        NEW_VN=$(echo "$CURRENT_VN" | awk -F. -v OFS=. '{$NF = $NF + 1;} 1')
+        sed -i "s/versionName = \".*\"/versionName = \"$NEW_VN\"/" app/build.gradle.kts
+
+        echo "NEW_VERSION_CODE=$NEW_VC" >> $GITHUB_ENV
+        echo "NEW_VERSION_NAME=$NEW_VN" >> $GITHUB_ENV
+        echo "NEW_TAG=v$NEW_VN" >> $GITHUB_ENV
+        echo "✅ Bumped version to $NEW_VN (Code: $NEW_VC)"
+
+    - name: Commit Version Bump
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git add app/build.gradle.kts
+        git commit -m "chore: bump version to ${{ env.NEW_VERSION_NAME }} (${{ env.NEW_VERSION_CODE }})"
+        git push origin main
+
     - name: Get Commit Info
       id: commit_info
       run: |
@@ -98,7 +173,7 @@ jobs:
         echo "date=$COMMIT_DATE" >> $GITHUB_OUTPUT
 
     - name: Create GitHub Release
-      if: success() # Only create release if build succeeded
+      if: success()
       uses: softprops/action-gh-release@v2
       with:
         tag_name: ${{ env.NEW_TAG }}
@@ -107,9 +182,20 @@ jobs:
           🚀 **Signed Release APK**
           
           📦 **Version:** ${{ env.NEW_VERSION_NAME }} (Code: ${{ env.NEW_VERSION_CODE }})
-          📝 **Commit Message:** ${{ steps.commit_info.outputs.message }}
-          🔗 **Commit Hash:** `${{ steps.commit_info.outputs.hash }}`
           📅 **Build Date:** ${{ steps.commit_info.outputs.date }}
+          
+          ---
+          
+          ## 📝 What's New
+          
+          ${{ steps.changelog.outputs.changelog }}
+          
+          ---
+          
+          📦 **Downloads:**
+          - 📱 [app-release.apk](https://github.com/${{ github.repository }}/releases/download/${{ env.NEW_TAG }}/${{ steps.find_apk.outputs.apk_path | split('/') | last }}) — Signed APK (install directly)
+          
+          🔗 **Full Changelog:** [Compare](https://github.com/${{ github.repository }}/compare/${{ steps.get_latest_tag.outputs.latest_tag }}...${{ env.NEW_TAG }})
         files: ${{ steps.find_apk.outputs.apk_path }}
         make_latest: true
       env:
